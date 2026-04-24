@@ -1,0 +1,29 @@
+# Remotion — backup manual no HD externo
+Remotion/
+
+# Dependências
+node_modules/
+*/node_modules/
+
+# Variáveis de ambiente — NUNCA enviar
+.env
+*/.env
+
+# Assets pesados gerados
+skill-edicao/projetos/*/output/downloads/
+skill-edicao/projetos/*/output/cenas/
+skill-edicao/assets/downloaded/
+skill-edicao/cenas/
+skill-edicao/ffmpeg-temp/
+skill-edicao/temp/
+
+# Binários ffmpeg
+skill-edicao/ffmpeg.exe
+skill-edicao/ffprobe.exe
+skill-edicao/ffmpeg.zip
+
+# Sistema
+.DS_Store
+Thumbs.db
+desktop.ini
+*.log

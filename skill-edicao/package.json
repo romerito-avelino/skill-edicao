@@ -1,0 +1,21 @@
+{
+  "name": "skill-edicao",
+  "version": "1.0.0",
+  "description": "Skill de edição de vídeos de histórias para YouTube",
+  "type": "commonjs",
+  "scripts": {
+    "parse": "npx tsx src/srt-parser.ts",
+    "select": "npx tsx src/visual-selector.ts",
+    "fetch": "npx tsx src/asset-fetcher.ts",
+    "build": "npx tsx src/index.ts"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.39.0",
+    "dotenv": "^17.4.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.39",
+    "tsx": "^4.21.0",
+    "typescript": "^5.0.0"
+  }
+}

@@ -1,0 +1,8 @@
+aroldo-001-quarenta-anos/
+├── roteiro.srt
+├── pacote-dados.pdf
+├── thumb.jpg
+└── referencias/
+    ├── avatar-aroldo.jpg      ← rosto/aparência do personagem
+    ├── chacara-varanda.jpg    ← cenário principal
+    └── estilo-visual.jpg      ← referência de tom cinematográfico
