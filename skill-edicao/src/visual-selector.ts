@@ -63,15 +63,30 @@ export async function processarTodosSegmentos(
   paleta: PaletaThumbnail
 ): Promise<SegmentoProcessado[]> {
 
-  const segmentosResumidos = segmentos.map(s => ({
-    id: s.id,
-    inicio_ms: s.inicio_ms,
-    fim_ms: s.fim_ms,
-    duracao_ms: s.duracao_ms,
-    texto: s.texto,
-  }));
+  const TAMANHO_LOTE = 15;
+  const lotes: Segmento[][] = [];
 
-  const prompt = `Você é o motor de decisão visual da Skill-Edição de vídeos de histórias para YouTube.
+  for (let i = 0; i < segmentos.length; i += TAMANHO_LOTE) {
+    lotes.push(segmentos.slice(i, i + TAMANHO_LOTE));
+  }
+
+  console.log(`Processando ${segmentos.length} segmentos em ${lotes.length} lotes de ${TAMANHO_LOTE}...`);
+
+  const todosProcessados: SegmentoProcessado[] = [];
+
+  for (let i = 0; i < lotes.length; i++) {
+    const lote = lotes[i];
+    console.log(`\nLote ${i + 1}/${lotes.length} — segmentos ${lote[0].id} a ${lote[lote.length - 1].id}`);
+
+    const segmentosResumidos = lote.map(s => ({
+      id: s.id,
+      inicio_ms: s.inicio_ms,
+      fim_ms: s.fim_ms,
+      duracao_ms: s.duracao_ms,
+      texto: s.texto,
+    }));
+
+    const prompt = `Você é o motor de decisão visual da Skill-Edição de vídeos de histórias para YouTube.
 
 CANAL: ${infoCanal.nome_canal}
 NICHO: ${infoCanal.nicho}
@@ -79,19 +94,49 @@ GAP DE EDIÇÃO: ${infoCanal.gap_de_edicao}
 ESTILO: ${infoCanal.estilo_visual}
 PALETA: primaria=${paleta.cor_primaria} secundaria=${paleta.cor_secundaria} acento=${paleta.cor_acento}
 
-REGRAS DE DECISÃO:
-- Terço emocional: segmentos iniciais=agressivo, meio=duvidoso, finais=esperançoso
+REGRAS:
+- Terço: primeiros 33% dos segmentos=agressivo, meio 33%=duvidoso, últimos 33%=esperançoso
 - Ritmo: agressivo=4000ms, duvidoso=5000ms, esperançoso=6000ms
 - num_clips = max(1, round(duracao_ms / ritmo_ms))
-- Tipos: video_stock (cenas filmáveis genéricas), imagem_ia (abstrato/emocional/específico do canal), remotion (frases-chave/viradas emocionais)
+- Tipos: video_stock (cenas genéricas filmáveis), imagem_ia (abstrato/emocional/específico), remotion (frases impactantes)
 - NUNCA mais de 2 clips do mesmo tipo seguidos
-- Queries Pexels SEMPRE em inglês
-- Prompts imagem_ia incluem sempre as cores da paleta
+- Queries Pexels SEMPRE em inglês, específicas e cinematográficas
+- Prompts imagem_ia: SEMPRE em inglês, cinematográficos e detalhados
 
-SEGMENTOS A PROCESSAR:
-${JSON.stringify(segmentosResumidos, null, 2)}
+REGRAS DE PROMPT PARA IMAGEM IA:
+Todo prompt de imagem_ia DEVE seguir esta estrutura:
+[DESCRIÇÃO DA CENA em detalhes] + [ILUMINAÇÃO] + [ESTILO FOTOGRÁFICO] + [PALETA DE CORES]
 
-Retorne APENAS um JSON válido com esta estrutura exata, sem texto adicional:
+Exemplos de prompts CORRETOS para o canal Aroldo do Pix:
+- "Elderly Brazilian man in his 60s sitting alone on wooden porch at sunset, looking at rural landscape, warm golden backlight, cinematic photography, shallow depth of field, 35mm film grain, color palette ${paleta.cor_primaria} ${paleta.cor_secundaria}"
+- "Close-up of weathered calloused hands holding unpaid bills on worn wooden table, single window casting warm shadow, nostalgic mood, cinematic close-up, natural lighting, ${paleta.cor_primaria} warm tones"
+- "Two elderly Brazilian men sitting on farm porch, serious conversation at dusk, silhouette against orange sunset sky, wide shot, cinematic, warm nostalgic atmosphere, ${paleta.cor_primaria} color grade"
+- "Rural Brazilian farm at golden hour, simple farmhouse, dirt road, cattle grazing, dramatic orange sky, cinematic wide angle, National Geographic style, ${paleta.cor_primaria} ${paleta.cor_secundaria} tones"
+
+EVITAR nos prompts de imagem_ia:
+- Rostos próximos (geram distorções)
+- Membros em primeiro plano
+- Texto na imagem
+- Cenários urbanos modernos
+- Pessoas jovens
+
+REGRAS DE PROMPT PARA REMOTION:
+O campo texto_animado DEVE conter uma frase curta e impactante do segmento.
+Máximo 10 palavras. Preferencialmente uma frase que o avatar disse.
+NUNCA deixar texto_animado vazio.
+
+REGRAS DE QUERY PARA PEXELS:
+Queries devem ser específicas e cinematográficas.
+Exemplos CORRETOS:
+- "elderly man wooden porch coffee sunset rural"
+- "weathered hands holding document worried"
+- "Brazilian farm cattle golden hour sunset"
+- "old man alone thinking regret"
+
+SEGMENTOS:
+${JSON.stringify(segmentosResumidos)}
+
+Retorne APENAS JSON válido sem texto adicional:
 {
   "segmentos": [
     {
@@ -99,7 +144,7 @@ Retorne APENAS um JSON válido com esta estrutura exata, sem texto adicional:
       "terco": "agressivo",
       "intensidade": 7,
       "tipo_momento": "abertura",
-      "bloco": "BLOCO 1 — ABERTURA",
+      "bloco": "BLOCO 1",
       "ritmo_corte_ms": 4000,
       "total_clips": 2,
       "clips": [
@@ -109,26 +154,14 @@ Retorne APENAS um JSON válido com esta estrutura exata, sem texto adicional:
           "fim_relativo_ms": 4000,
           "duracao_ms": 4000,
           "tipo": "video_stock",
-          "queries": ["elderly man porch sunset brazil", "senior man wooden chair farm", "countryside evening relaxing"],
+          "queries": ["query1 english", "query2 english", "query3 english"],
           "arquivo_final": "cenas/001-01.mp4",
           "fallback_tipo": "imagem_ia",
-          "fallback_prompt": "elderly Brazilian man on wooden porch at sunset, warm orange tones ${paleta.cor_primaria}, cinematic, nostalgic"
+          "fallback_prompt": "prompt em inglês com cor ${paleta.cor_primaria}"
         }
       ]
     }
   ]
-}
-
-Para clips imagem_ia use:
-{
-  "clip_id": "001-02",
-  "inicio_relativo_ms": 4000,
-  "fim_relativo_ms": 8000,
-  "duracao_ms": 4000,
-  "tipo": "imagem_ia",
-  "prompt": "descrição detalhada em inglês, cores ${paleta.cor_primaria}, cinematic",
-  "animacao_remotion": "ken_burns_zoom_in",
-  "arquivo_final": "cenas/001-02.mp4"
 }
 
 Para clips remotion use:
@@ -138,44 +171,60 @@ Para clips remotion use:
   "fim_relativo_ms": 14000,
   "duracao_ms": 6000,
   "tipo": "remotion",
-  "texto_animado": "frase exata do segmento",
+  "texto_animado": "OBRIGATÓRIO: copie aqui a frase exata mais impactante do segmento",
   "animacao_remotion": "palavra_por_palavra",
   "arquivo_final": "cenas/001-03.mp4"
-}`;
+}
 
-  console.log(`Analisando ${segmentos.length} segmentos em uma única chamada...`);
+ATENÇÃO: O campo texto_animado é OBRIGATÓRIO em clips do tipo remotion.
+Sempre copie uma frase curta e impactante do texto do segmento.
+NUNCA deixe texto_animado vazio ou ausente.`;
 
-  const resposta = await client.messages.create({
-    model: "claude-haiku-4-5-20251001",
-    max_tokens: 16000,
-    messages: [{ role: "user", content: prompt }],
-  });
+    try {
+      const resposta = await client.messages.create({
+        model: "claude-haiku-4-5-20251001",
+        max_tokens: 8000,
+        messages: [{ role: "user", content: prompt }],
+      });
 
-  const conteudo = resposta.content[0];
-  if (conteudo.type !== "text") {
-    throw new Error("Resposta inesperada da API");
+      const conteudo = resposta.content[0];
+      if (conteudo.type !== "text") throw new Error("Resposta inesperada");
+
+      const texto = conteudo.text.trim();
+      const jsonMatch = texto.match(/\{[\s\S]*\}/);
+      if (!jsonMatch) throw new Error("JSON não encontrado");
+
+      const resultado = JSON.parse(jsonMatch[0]);
+
+      const processados = resultado.segmentos.map((s: any) => {
+        const original = segmentos.find(seg => seg.id === s.id);
+        return {
+          id: s.id,
+          bloco: s.bloco || "",
+          inicio_ms: original?.inicio_ms || 0,
+          fim_ms: original?.fim_ms || 0,
+          duracao_ms: original?.duracao_ms || 0,
+          texto: original?.texto || "",
+          terco: s.terco,
+          intensidade: s.intensidade,
+          tipo_momento: s.tipo_momento,
+          ritmo_corte_ms: s.ritmo_corte_ms,
+          total_clips: s.total_clips,
+          clips: s.clips,
+        };
+      });
+
+      todosProcessados.push(...processados);
+      console.log(`  ✓ ${processados.length} segmentos processados`);
+
+      if (i < lotes.length - 1) {
+        await new Promise(r => setTimeout(r, 1000));
+      }
+
+    } catch (erro: any) {
+      console.error(`  ✗ Erro no lote ${i + 1}: ${erro.message}`);
+    }
   }
 
-  const texto = conteudo.text.trim();
-  const jsonMatch = texto.match(/\{[\s\S]*\}/);
-  if (!jsonMatch) {
-    throw new Error("JSON não encontrado na resposta");
-  }
-
-  const resultado = JSON.parse(jsonMatch[0]);
-
-  return resultado.segmentos.map((s: any) => ({
-    id: s.id,
-    bloco: s.bloco || "",
-    inicio_ms: segmentos.find(seg => seg.id === s.id)?.inicio_ms || 0,
-    fim_ms: segmentos.find(seg => seg.id === s.id)?.fim_ms || 0,
-    duracao_ms: segmentos.find(seg => seg.id === s.id)?.duracao_ms || 0,
-    texto: segmentos.find(seg => seg.id === s.id)?.texto || "",
-    terco: s.terco,
-    intensidade: s.intensidade,
-    tipo_momento: s.tipo_momento,
-    ritmo_corte_ms: s.ritmo_corte_ms,
-    total_clips: s.total_clips,
-    clips: s.clips,
-  }));
+  return todosProcessados;
 }

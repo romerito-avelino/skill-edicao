@@ -4,7 +4,8 @@ import * as dotenv from "dotenv";
 import { parsearSRT, resumirSRT, Segmento } from "./srt-parser";
 import { processarTodosSegmentos, InfoCanal, PaletaThumbnail, SegmentoProcessado } from "./visual-selector";
 import { buscarPexelsVideo, gerarImagemReplicate } from "./asset-fetcher";
-import { gerarComandoVideoStock, gerarComandoImagemIA, gerarComandoTextoAnimado, executarFFmpeg } from "./ffmpeg-processor";
+import { gerarComandoVideoStock, gerarComandoImagemIA, executarFFmpeg } from "./ffmpeg-processor";
+import { renderizarFraseImpacto, renderizarKenBurns } from "./remotion-renderer";
 
 dotenv.config({ path: path.resolve(__dirname, "../.env") });
 
@@ -108,28 +109,65 @@ async function processarSegmento(
       }
     }
 
-    if (clip.tipo === "imagem_ia" && clip.prompt) {
-      await gerarEProcessarImagemIA(
-        clip.clip_id,
-        clip.prompt,
-        clip.duracao_ms,
-        pastaDownloads,
-        pastaCenas
-      );
+    if (clip.tipo === "imagem_ia") {
+      const promptFinal = (clip as any).prompt ||
+                          (clip as any).fallback_prompt ||
+                          (clip as any).image_prompt || "";
+
+      if (promptFinal) {
+        const resultado = await gerarImagemReplicate(
+          promptFinal,
+          clip.clip_id,
+          pastaDownloads
+        );
+
+        if (resultado.sucesso) {
+          const direcoes = ["zoom_in", "zoom_out", "pan_direita", "pan_esquerda"] as const;
+          const direcao = direcoes[Math.floor(Math.random() * direcoes.length)];
+          const arquivo_saida = path.join(pastaCenas, `${clip.clip_id}.mp4`);
+
+          const resultadoKB = await renderizarKenBurns(
+            resultado.arquivo_baixado,
+            arquivo_saida,
+            clip.duracao_ms,
+            direcao
+          );
+
+          if (!resultadoKB.sucesso) {
+            console.log(`    ✗ KenBurns falhou`);
+          }
+        } else {
+          console.log(`    ✗ Replicate falhou: ${resultado.erro}`);
+        }
+      } else {
+        console.log(`    ✗ Sem prompt para imagem IA no clip ${clip.clip_id}`);
+      }
     }
 
-    if (clip.tipo === "remotion" && clip.texto_animado) {
-      const comando = gerarComandoTextoAnimado(
-        clip.clip_id,
-        clip.texto_animado,
-        path.join(pastaCenas, `${clip.clip_id}.mp4`),
-        clip.duracao_ms
-      );
-      const resultado = await executarFFmpeg(comando);
-      if (resultado.sucesso) {
-        console.log(`    ✓ ${clip.clip_id}.mp4 gerado (texto animado)`);
+    if (clip.tipo === "remotion") {
+      const textoFinal = (clip as any).texto_animado ||
+                         (clip as any).texto ||
+                         (clip as any).texto_animacao || "";
+
+      if (textoFinal) {
+        const arquivo_saida = path.join(pastaCenas, `${clip.clip_id}.mp4`);
+        const tercoEstilo = (segmentoProcessado.terco === "agressivo"
+          ? "agressivo"
+          : segmentoProcessado.terco === "duvidoso"
+          ? "duvidoso"
+          : "esperancoso") as "agressivo" | "duvidoso" | "esperancoso";
+
+        const resultado = await renderizarFraseImpacto(
+          textoFinal,
+          arquivo_saida,
+          clip.duracao_ms,
+          tercoEstilo
+        );
+        if (!resultado.sucesso) {
+          console.log(`    → Remotion falhou, pulando clip...`);
+        }
       } else {
-        console.log(`    ✗ Erro Remotion: ${resultado.erro}`);
+        console.log(`    ✗ Sem texto para remotion no clip ${clip.clip_id}`);
       }
     }
   }
@@ -149,18 +187,21 @@ async function gerarEProcessarImagemIA(
   );
 
   if (resultado.sucesso) {
-    const direcao = Math.random() > 0.5 ? "in" : "out";
+    const direcao = ["in", "out"][Math.floor(Math.random() * 2)] as "in" | "out";
+    const arquivo_saida = path.join(pastaCenas, `${clip_id}.mp4`);
     const comando = gerarComandoImagemIA(
       clip_id,
       resultado.arquivo_baixado,
-      path.join(pastaCenas, `${clip_id}.mp4`),
+      arquivo_saida,
       duracao_ms,
       1.08,
-      direcao as "in" | "out"
+      direcao
     );
     const resultadoFF = await executarFFmpeg(comando);
     if (resultadoFF.sucesso) {
-      console.log(`    ✓ ${clip_id}.mp4 gerado (imagem IA animada)`);
+      console.log(`    ✓ ${clip_id}.mp4 gerado (imagem IA + Ken Burns ffmpeg)`);
+    } else {
+      console.log(`    ✗ ffmpeg falhou: ${resultadoFF.erro}`);
     }
   } else {
     console.log(`    ✗ Replicate falhou: ${resultado.erro}`);

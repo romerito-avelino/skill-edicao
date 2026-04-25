@@ -72,32 +72,12 @@ export function gerarComandoImagemIA(
   direcao: "in" | "out" = "in"
 ): ComandoFFmpeg {
   const duracao = msParaSegundos(duracao_ms);
-  const fps = 30;
-  const total_frames = Math.ceil((duracao_ms / 1000) * fps);
+  const entrada_escaped = arquivo_entrada.replace(/\\/g, "/");
+  const saida_escaped = arquivo_saida.replace(/\\/g, "/");
 
-  const zoom_inicio = direcao === "in" ? 1.0 : zoom_fator;
-  const zoom_fim = direcao === "in" ? zoom_fator : 1.0;
-  const zoom_step = ((zoom_fim - zoom_inicio) / total_frames).toFixed(6);
+  const escala_inicio = direcao === "in" ? "1.0" : zoom_fator.toFixed(3);
 
-  const filtro_zoom = [
-    `scale=8000:-1`,
-    `zoompan=z='${zoom_inicio}+${zoom_step}*on':`,
-    `x='iw/2-(iw/zoom/2)':`,
-    `y='ih/2-(ih/zoom/2)':`,
-    `d=${total_frames}:s=1920x1080:fps=${fps}`,
-  ]
-    .join("")
-    .replace(/\n/g, "");
-
-  const comando = [
-    "ffmpeg -y",
-    `-loop 1 -i "${arquivo_entrada}"`,
-    `-t ${duracao}`,
-    `-vf "${filtro_zoom}"`,
-    `-c:v libx264 -preset fast -crf 18`,
-    `-an`,
-    `"${arquivo_saida}"`,
-  ].join(" ");
+  const comando = `ffmpeg -y -loop 1 -i "${entrada_escaped}" -t ${duracao} -vf "scale=1920:1080:force_original_aspect_ratio=increase,crop=1920:1080,zoompan=z='if(eq(on\\,1)\\,${escala_inicio}\\,zoom+0.0005)':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':d=1:s=1920x1080:fps=30" -c:v libx264 -preset fast -crf 18 -an "${saida_escaped}"`;
 
   return {
     clip_id,

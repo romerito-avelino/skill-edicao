@@ -3,10 +3,10 @@
     "canal": "Aroldo do Pix",
     "nicho": "Erros financeiros comuns após os 40",
     "projeto": "aroldo-001-quarenta-anos",
-    "gerado_em": "23/04/2026, 21:48:32",
-    "total_segmentos": 90,
-    "total_clips": 119,
-    "duracao_total_ms": 591233,
+    "gerado_em": "25/04/2026, 12:48:29",
+    "total_segmentos": 30,
+    "total_clips": 58,
+    "duracao_total_ms": 197733,
     "gap_de_edicao": "Trocar animações genéricas por imagens evocativas (fotos antigas, cenários de interior, mãos trabalhadas), ritmo pausado, texto na tela reforçando frases-chave, música nostálgica sutil"
   },
   "paleta_thumbnail": {
@@ -18,3220 +18,1055 @@
   "segmentos": [
     {
       "id": "001",
-      "bloco": "gancho inicial",
+      "bloco": "BLOCO 1",
       "inicio_ms": 0,
       "fim_ms": 6566,
       "duracao_ms": 6566,
       "texto": "\"Rapaz… tem uma coisa que fica na cabeça da gente. Uma pergunta que cê nunca",
       "terco": "agressivo",
-      "intensidade": 6,
-      "tipo_momento": "abertura",
+      "intensidade": 8,
+      "tipo_momento": "abertura_hook",
       "ritmo_corte_ms": 4000,
       "total_clips": 2,
-      "avatar": {
-        "visivel": true,
-        "posicao": "fullscreen",
-        "tamanho_percent": 100
-      },
       "clips": [
         {
           "clip_id": "001-01",
           "inicio_relativo_ms": 0,
-          "fim_relativo_ms": 3500,
-          "duracao_ms": 3500,
-          "tipo": "video_stock",
-          "queries": [
-            "elderly man thinking porch sunset",
-            "old farmer contemplating rural landscape",
-            "mature man deep thought countryside"
-          ],
-          "arquivo_final": "cenas/001-01.mp4",
-          "fallback_tipo": "imagem_ia",
-          "fallback_prompt": "Cinematic close-up of weathered hands of an elderly man resting on wooden chair armrest, warm sunset light streaming through window, sepia and earthy tones with #D4651A orange glow, #8B4513 brown shadows, rural Brazilian farmhouse interior, nostalgic mood, shallow depth of field"
+          "fim_relativo_ms": 4000,
+          "duracao_ms": 4000,
+          "tipo": "imagem_ia",
+          "fallback_prompt": "Weathered Brazilian man in his 60s sitting on wooden chair in rural porch, staring into distance with concern, warm golden hour backlight, cinematic photography, shallow depth of field, nostalgic mood, #D4651A #8B4513 color grading, 35mm film aesthetic"
         },
         {
           "clip_id": "001-02",
-          "inicio_relativo_ms": 3500,
+          "inicio_relativo_ms": 4000,
           "fim_relativo_ms": 6566,
-          "duracao_ms": 3066,
-          "tipo": "imagem_ia",
-          "prompt": "Wide shot of empty wooden rocking chair on rustic porch overlooking vast cattle farm at golden hour, warm #D4651A sunset colors, #8B4513 earth tones, #F5C842 golden light rays, dust particles in air, nostalgic Brazilian countryside atmosphere, cinematic composition, contemplative mood",
-          "animacao_remotion": "ken_burns_zoom_in",
-          "zoom_fator": 1.08,
+          "duracao_ms": 2566,
+          "tipo": "remotion",
+          "texto_animado": "Tem uma coisa que fica na cabeça da gente",
+          "animacao_remotion": "palavra_por_palavra",
           "arquivo_final": "cenas/001-02.mp4"
         }
       ]
     },
     {
       "id": "002",
-      "bloco": "tensão emocional - medo do arrependimento",
+      "bloco": "BLOCO 1",
       "inicio_ms": 6566,
       "fim_ms": 13033,
       "duracao_ms": 6467,
       "texto": "quer ter que responder tarde demais. Sabe aquela sensação de que tudo pode",
-      "terco": "duvidoso",
-      "intensidade": 7,
-      "tipo_momento": "reflexão",
-      "ritmo_corte_ms": 5000,
-      "total_clips": 1,
-      "avatar": {
-        "visivel": true,
-        "posicao": "bottom-right",
-        "tamanho_percent": 35
-      },
+      "terco": "agressivo",
+      "intensidade": 8,
+      "tipo_momento": "contexto_emocional",
+      "ritmo_corte_ms": 4000,
+      "total_clips": 2,
       "clips": [
         {
           "clip_id": "002-01",
-          "inicio_relativo_ms": 0,
-          "fim_relativo_ms": 6467,
-          "duracao_ms": 6467,
-          "tipo": "imagem_ia",
-          "prompt": "Elderly weathered hands gripping an old wooden chair armrest, warm sunset light through farmhouse window casting long shadows, sepia and orange tones #D4651A #8B4513, dust particles floating in golden light #F5C842, cinematic shallow depth of field, nostalgic rural Brazilian interior, sense of uncertainty and reflection, photorealistic",
-          "animacao_remotion": "ken_burns_zoom_in",
-          "zoom_fator": 1.08,
-          "arquivo_final": "cenas/002-01.mp4"
+          "inicio_relativo_ms": 6566,
+          "fim_relativo_ms": 10566,
+          "duracao_ms": 4000,
+          "tipo": "video_stock",
+          "queries": [
+            "old man worried thinking indoor",
+            "elderly person stressed expression rural home",
+            "senior man anxious sitting wooden furniture"
+          ]
+        },
+        {
+          "clip_id": "002-02",
+          "inicio_relativo_ms": 10566,
+          "fim_relativo_ms": 13033,
+          "duracao_ms": 2467,
+          "tipo": "remotion",
+          "texto_animado": "Aquela sensação de que tudo pode desabar",
+          "animacao_remotion": "palavra_por_palavra",
+          "arquivo_final": "cenas/002-02.mp4"
         }
       ]
     },
     {
       "id": "003",
-      "bloco": "confronto com vulnerabilidade",
+      "bloco": "BLOCO 1",
       "inicio_ms": 13033,
       "fim_ms": 19600,
       "duracao_ms": 6567,
       "texto": "desabar? Acordar doente, não conseguir mais trabalhar. Não conseguir tirar o",
       "terco": "agressivo",
-      "intensidade": 8,
-      "tipo_momento": "clímax",
+      "intensidade": 9,
+      "tipo_momento": "escalacao_tensao",
       "ritmo_corte_ms": 4000,
       "total_clips": 2,
-      "avatar": {
-        "visivel": true,
-        "posicao": "fullscreen",
-        "tamanho_percent": 100
-      },
       "clips": [
         {
           "clip_id": "003-01",
-          "inicio_relativo_ms": 0,
-          "fim_relativo_ms": 3500,
-          "duracao_ms": 3500,
+          "inicio_relativo_ms": 13033,
+          "fim_relativo_ms": 17033,
+          "duracao_ms": 4000,
           "tipo": "imagem_ia",
-          "prompt": "Cinematic close-up of weathered elderly hands gripping hospital bed rails, warm sepia tones with #D4651A orange ambient light through window, shallow depth of field, dramatic morning light, rural hospital room atmosphere, photorealistic, emotional vulnerability, #8B4513 brown wooden furniture in background",
-          "animacao_remotion": "ken_burns_zoom_in",
-          "zoom_fator": 1.12,
-          "arquivo_final": "cenas/003-01.mp4"
+          "fallback_prompt": "Close-up of elderly man's face in shadow, expression of deep concern and vulnerability, single lamp light casting warm amber glow, cinematic portrait, natural lighting, #D4651A warm nostalgic tones, 35mm film grain, melancholic atmosphere"
         },
         {
           "clip_id": "003-02",
-          "inicio_relativo_ms": 3500,
-          "fim_relativo_ms": 6567,
-          "duracao_ms": 3067,
+          "inicio_relativo_ms": 17033,
+          "fim_relativo_ms": 19600,
+          "duracao_ms": 2567,
           "tipo": "remotion",
-          "texto_animado": "Acordar doente, não conseguir mais trabalhar.",
-          "animacao_remotion": "fade_in_por_letra",
+          "texto_animado": "Acordar doente, não conseguir mais trabalhar",
+          "animacao_remotion": "palavra_por_palavra",
           "arquivo_final": "cenas/003-02.mp4"
         }
       ]
     },
     {
       "id": "004",
-      "bloco": "conflito_interno_provedor",
+      "bloco": "BLOCO 1",
       "inicio_ms": 19600,
       "fim_ms": 26100,
       "duracao_ms": 6500,
       "texto": "sustento da família? O cabra sofre só de pensar isso. Ainda mais eu, que já",
       "terco": "agressivo",
       "intensidade": 8,
-      "tipo_momento": "causo",
+      "tipo_momento": "aprofundamento_medo",
       "ritmo_corte_ms": 4000,
       "total_clips": 2,
-      "avatar": {
-        "visivel": true,
-        "posicao": "bottom-right",
-        "tamanho_percent": 35
-      },
       "clips": [
         {
           "clip_id": "004-01",
-          "inicio_relativo_ms": 0,
-          "fim_relativo_ms": 4000,
+          "inicio_relativo_ms": 19600,
+          "fim_relativo_ms": 23600,
           "duracao_ms": 4000,
           "tipo": "video_stock",
           "queries": [
-            "worried father sitting alone rural home",
-            "man head in hands stress countryside",
-            "farmer worried about family sunset"
-          ],
-          "arquivo_final": "cenas/004-01.mp4",
-          "fallback_tipo": "imagem_ia",
-          "fallback_prompt": "Worried middle-aged Brazilian man sitting on wooden chair in rustic farmhouse, head slightly down in contemplation, warm orange sunset light through window, earthy tones #D4651A and #8B4513, sepia mood, weathered hands visible, cinematic photography style, nostalgic atmosphere"
+            "worried man holding empty wallet poverty",
+            "elderly man counting coins struggling financial",
+            "senior person stressed finances bills debt"
+          ]
         },
         {
           "clip_id": "004-02",
-          "inicio_relativo_ms": 4000,
-          "fim_relativo_ms": 6500,
+          "inicio_relativo_ms": 23600,
+          "fim_relativo_ms": 26100,
           "duracao_ms": 2500,
-          "tipo": "imagem_ia",
-          "prompt": "Close-up of calloused working hands gripping wooden table edge in anxiety, wedding ring visible, warm amber light #D4651A, rustic kitchen background with coffee cup, brown earth tones #8B4513, golden accent #F5C842 from window light, cinematic shallow depth of field, emotional tension, nostalgic Brazilian countryside mood",
-          "animacao_remotion": "ken_burns_zoom_in",
-          "zoom_fator": 1.08,
+          "tipo": "remotion",
+          "texto_animado": "O cabra sofre só de pensar isso",
+          "animacao_remotion": "palavra_por_palavra",
           "arquivo_final": "cenas/004-02.mp4"
         }
       ]
     },
     {
       "id": "005",
-      "bloco": "confissão inicial",
+      "bloco": "BLOCO 1",
       "inicio_ms": 26133,
       "fim_ms": 32733,
       "duracao_ms": 6600,
       "texto": "tive a oportunidade de está bem financeiramente e por escolhas erradas acabei",
       "terco": "agressivo",
-      "intensidade": 7,
-      "tipo_momento": "abertura",
+      "intensidade": 9,
+      "tipo_momento": "confissao_pessoal",
       "ritmo_corte_ms": 4000,
       "total_clips": 2,
-      "avatar": {
-        "visivel": true,
-        "posicao": "fullscreen",
-        "tamanho_percent": 100
-      },
       "clips": [
         {
           "clip_id": "005-01",
-          "inicio_relativo_ms": 0,
-          "fim_relativo_ms": 3300,
-          "duracao_ms": 3300,
-          "tipo": "video_stock",
-          "queries": [
-            "man looking at horizon sunset countryside",
-            "farmer contemplating life rural setting",
-            "middle aged man reflective moment golden hour"
-          ],
-          "arquivo_final": "cenas/005-01.mp4",
-          "fallback_tipo": "imagem_ia",
-          "fallback_prompt": "Middle-aged Brazilian man sitting on wooden chair on farmhouse porch, looking down with regretful expression, warm sunset light casting long shadows, tones of #D4651A orange and #8B4513 brown, rustic countryside background, cinematic lighting, nostalgic atmosphere, weathered hands clasped together"
+          "inicio_relativo_ms": 26133,
+          "fim_relativo_ms": 30133,
+          "duracao_ms": 4000,
+          "tipo": "imagem_ia",
+          "fallback_prompt": "Weathered hands of middle-aged Brazilian man resting on worn wooden table in dim farmhouse kitchen, regretful expression visible in posture, warm candlelight and window glow, cinematic close-up photography, #D4651A #8B4513 tones, nostalgic melancholic mood"
         },
         {
           "clip_id": "005-02",
-          "inicio_relativo_ms": 3300,
-          "fim_relativo_ms": 6600,
-          "duracao_ms": 3300,
+          "inicio_relativo_ms": 30133,
+          "fim_relativo_ms": 32733,
+          "duracao_ms": 2600,
           "tipo": "remotion",
-          "texto_animado": "escolhas erradas",
-          "animacao_remotion": "fade_in_por_letra",
+          "texto_animado": "Escolhas erradas acabei trilhando outros caminhos",
+          "animacao_remotion": "palavra_por_palavra",
           "arquivo_final": "cenas/005-02.mp4"
         }
       ]
     },
     {
       "id": "006",
-      "bloco": "questionamento sobre dependência do governo",
+      "bloco": "BLOCO 2",
       "inicio_ms": 32766,
       "fim_ms": 39333,
       "duracao_ms": 6567,
       "texto": "trilhando outros caminhos. Será que hoje, o governo vai me sustentar com uma",
       "terco": "duvidoso",
-      "intensidade": 6,
-      "tipo_momento": "reflexão",
+      "intensidade": 7,
+      "tipo_momento": "questao_incerteza",
       "ritmo_corte_ms": 5000,
-      "total_clips": 1,
-      "avatar": {
-        "visivel": true,
-        "posicao": "bottom-right",
-        "tamanho_percent": 35
-      },
+      "total_clips": 2,
       "clips": [
         {
           "clip_id": "006-01",
-          "inicio_relativo_ms": 0,
-          "fim_relativo_ms": 6567,
-          "duracao_ms": 6567,
-          "tipo": "imagem_ia",
-          "prompt": "Elderly Brazilian man sitting alone on wooden porch chair, looking at empty hands with worried expression, rural farmhouse background, warm sunset light filtering through, sepia and earthy tones with #D4651A orange highlights and #8B4513 brown shadows, #F5C842 golden sun rays, cinematic composition, nostalgic melancholic mood, weathered wooden planks, coffee cup on side table, contemplative atmosphere",
-          "animacao_remotion": "ken_burns_zoom_in",
-          "zoom_fator": 1.08,
-          "arquivo_final": "cenas/006-01.mp4"
+          "inicio_relativo_ms": 32766,
+          "fim_relativo_ms": 37766,
+          "duracao_ms": 5000,
+          "tipo": "video_stock",
+          "queries": [
+            "old man looking at documents pension retirement",
+            "elderly Brazilian reading paperwork worried",
+            "senior man examining bills government assistance"
+          ]
+        },
+        {
+          "clip_id": "006-02",
+          "inicio_relativo_ms": 37766,
+          "fim_relativo_ms": 39333,
+          "duracao_ms": 1567,
+          "tipo": "remotion",
+          "texto_animado": "O governo vai me sustentar com uma aposentadoria?",
+          "animacao_remotion": "palavra_por_palavra",
+          "arquivo_final": "cenas/006-02.mp4"
         }
       ]
     },
     {
       "id": "007",
-      "bloco": "realidade da aposentadoria insuficiente",
+      "bloco": "BLOCO 2",
       "inicio_ms": 39333,
       "fim_ms": 45600,
       "duracao_ms": 6267,
       "texto": "aposentadoria que não paga nem a despesa? Ou eu tenho que me virar pra",
       "terco": "duvidoso",
-      "intensidade": 7,
-      "tipo_momento": "reflexão",
+      "intensidade": 6,
+      "tipo_momento": "encruzilhada_decisao",
       "ritmo_corte_ms": 5000,
-      "total_clips": 1,
-      "avatar": {
-        "visivel": true,
-        "posicao": "bottom-right",
-        "tamanho_percent": 35
-      },
+      "total_clips": 2,
       "clips": [
         {
           "clip_id": "007-01",
-          "inicio_relativo_ms": 0,
-          "fim_relativo_ms": 6267,
-          "duracao_ms": 6267,
+          "inicio_relativo_ms": 39333,
+          "fim_relativo_ms": 44333,
+          "duracao_ms": 5000,
           "tipo": "imagem_ia",
-          "prompt": "Elderly Brazilian man with weathered hands counting few coins and crumpled bills on a worn wooden kitchen table, worried expression, humble rural home interior, warm sunset light through window casting long shadows, color palette dominated by earthy tones #D4651A orange and #8B4513 brown, #F5C842 golden accents in the light, cinematic composition, shallow depth of field, nostalgic melancholic mood, photorealistic style",
-          "animacao_remotion": "ken_burns_zoom_in",
-          "zoom_fator": 1.08,
-          "arquivo_final": "cenas/007-01.mp4",
-          "fallback_tipo": "video_stock",
-          "fallback_queries": [
-            "elderly man counting money worried kitchen table",
-            "senior person financial struggle coins bills",
-            "old hands counting few coins wooden table sunset"
-          ]
+          "fallback_prompt": "Rural Brazilian man standing at crossroads looking at two paths at dusk, silhouette against warm orange sky, wide shot contemplative mood, cinematic landscape photography, golden hour lighting, #D4651A #F5C842 color palette, National Geographic style"
+        },
+        {
+          "clip_id": "007-02",
+          "inicio_relativo_ms": 44333,
+          "fim_relativo_ms": 45600,
+          "duracao_ms": 1267,
+          "tipo": "remotion",
+          "texto_animado": "Tenho que me virar pra conseguir outra renda",
+          "animacao_remotion": "palavra_por_palavra",
+          "arquivo_final": "cenas/007-02.mp4"
         }
       ]
     },
     {
       "id": "008",
-      "bloco": "arrependimento e alerta",
+      "bloco": "BLOCO 2",
       "inicio_ms": 45633,
       "fim_ms": 52200,
       "duracao_ms": 6567,
       "texto": "conseguir outra renda? Essa pergunta chegou pra mim tarde demais. Mas pro cê",
       "terco": "duvidoso",
       "intensidade": 7,
-      "tipo_momento": "reflexão",
+      "tipo_momento": "reflexao_arrependimento",
       "ritmo_corte_ms": 5000,
-      "total_clips": 1,
-      "avatar": {
-        "visivel": true,
-        "posicao": "fullscreen",
-        "tamanho_percent": 100
-      },
+      "total_clips": 2,
       "clips": [
         {
           "clip_id": "008-01",
-          "inicio_relativo_ms": 0,
-          "fim_relativo_ms": 6567,
-          "duracao_ms": 6567,
+          "inicio_relativo_ms": 45633,
+          "fim_relativo_ms": 50633,
+          "duracao_ms": 5000,
+          "tipo": "video_stock",
+          "queries": [
+            "old man alone regret sitting porch rural",
+            "elderly person melancholic wooden chair farm",
+            "senior Brazilian man nostalgic looking backward"
+          ]
+        },
+        {
+          "clip_id": "008-02",
+          "inicio_relativo_ms": 50633,
+          "fim_relativo_ms": 52200,
+          "duracao_ms": 1567,
           "tipo": "remotion",
-          "texto_animado": "Essa pergunta chegou tarde demais",
-          "animacao_remotion": "fade_in_por_letra",
-          "arquivo_final": "cenas/008-01.mp4"
+          "texto_animado": "Essa pergunta chegou pra mim tarde demais",
+          "animacao_remotion": "palavra_por_palavra",
+          "arquivo_final": "cenas/008-02.mp4"
         }
       ]
     },
     {
       "id": "009",
-      "bloco": "mensagem final de esperança",
+      "bloco": "BLOCO 3",
       "inicio_ms": 52200,
       "fim_ms": 58766,
       "duracao_ms": 6566,
       "texto": "que tá me ouvindo agora… talvez ainda dê tempo de ela chegar na hora certa.\"",
       "terco": "esperançoso",
-      "intensidade": 8,
-      "tipo_momento": "encerramento",
+      "intensidade": 6,
+      "tipo_momento": "abertura_esperanca",
       "ritmo_corte_ms": 6000,
-      "total_clips": 1,
-      "avatar": {
-        "visivel": true,
-        "posicao": "fullscreen",
-        "tamanho_percent": 100
-      },
+      "total_clips": 2,
       "clips": [
         {
           "clip_id": "009-01",
-          "inicio_relativo_ms": 0,
-          "fim_relativo_ms": 6566,
-          "duracao_ms": 6566,
+          "inicio_relativo_ms": 52200,
+          "fim_relativo_ms": 58200,
+          "duracao_ms": 6000,
+          "tipo": "imagem_ia",
+          "fallback_prompt": "Elderly Brazilian man turning to face viewer with subtle hopeful expression, warm sunset backlight creating halo effect, sitting on wooden chair rural porch, cinematic portrait, golden hour cinematography, #D4651A warm tones, soft focus background, encouraging mood"
+        },
+        {
+          "clip_id": "009-02",
+          "inicio_relativo_ms": 58200,
+          "fim_relativo_ms": 58766,
+          "duracao_ms": 566,
           "tipo": "remotion",
-          "texto_animado": "Talvez ainda dê tempo.",
-          "animacao_remotion": "fade_in_por_letra",
-          "arquivo_final": "cenas/009-01.mp4"
+          "texto_animado": "Talvez ainda dê tempo de ela chegar na hora certa",
+          "animacao_remotion": "palavra_por_palavra",
+          "arquivo_final": "cenas/009-02.mp4"
         }
       ]
     },
     {
       "id": "010",
-      "bloco": "introdução_cenário",
+      "bloco": "BLOCO 3",
       "inicio_ms": 58766,
       "fim_ms": 65466,
       "duracao_ms": 6700,
       "texto": "\"Semana passada eu tava aqui mesmo, nessa varanda. Tomando meu café, igual todo",
-      "terco": "agressivo",
-      "intensidade": 3,
-      "tipo_momento": "abertura",
-      "ritmo_corte_ms": 4000,
+      "terco": "esperançoso",
+      "intensidade": 5,
+      "tipo_momento": "transicao_historia",
+      "ritmo_corte_ms": 6000,
       "total_clips": 2,
-      "avatar": {
-        "visivel": true,
-        "posicao": "fullscreen",
-        "tamanho_percent": 100
-      },
       "clips": [
         {
           "clip_id": "010-01",
-          "inicio_relativo_ms": 0,
-          "fim_relativo_ms": 4000,
-          "duracao_ms": 4000,
+          "inicio_relativo_ms": 58766,
+          "fim_relativo_ms": 64766,
+          "duracao_ms": 6000,
           "tipo": "video_stock",
           "queries": [
-            "elderly man wooden porch morning coffee rural",
-            "old farmer sitting veranda sunrise countryside",
-            "senior man rocking chair farmhouse porch peaceful"
-          ],
-          "arquivo_final": "cenas/010-01.mp4",
-          "fallback_tipo": "imagem_ia",
-          "fallback_prompt": "Elderly Brazilian farmer sitting on rustic wooden veranda at sunrise, holding ceramic coffee cup, warm orange tones #D4651A, sepia atmosphere #8B4513, golden morning light #F5C842, weathered hands, peaceful rural scene, cinematic photography style, nostalgic mood"
+            "old man drinking coffee wooden porch sunrise morning",
+            "elderly Brazilian coffee cup rural landscape peaceful",
+            "senior man morning ritual farm veranda calm"
+          ]
         },
         {
           "clip_id": "010-02",
-          "inicio_relativo_ms": 4000,
-          "fim_relativo_ms": 6700,
-          "duracao_ms": 2700,
-          "tipo": "imagem_ia",
-          "prompt": "Close-up of steaming coffee cup on old wooden table, farm veranda background with soft morning light, warm earthy tones #D4651A and #8B4513, golden accents #F5C842, rustic Brazilian countryside atmosphere, shallow depth of field, cinematic nostalgic photography",
-          "animacao_remotion": "ken_burns_zoom_in",
-          "zoom_fator": 1.08,
+          "inicio_relativo_ms": 64766,
+          "fim_relativo_ms": 65466,
+          "duracao_ms": 700,
+          "tipo": "remotion",
+          "texto_animado": "Tomando meu café, igual todo dia",
+          "animacao_remotion": "palavra_por_palavra",
           "arquivo_final": "cenas/010-02.mp4"
         }
       ]
     },
     {
       "id": "011",
-      "bloco": "apresentação do personagem",
+      "bloco": "BLOCO 3",
       "inicio_ms": 65500,
       "fim_ms": 72200,
       "duracao_ms": 6700,
       "texto": "dia. Aí chegou o Zé Raimundo. Cabra da cidade. Sessenta e dois anos. A gente se",
-      "terco": "agressivo",
-      "intensidade": 6,
-      "tipo_momento": "causo",
-      "ritmo_corte_ms": 4000,
+      "terco": "esperançoso",
+      "intensidade": 5,
+      "tipo_momento": "introducao_personagem",
+      "ritmo_corte_ms": 6000,
       "total_clips": 2,
-      "avatar": {
-        "visivel": true,
-        "posicao": "bottom-right",
-        "tamanho_percent": 35
-      },
       "clips": [
         {
           "clip_id": "011-01",
-          "inicio_relativo_ms": 0,
-          "fim_relativo_ms": 3500,
-          "duracao_ms": 3500,
-          "tipo": "video_stock",
-          "queries": [
-            "elderly brazilian man arriving small town",
-            "older man walking rural street sunset",
-            "senior man countryside arrival warm light"
-          ],
-          "arquivo_final": "cenas/011-01.mp4",
-          "fallback_tipo": "imagem_ia",
-          "fallback_prompt": "Elderly Brazilian man, 62 years old, weathered face, arriving at a small rural town, warm orange sunset light, dusty road, color palette #D4651A and #8B4513, cinematic composition, nostalgic atmosphere, earthy tones, soft golden hour lighting"
+          "inicio_relativo_ms": 65500,
+          "fim_relativo_ms": 71500,
+          "duracao_ms": 6000,
+          "tipo": "imagem_ia",
+          "fallback_prompt": "Two elderly Brazilian men sitting together on rural farm porch at golden hour, warm conversation atmosphere, one man arriving with thoughtful expression, cinematic wide shot, soft golden backlight, #D4651A #8B4513 warm tones, peaceful nostalgic mood"
         },
         {
           "clip_id": "011-02",
-          "inicio_relativo_ms": 3500,
-          "fim_relativo_ms": 6700,
-          "duracao_ms": 3200,
-          "tipo": "imagem_ia",
-          "prompt": "Close-up portrait of a 62 year old Brazilian man from the city, slightly out of place in rural setting, wearing simple clothes, warm sepia tones, background with wooden fence and countryside, color accents #D4651A #F5C842, cinematic lighting, reflective mood, photo-realistic style",
-          "animacao_remotion": "ken_burns_zoom_in",
-          "zoom_fator": 1.08,
+          "inicio_relativo_ms": 71500,
+          "fim_relativo_ms": 72200,
+          "duracao_ms": 700,
+          "tipo": "remotion",
+          "texto_animado": "Chegou o Zé Raimundo. Cabra da cidade",
+          "animacao_remotion": "palavra_por_palavra",
           "arquivo_final": "cenas/011-02.mp4"
         }
       ]
     },
     {
       "id": "012",
-      "bloco": "apresentação de personagem",
+      "bloco": "BLOCO 3",
       "inicio_ms": 72233,
       "fim_ms": 78933,
       "duracao_ms": 6700,
       "texto": "conhece há uns vinte anos. Bom homem. Trabalhador. Nunca faltou ao serviço. Ele",
-      "terco": "agressivo",
-      "intensidade": 5,
-      "tipo_momento": "causo",
-      "ritmo_corte_ms": 4000,
-      "total_clips": 2,
-      "avatar": {
-        "visivel": true,
-        "posicao": "bottom-right",
-        "tamanho_percent": 35
-      },
+      "terco": "esperançoso",
+      "intensidade": 4,
+      "tipo_momento": "caracterizacao",
+      "ritmo_corte_ms": 6000,
+      "total_clips": 1,
       "clips": [
         {
           "clip_id": "012-01",
-          "inicio_relativo_ms": 0,
-          "fim_relativo_ms": 3500,
-          "duracao_ms": 3500,
-          "tipo": "imagem_ia",
-          "prompt": "Close-up of weathered working hands of a middle-aged Brazilian rural man, calloused fingers, warm earthy tones #D4651A and #8B4513, golden hour sunlight #F5C842, rustic wooden table background, cinematic lighting, nostalgic sepia atmosphere, photorealistic style",
-          "animacao_remotion": "ken_burns_zoom_in",
-          "zoom_fator": 1.08,
-          "arquivo_final": "cenas/012-01.mp4"
-        },
-        {
-          "clip_id": "012-02",
-          "inicio_relativo_ms": 3500,
-          "fim_relativo_ms": 6700,
-          "duracao_ms": 3200,
+          "inicio_relativo_ms": 72233,
+          "fim_relativo_ms": 78933,
+          "duracao_ms": 6700,
           "tipo": "video_stock",
           "queries": [
-            "hardworking man rural farm sunrise",
-            "brazilian farmer working field golden hour",
-            "honest worker countryside morning routine"
-          ],
-          "arquivo_final": "cenas/012-02.mp4",
-          "fallback_tipo": "imagem_ia",
-          "fallback_prompt": "Silhouette of a dedicated worker man arriving at rural farm at dawn, warm orange tones #D4651A, dusty country road, wooden fence posts, #8B4513 earth colors, golden sunlight #F5C842 breaking through, cinematic wide shot, nostalgic Brazilian countryside atmosphere, photorealistic"
-        }
-      ]
-    },
-    {
-      "id": "013",
-      "bloco": "chegada do personagem / tensão narrativa",
-      "inicio_ms": 78966,
-      "fim_ms": 85466,
-      "duracao_ms": 6500,
-      "texto": "chegou aqui e ficou olhando pra chácara assim… daquele jeito de quem tá com",
-      "terco": "duvidoso",
-      "intensidade": 6,
-      "tipo_momento": "causo",
-      "ritmo_corte_ms": 5000,
-      "total_clips": 1,
-      "avatar": {
-        "visivel": true,
-        "posicao": "bottom-right",
-        "tamanho_percent": 35
-      },
-      "clips": [
-        {
-          "clip_id": "013-01",
-          "inicio_relativo_ms": 0,
-          "fim_relativo_ms": 6500,
-          "duracao_ms": 6500,
-          "tipo": "imagem_ia",
-          "prompt": "Cinematic wide shot of a middle-aged man standing at the entrance of a small rural farm property, looking contemplatively at the land, warm sunset lighting with orange and sepia tones #D4651A #8B4513, rustic wooden fence, dry grass field, melancholic atmosphere, Brazilian countryside aesthetic, nostalgic mood, golden hour, dust particles in the air, weathered clothes, back partially turned to camera",
-          "animacao_remotion": "ken_burns_zoom_in",
-          "zoom_fator": 1.08,
-          "arquivo_final": "cenas/013-01.mp4"
-        }
-      ]
-    },
-    {
-      "id": "014",
-      "bloco": "momento de pausa e reflexão do personagem",
-      "inicio_ms": 85500,
-      "fim_ms": 91966,
-      "duracao_ms": 6466,
-      "texto": "coisa na cabeça. Sentou. Tomou um café. E depois de um tempo, ele falou: —",
-      "terco": "duvidoso",
-      "intensidade": 4,
-      "tipo_momento": "causo",
-      "ritmo_corte_ms": 5000,
-      "total_clips": 1,
-      "avatar": {
-        "visivel": true,
-        "posicao": "bottom-right",
-        "tamanho_percent": 35
-      },
-      "clips": [
-        {
-          "clip_id": "014-01",
-          "inicio_relativo_ms": 0,
-          "fim_relativo_ms": 6466,
-          "duracao_ms": 6466,
-          "tipo": "imagem_ia",
-          "prompt": "Elderly Brazilian man sitting on rustic wooden chair, holding ceramic coffee cup with weathered calloused hands, contemplative expression, warm morning light through farmhouse window, sepia and earthy tones with #D4651A orange ambient glow, #8B4513 wooden furniture, steam rising from coffee, rural interior setting, cinematic nostalgic atmosphere, shallow depth of field, photorealistic",
-          "animacao_remotion": "ken_burns_zoom_in",
-          "zoom_fator": 1.08,
-          "arquivo_final": "cenas/014-01.mp4",
-          "fallback_tipo": "video_stock",
-          "fallback_queries": [
-            "elderly man drinking coffee rustic kitchen",
-            "old farmer sitting wooden chair morning",
-            "weathered hands holding coffee cup warm light"
+            "two elderly men conversation porch rural farm",
+            "senior men sitting talking outdoor peaceful",
+            "old friends discussing serious conversation wooden porch"
           ]
         }
       ]
     },
     {
+      "id": "013",
+      "bloco": "BLOCO 3",
+      "inicio_ms": 78966,
+      "fim_ms": 85466,
+      "duracao_ms": 6500,
+      "texto": "chegou aqui e ficou olhando pra chácara assim… daquele jeito de quem tá com",
+      "terco": "esperançoso",
+      "intensidade": 5,
+      "tipo_momento": "observacao_emocional",
+      "ritmo_corte_ms": 6000,
+      "total_clips": 2,
+      "clips": [
+        {
+          "clip_id": "013-01",
+          "inicio_relativo_ms": 78966,
+          "fim_relativo_ms": 84966,
+          "duracao_ms": 6000,
+          "tipo": "imagem_ia",
+          "fallback_prompt": "Close-up detail of elderly man's face in profile looking at rural landscape with concerned expression, warm afternoon light filtering through window, cinematic documentary style, shallow depth of field, #D4651A nostalgic tones, thoughtful vulnerable moment"
+        },
+        {
+          "clip_id": "013-02",
+          "inicio_relativo_ms": 84966,
+          "fim_relativo_ms": 85466,
+          "duracao_ms": 500,
+          "tipo": "remotion",
+          "texto_animado": "Ficou olhando pra chácara daquele jeito",
+          "animacao_remotion": "palavra_por_palavra",
+          "arquivo_final": "cenas/013-02.mp4"
+        }
+      ]
+    },
+    {
+      "id": "014",
+      "bloco": "BLOCO 3",
+      "inicio_ms": 85500,
+      "fim_ms": 91966,
+      "duracao_ms": 6466,
+      "texto": "coisa na cabeça. Sentou. Tomou um café. E depois de um tempo, ele falou: —",
+      "terco": "esperançoso",
+      "intensidade": 5,
+      "tipo_momento": "preparacao_revelacao",
+      "ritmo_corte_ms": 6000,
+      "total_clips": 2,
+      "clips": [
+        {
+          "clip_id": "014-01",
+          "inicio_relativo_ms": 85500,
+          "fim_relativo_ms": 91500,
+          "duracao_ms": 6000,
+          "tipo": "video_stock",
+          "queries": [
+            "elderly men coffee conversation farm porch serious",
+            "two senior men talking outdoor rural setting",
+            "old friends discussing life sitting together peaceful"
+          ]
+        },
+        {
+          "clip_id": "014-02",
+          "inicio_relativo_ms": 91500,
+          "fim_relativo_ms": 91966,
+          "duracao_ms": 466,
+          "tipo": "remotion",
+          "texto_animado": "Ele falou: Aroldo… como é que você conseguiu parar?",
+          "animacao_remotion": "palavra_por_palavra",
+          "arquivo_final": "cenas/014-02.mp4"
+        }
+      ]
+    },
+    {
       "id": "015",
-      "bloco": "momento de silêncio revelador",
+      "bloco": "BLOCO 3",
       "inicio_ms": 91966,
       "fim_ms": 98666,
       "duracao_ms": 6700,
       "texto": "Aroldo… como é que você conseguiu parar? Eu fiquei em silêncio. Porque eu sabia",
-      "terco": "duvidoso",
-      "intensidade": 8,
-      "tipo_momento": "clímax",
-      "ritmo_corte_ms": 5000,
+      "terco": "esperançoso",
+      "intensidade": 4,
+      "tipo_momento": "cliffhanger_reflexao",
+      "ritmo_corte_ms": 6000,
       "total_clips": 1,
-      "avatar": {
-        "visivel": true,
-        "posicao": "fullscreen",
-        "tamanho_percent": 100
-      },
       "clips": [
         {
           "clip_id": "015-01",
-          "inicio_relativo_ms": 0,
-          "fim_relativo_ms": 6700,
+          "inicio_relativo_ms": 91966,
+          "fim_relativo_ms": 98666,
           "duracao_ms": 6700,
           "tipo": "imagem_ia",
-          "prompt": "Cinematic close-up of weathered elderly hands resting on a rustic wooden table, warm sepia tones with #D4651A amber light streaming through window, steam rising from ceramic coffee cup, moment of contemplative silence, Brazilian countryside kitchen atmosphere, #8B4513 wooden textures, #F5C842 golden hour glow, shallow depth of field, nostalgic and introspective mood",
-          "animacao_remotion": "ken_burns_zoom_in",
-          "zoom_fator": 1.06,
-          "arquivo_final": "cenas/015-01.mp4"
+          "fallback_prompt": "Elderly Brazilian man in contemplative silence on rural porch at dusk, golden hour backlight, face partially in shadow, expression of deep wisdom and understanding, cinematic wide shot, warm orange sky behind, #D4651A #8B4513 tones, profound atmospheric moment"
         }
       ]
     },
     {
       "id": "016",
-      "bloco": "revelação_da_pergunta",
+      "bloco": "BLOCO 1",
       "inicio_ms": 98700,
       "fim_ms": 105300,
       "duracao_ms": 6600,
       "texto": "o que ele tava perguntando. Num era aposentadoria. Num era benefício. Era por",
-      "terco": "duvidoso",
-      "intensidade": 7,
-      "tipo_momento": "causo",
-      "ritmo_corte_ms": 5000,
-      "total_clips": 1,
-      "avatar": {
-        "visivel": true,
-        "posicao": "bottom-right",
-        "tamanho_percent": 35
-      },
+      "terco": "agressivo",
+      "intensidade": 8,
+      "tipo_momento": "confronto_emocional",
+      "ritmo_corte_ms": 4000,
+      "total_clips": 2,
       "clips": [
         {
           "clip_id": "016-01",
           "inicio_relativo_ms": 0,
-          "fim_relativo_ms": 6600,
-          "duracao_ms": 6600,
+          "fim_relativo_ms": 4000,
+          "duracao_ms": 4000,
           "tipo": "imagem_ia",
-          "prompt": "Cinematic close-up of weathered elderly hands resting on a wooden table, warm sunset light streaming through a farmhouse window, sepia and orange tones #D4651A #8B4513, dust particles in the air, shallow depth of field, nostalgic rural Brazilian interior, coffee cup nearby, contemplative mood, golden hour lighting #F5C842 accents",
-          "animacao_remotion": "ken_burns_zoom_in",
-          "zoom_fator": 1.08,
+          "prompt": "Elderly Brazilian man in his 60s sitting on weathered wooden porch in dim interior, face in shadow, looking downward with worry, single warm window light casting long shadows across worn wooden floor, cinematic close-up of emotion, natural golden-hour backlight, nostalgic film grain, color palette #D4651A #8B4513 sepia tones",
           "arquivo_final": "cenas/016-01.mp4"
+        },
+        {
+          "clip_id": "016-02",
+          "inicio_relativo_ms": 4000,
+          "fim_relativo_ms": 6600,
+          "duracao_ms": 2600,
+          "tipo": "remotion",
+          "texto_animado": "Num era aposentadoria. Era escolha.",
+          "animacao_remotion": "palavra_por_palavra",
+          "arquivo_final": "cenas/016-02.mp4"
         }
       ]
     },
     {
       "id": "017",
-      "bloco": "revelação do sacrifício",
+      "bloco": "BLOCO 1",
       "inicio_ms": 105333,
       "fim_ms": 111933,
       "duracao_ms": 6600,
       "texto": "que… ele ainda acorda às cinco da manhã pra trabalhar porque não tem escolha.",
       "terco": "agressivo",
-      "intensidade": 8,
-      "tipo_momento": "clímax",
+      "intensidade": 9,
+      "tipo_momento": "revelação",
       "ritmo_corte_ms": 4000,
       "total_clips": 2,
-      "avatar": {
-        "visivel": true,
-        "posicao": "fullscreen",
-        "tamanho_percent": 100
-      },
       "clips": [
         {
           "clip_id": "017-01",
           "inicio_relativo_ms": 0,
-          "fim_relativo_ms": 3300,
-          "duracao_ms": 3300,
-          "tipo": "imagem_ia",
-          "prompt": "Elderly Brazilian farmer waking up before dawn, sitting on edge of simple wooden bed, worn calloused hands rubbing tired face, alarm clock showing 5:00 AM, dim warm light from small window, rustic bedroom interior, warm sepia tones with #D4651A orange ambient light, #8B4513 wooden furniture, cinematic photography style, emotional atmosphere, rural Brazilian interior",
-          "animacao_remotion": "ken_burns_zoom_in",
-          "zoom_fator": 1.08,
-          "arquivo_final": "cenas/017-01.mp4"
+          "fim_relativo_ms": 4000,
+          "duracao_ms": 4000,
+          "tipo": "video_stock",
+          "queries": [
+            "elderly man waking up dark bedroom 5am rural",
+            "old farmer getting out of bed morning darkness",
+            "weathered hands reaching for work clothes dawn"
+          ],
+          "arquivo_final": "cenas/017-01.mp4",
+          "fallback_tipo": "imagem_ia",
+          "fallback_prompt": "Close-up of weathered calloused hands reaching for work clothes in pre-dawn darkness, single candle or lamp light, worn wooden furniture in background, cinematic intimate moment, natural lighting, nostalgic mood, #D4651A warm tones with deep shadows"
         },
         {
           "clip_id": "017-02",
-          "inicio_relativo_ms": 3300,
+          "inicio_relativo_ms": 4000,
           "fim_relativo_ms": 6600,
-          "duracao_ms": 3300,
+          "duracao_ms": 2600,
           "tipo": "remotion",
-          "texto_animado": "porque não tem escolha",
-          "animacao_remotion": "fade_in_por_letra",
-          "cor_texto": "#F5C842",
-          "cor_fundo": "#8B4513",
+          "texto_animado": "Ainda acorda às cinco porque não tem escolha.",
+          "animacao_remotion": "palavra_por_palavra",
           "arquivo_final": "cenas/017-02.mp4"
         }
       ]
     },
     {
       "id": "018",
-      "bloco": "revelação da idade - momento de vulnerabilidade",
+      "bloco": "BLOCO 1",
       "inicio_ms": 111933,
       "fim_ms": 118533,
       "duracao_ms": 6600,
       "texto": "Sessenta e dois anos. E não tem escolha. E eu tava sentado ali com sessenta e",
-      "terco": "duvidoso",
-      "intensidade": 8,
-      "tipo_momento": "clímax",
-      "ritmo_corte_ms": 5000,
-      "total_clips": 1,
-      "avatar": {
-        "visivel": true,
-        "posicao": "fullscreen",
-        "tamanho_percent": 100
-      },
+      "terco": "agressivo",
+      "intensidade": 9,
+      "tipo_momento": "contraste_geracional",
+      "ritmo_corte_ms": 4000,
+      "total_clips": 2,
       "clips": [
         {
           "clip_id": "018-01",
           "inicio_relativo_ms": 0,
-          "fim_relativo_ms": 6600,
-          "duracao_ms": 6600,
-          "tipo": "remotion",
-          "texto_animado": "62 anos. Sem escolha.",
-          "animacao_remotion": "fade_in_por_letra",
+          "fim_relativo_ms": 4000,
+          "duracao_ms": 4000,
+          "tipo": "imagem_ia",
+          "prompt": "Two men sitting on rural farm porch at dusk, one elderly at 62 looking weary, one middle-aged at 65 looking contemplative, wide shot showing age difference and worry, warm orange sunset sky behind them, cinematic dramatic lighting, nostalgic atmosphere, #D4651A #8B4513 color grade, National Geographic style",
           "arquivo_final": "cenas/018-01.mp4"
+        },
+        {
+          "clip_id": "018-02",
+          "inicio_relativo_ms": 4000,
+          "fim_relativo_ms": 6600,
+          "duracao_ms": 2600,
+          "tipo": "remotion",
+          "texto_animado": "Sessenta e dois. Sem escolha.",
+          "animacao_remotion": "palavra_por_palavra",
+          "arquivo_final": "cenas/018-02.mp4"
         }
       ]
     },
     {
       "id": "019",
-      "bloco": "sonho de liberdade / independência conquistada",
+      "bloco": "BLOCO 1",
       "inicio_ms": 118566,
       "fim_ms": 125133,
       "duracao_ms": 6567,
       "texto": "cinco. Sem precisar acordar pra nada que eu num queira. Como eu explico isso",
-      "terco": "esperançoso",
-      "intensidade": 7,
-      "tipo_momento": "reflexão",
-      "ritmo_corte_ms": 6000,
-      "total_clips": 1,
-      "avatar": {
-        "visivel": true,
-        "posicao": "fullscreen",
-        "tamanho_percent": 100
-      },
+      "terco": "agressivo",
+      "intensidade": 8,
+      "tipo_momento": "reflexão_culpa",
+      "ritmo_corte_ms": 4000,
+      "total_clips": 2,
       "clips": [
         {
           "clip_id": "019-01",
           "inicio_relativo_ms": 0,
+          "fim_relativo_ms": 4000,
+          "duracao_ms": 4000,
+          "tipo": "video_stock",
+          "queries": [
+            "man sitting alone peaceful morning no rush retired",
+            "middle-aged man relaxed coffee wooden porch calm",
+            "elderly man reading newspaper leisurely morning light"
+          ],
+          "arquivo_final": "cenas/019-01.mp4",
+          "fallback_tipo": "imagem_ia",
+          "fallback_prompt": "Peaceful scene of man in his 60s sitting alone on wooden bench with coffee, morning sunlight streaming through window, no urgency in posture, content expression, warm nostalgic interior, cinematic shallow depth of field, #D4651A #F5C842 warm tones, serene mood"
+        },
+        {
+          "clip_id": "019-02",
+          "inicio_relativo_ms": 4000,
           "fim_relativo_ms": 6567,
-          "duracao_ms": 6567,
-          "tipo": "imagem_ia",
-          "prompt": "Elderly Brazilian farmer sitting peacefully on rustic wooden chair on farmhouse porch at golden hour sunrise, bare feet relaxed, steaming coffee cup in weathered calloused hands, serene smile of contentment, cattle grazing in misty pasture background, warm sepia tones with #D4651A orange sunlight and #8B4513 brown wood textures, #F5C842 golden sun rays, nostalgic cinematic style, soft focus background, 35mm film grain aesthetic",
-          "animacao_remotion": "ken_burns_zoom_in",
-          "zoom_fator": 1.08,
-          "arquivo_final": "cenas/019-01.mp4"
+          "duracao_ms": 2567,
+          "tipo": "remotion",
+          "texto_animado": "Como explico isso pra ele?",
+          "animacao_remotion": "palavra_por_palavra",
+          "arquivo_final": "cenas/019-02.mp4"
         }
       ]
     },
     {
       "id": "020",
-      "bloco": "gancho inicial - identificação pessoal",
+      "bloco": "BLOCO 2",
       "inicio_ms": 125166,
       "fim_ms": 131833,
       "duracao_ms": 6667,
       "texto": "pra ele? A verdade é que eu quase fui ele. Quase.\" \"Lá pelos quarenta e poucos",
-      "terco": "agressivo",
-      "intensidade": 8,
-      "tipo_momento": "abertura",
-      "ritmo_corte_ms": 4000,
+      "terco": "duvidoso",
+      "intensidade": 7,
+      "tipo_momento": "confissão",
+      "ritmo_corte_ms": 5000,
       "total_clips": 2,
-      "avatar": {
-        "visivel": true,
-        "posicao": "fullscreen",
-        "tamanho_percent": 100
-      },
       "clips": [
         {
           "clip_id": "020-01",
           "inicio_relativo_ms": 0,
-          "fim_relativo_ms": 3500,
-          "duracao_ms": 3500,
-          "tipo": "remotion",
-          "texto_animado": "Eu quase fui ele.",
-          "animacao_remotion": "fade_in_por_letra",
+          "fim_relativo_ms": 5000,
+          "duracao_ms": 5000,
+          "tipo": "imagem_ia",
+          "prompt": "Man in his 40s looking in mirror with expression of realization and concern, warm interior lighting casting shadows on face, weathered features showing doubt, cinematic portrait, nostalgic mood, shallow depth of field, #D4651A warm brown tones, introspective atmosphere",
           "arquivo_final": "cenas/020-01.mp4"
         },
         {
           "clip_id": "020-02",
-          "inicio_relativo_ms": 3500,
+          "inicio_relativo_ms": 5000,
           "fim_relativo_ms": 6667,
-          "duracao_ms": 3167,
-          "tipo": "imagem_ia",
-          "prompt": "Brazilian man in his early 40s sitting alone on a worn wooden chair, looking contemplative at sunset on a rural farm, warm earthy tones #D4651A and #8B4513, golden hour light #F5C842, weathered hands resting on knees, nostalgic sepia atmosphere, cinematic shallow depth of field, emotional reflection moment",
-          "animacao_remotion": "ken_burns_zoom_in",
-          "zoom_fator": 1.08,
+          "duracao_ms": 1667,
+          "tipo": "remotion",
+          "texto_animado": "Quase fui ele. Quase.",
+          "animacao_remotion": "palavra_por_palavra",
           "arquivo_final": "cenas/020-02.mp4"
         }
       ]
     },
     {
       "id": "021",
-      "bloco": "setup_historia_pessoal",
+      "bloco": "BLOCO 2",
       "inicio_ms": 131833,
       "fim_ms": 138533,
       "duracao_ms": 6700,
       "texto": "anos… eu me sentia no auge. Funcionário público. Emprego seguro. Ganhando bem —",
-      "terco": "agressivo",
-      "intensidade": 7,
-      "tipo_momento": "causo",
-      "ritmo_corte_ms": 4000,
+      "terco": "duvidoso",
+      "intensidade": 6,
+      "tipo_momento": "falsa_segurança",
+      "ritmo_corte_ms": 5000,
       "total_clips": 2,
-      "avatar": {
-        "visivel": true,
-        "posicao": "bottom-right",
-        "tamanho_percent": 35
-      },
       "clips": [
         {
           "clip_id": "021-01",
           "inicio_relativo_ms": 0,
-          "fim_relativo_ms": 3500,
-          "duracao_ms": 3500,
-          "tipo": "imagem_ia",
-          "prompt": "Brazilian middle-aged man in his 40s wearing formal government employee clothes, confident proud expression, standing in front of a modest Brazilian public office building, warm sunset lighting with orange and sepia tones #D4651A #8B4513, nostalgic 1990s atmosphere, cinematic photography style, soft golden hour glow",
-          "animacao_remotion": "ken_burns_zoom_in",
-          "zoom_fator": 1.08,
-          "arquivo_final": "cenas/021-01.mp4"
+          "fim_relativo_ms": 5000,
+          "duracao_ms": 5000,
+          "tipo": "video_stock",
+          "queries": [
+            "government office interior desk professional Brazilian 1990s",
+            "public servant at desk proud confident retro",
+            "office worker in uniform 40s satisfied look"
+          ],
+          "arquivo_final": "cenas/021-01.mp4",
+          "fallback_tipo": "imagem_ia",
+          "fallback_prompt": "Brazilian government office interior from 1990s, man in his 40s at wooden desk with official documents, proud confident expression, warm amber interior lighting, vintage aesthetic, cinematic composition, #D4651A #8B4513 warm brown tones, professional but nostalgic mood"
         },
         {
           "clip_id": "021-02",
-          "inicio_relativo_ms": 3500,
+          "inicio_relativo_ms": 5000,
           "fim_relativo_ms": 6700,
-          "duracao_ms": 3200,
+          "duracao_ms": 1700,
           "tipo": "remotion",
-          "texto_animado": "Ganhando bem —",
-          "animacao_remotion": "fade_in_bloco",
+          "texto_animado": "Aroldo tinha chegado.",
+          "animacao_remotion": "palavra_por_palavra",
           "arquivo_final": "cenas/021-02.mp4"
         }
       ]
     },
     {
       "id": "022",
-      "bloco": "conquista_ascensao",
+      "bloco": "BLOCO 2",
       "inicio_ms": 138566,
       "fim_ms": 145166,
       "duracao_ms": 6600,
       "texto": "melhor do que nunca na vida. Aroldo Pereira da Silva tinha chegado. Era o que",
-      "terco": "esperançoso",
-      "intensidade": 8,
-      "tipo_momento": "clímax",
-      "ritmo_corte_ms": 6000,
-      "total_clips": 1,
-      "avatar": {
-        "visivel": true,
-        "posicao": "fullscreen",
-        "tamanho_percent": 100
-      },
+      "terco": "duvidoso",
+      "intensidade": 7,
+      "tipo_momento": "ilusão",
+      "ritmo_corte_ms": 5000,
+      "total_clips": 2,
       "clips": [
         {
           "clip_id": "022-01",
           "inicio_relativo_ms": 0,
-          "fim_relativo_ms": 6600,
-          "duracao_ms": 6600,
+          "fim_relativo_ms": 5000,
+          "duracao_ms": 5000,
           "tipo": "imagem_ia",
-          "prompt": "Brazilian rural man in his 50s standing proud on his prosperous farm at golden hour, warm orange sunset light #D4651A, cattle grazing in background, man wearing clean clothes looking successful, cinematic composition, earthy tones #8B4513, golden accents #F5C842, nostalgic sepia atmosphere, triumph moment, ranch landscape, sense of achievement and arrival",
-          "animacao_remotion": "ken_burns_zoom_out",
-          "zoom_fator": 1.08,
+          "prompt": "Man in 40s dressed in new clothes and polished appearance standing in front of modest house, proud posture but subtle concern in eyes, warm late afternoon light, cinematic wide shot showing false confidence, nostalgic film grain, #D4651A #F5C842 golden tones, slightly ominous mood",
           "arquivo_final": "cenas/022-01.mp4"
+        },
+        {
+          "clip_id": "022-02",
+          "inicio_relativo_ms": 5000,
+          "fim_relativo_ms": 6600,
+          "duracao_ms": 1600,
+          "tipo": "remotion",
+          "texto_animado": "Era o que eu pensava.",
+          "animacao_remotion": "palavra_por_palavra",
+          "arquivo_final": "cenas/022-02.mp4"
         }
       ]
     },
     {
       "id": "023",
-      "bloco": "armadilha da zona de conforto",
+      "bloco": "BLOCO 2",
       "inicio_ms": 145166,
       "fim_ms": 151566,
       "duracao_ms": 6400,
       "texto": "eu pensava. Aí é que mora o perigo. Quando cê acha que chegou… cê para de",
       "terco": "duvidoso",
-      "intensidade": 7,
-      "tipo_momento": "reflexão",
+      "intensidade": 8,
+      "tipo_momento": "advertência",
       "ritmo_corte_ms": 5000,
-      "total_clips": 1,
-      "avatar": {
-        "visivel": true,
-        "posicao": "fullscreen",
-        "tamanho_percent": 100
-      },
+      "total_clips": 2,
       "clips": [
         {
           "clip_id": "023-01",
           "inicio_relativo_ms": 0,
+          "fim_relativo_ms": 5000,
+          "duracao_ms": 5000,
+          "tipo": "video_stock",
+          "queries": [
+            "person sitting idle lazy chair no movement",
+            "man stopped walking path thoughtful still",
+            "person resting bench moment of pause hesitation"
+          ],
+          "arquivo_final": "cenas/023-01.mp4",
+          "fallback_tipo": "imagem_ia",
+          "fallback_prompt": "Man in his 40s sitting motionless on wooden chair on rural porch, no movement, static pose suggesting stagnation, warm interior light creating golden shadows, cinematic mood, shallow depth of field, melancholic expression, #D4651A warm sepia tones, danger and stillness feeling"
+        },
+        {
+          "clip_id": "023-02",
+          "inicio_relativo_ms": 5000,
           "fim_relativo_ms": 6400,
-          "duracao_ms": 6400,
+          "duracao_ms": 1400,
           "tipo": "remotion",
           "texto_animado": "Quando cê acha que chegou… cê para.",
-          "animacao_remotion": "fade_in_por_letra",
-          "cor_texto": "#F5C842",
-          "cor_fundo": "#D4651A",
-          "arquivo_final": "cenas/023-01.mp4"
+          "animacao_remotion": "palavra_por_palavra",
+          "arquivo_final": "cenas/023-02.mp4"
         }
       ]
     },
     {
       "id": "024",
-      "bloco": "confissão do erro - vaidade financeira",
+      "bloco": "BLOCO 2",
       "inicio_ms": 151600,
       "fim_ms": 158166,
       "duracao_ms": 6566,
       "texto": "caminhar. Eu comecei a gastar. Não porque precisava. Porque queria aparecer.",
-      "terco": "agressivo",
+      "terco": "duvidoso",
       "intensidade": 7,
-      "tipo_momento": "causo",
-      "ritmo_corte_ms": 4000,
+      "tipo_momento": "gastos_desnecessários",
+      "ritmo_corte_ms": 5000,
       "total_clips": 2,
-      "avatar": {
-        "visivel": true,
-        "posicao": "bottom-right",
-        "tamanho_percent": 35
-      },
       "clips": [
         {
           "clip_id": "024-01",
           "inicio_relativo_ms": 0,
-          "fim_relativo_ms": 3500,
-          "duracao_ms": 3500,
-          "tipo": "video_stock",
-          "queries": [
-            "man spending money shopping bags slow motion",
-            "person buying expensive items store",
-            "hands counting cash bills close up"
-          ],
-          "arquivo_final": "cenas/024-01.mp4",
-          "fallback_tipo": "imagem_ia",
-          "fallback_prompt": "Weathered hands of a rural man holding new expensive items, shopping bags on rustic wooden table, warm orange and sepia tones #D4651A #8B4513, golden hour light through window, regretful mood, cinematic shallow depth of field, Brazilian countryside interior"
+          "fim_relativo_ms": 5000,
+          "duracao_ms": 5000,
+          "tipo": "imagem_ia",
+          "prompt": "Hands of man in his 40s counting money or holding new car keys with uncertain expression, warm intimate lighting on hands and face, wooden table surface, cinematic close-up showing doubt mixed with temptation, #D4651A #8B4513 brown tones, nostalgic mood, conflicted emotion",
+          "arquivo_final": "cenas/024-01.mp4"
         },
         {
           "clip_id": "024-02",
-          "inicio_relativo_ms": 3500,
+          "inicio_relativo_ms": 5000,
           "fim_relativo_ms": 6566,
-          "duracao_ms": 3066,
+          "duracao_ms": 1566,
           "tipo": "remotion",
-          "texto_animado": "Queria aparecer.",
-          "animacao_remotion": "fade_in_por_letra",
+          "texto_animado": "Comecei a gastar porque queria aparecer.",
+          "animacao_remotion": "palavra_por_palavra",
           "arquivo_final": "cenas/024-02.mp4"
         }
       ]
     },
     {
       "id": "025",
-      "bloco": "lista de erros financeiros",
+      "bloco": "BLOCO 2",
       "inicio_ms": 158200,
       "fim_ms": 164700,
       "duracao_ms": 6500,
       "texto": "Carro novo. Uns negócio de gado que o compadre disse que ia dar certo. Umas",
-      "terco": "agressivo",
+      "terco": "duvidoso",
       "intensidade": 7,
-      "tipo_momento": "causo",
-      "ritmo_corte_ms": 4000,
+      "tipo_momento": "investimentos_perigosos",
+      "ritmo_corte_ms": 5000,
       "total_clips": 2,
-      "avatar": {
-        "visivel": true,
-        "posicao": "bottom-right",
-        "tamanho_percent": 35
-      },
       "clips": [
         {
           "clip_id": "025-01",
           "inicio_relativo_ms": 0,
-          "fim_relativo_ms": 3500,
-          "duracao_ms": 3500,
+          "fim_relativo_ms": 5000,
+          "duracao_ms": 5000,
           "tipo": "video_stock",
           "queries": [
-            "new pickup truck rural farm",
-            "shiny car dealership purchase",
-            "man admiring new vehicle countryside"
+            "cattle ranch livestock rural Brazil landscape",
+            "new car parked rural farm scene",
+            "livestock grazing field sunset warm light"
           ],
           "arquivo_final": "cenas/025-01.mp4",
           "fallback_tipo": "imagem_ia",
-          "fallback_prompt": "Brand new pickup truck parked in front of rustic wooden farmhouse, golden hour sunset lighting, warm orange tones #D4651A, dusty rural road, Brazilian countryside atmosphere, cinematic composition, nostalgic sepia undertones #8B4513, lens flare from setting sun #F5C842"
+          "fallback_prompt": "Rural Brazilian farm scene with cattle grazing in golden hour light, simple wooden fence, warm orange sky, sense of false prosperity, cinematic wide shot, #D4651A #F5C842 warm nostalgic tones, inviting but risky atmosphere, National Geographic style"
         },
         {
           "clip_id": "025-02",
-          "inicio_relativo_ms": 3500,
+          "inicio_relativo_ms": 5000,
           "fim_relativo_ms": 6500,
-          "duracao_ms": 3000,
-          "tipo": "imagem_ia",
-          "prompt": "Weathered hands of older farmer shaking hands on cattle deal, blurred zebu cattle in background, rustic wooden fence, warm earthy tones #D4651A and #8B4513, golden dust particles in sunset light #F5C842, cinematic shallow depth of field, nostalgic Brazilian interior farm atmosphere, hopeful yet uncertain mood",
-          "animacao_remotion": "ken_burns_zoom_in",
-          "zoom_fator": 1.08,
+          "duracao_ms": 1500,
+          "tipo": "remotion",
+          "texto_animado": "Uns negócio de gado que ia dar certo.",
+          "animacao_remotion": "palavra_por_palavra",
           "arquivo_final": "cenas/025-02.mp4"
         }
       ]
     },
     {
       "id": "026",
-      "bloco": "erro_confianca_cega",
+      "bloco": "BLOCO 2",
       "inicio_ms": 164700,
       "fim_ms": 171400,
       "duracao_ms": 6700,
       "texto": "aplicação que um conhecido disse que era oportunidade. Tudo baseado em conversa",
       "terco": "duvidoso",
-      "intensidade": 6,
-      "tipo_momento": "causo",
+      "intensidade": 7,
+      "tipo_momento": "conversa_bar",
       "ritmo_corte_ms": 5000,
-      "total_clips": 1,
-      "avatar": {
-        "visivel": true,
-        "posicao": "bottom-right",
-        "tamanho_percent": 35
-      },
+      "total_clips": 2,
       "clips": [
         {
           "clip_id": "026-01",
           "inicio_relativo_ms": 0,
-          "fim_relativo_ms": 6700,
-          "duracao_ms": 6700,
+          "fim_relativo_ms": 5000,
+          "duracao_ms": 5000,
           "tipo": "imagem_ia",
-          "prompt": "Two older Brazilian men talking at a rustic wooden table in a countryside bar, warm amber lighting, one man gesturing convincingly while the other listens with naive trust, sepia tones with #D4651A orange warmth and #8B4513 brown shadows, rural interior with worn wooden chairs, coffee cups on table, cinematic composition, nostalgic atmosphere, soft dust particles in golden light, 1970s Brazilian countryside aesthetic",
-          "animacao_remotion": "ken_burns_zoom_in",
-          "zoom_fator": 1.08,
-          "arquivo_final": "cenas/026-01.mp4",
-          "fallback_tipo": "video_stock",
-          "fallback_queries": [
-            "older men conversation rural bar",
-            "friends talking coffee table countryside",
-            "trust conversation between men vintage"
-          ]
+          "prompt": "Men in their 40s-50s sitting in modest Brazilian bar or cafe interior, having serious conversation, beer bottles and worn wooden table, warm amber interior lighting, suspicious conversation about investments, cinematic composition, nostalgic film grain, #D4651A #8B4513 warm tones, cautionary mood",
+          "arquivo_final": "cenas/026-01.mp4"
+        },
+        {
+          "clip_id": "026-02",
+          "inicio_relativo_ms": 5000,
+          "fim_relativo_ms": 6700,
+          "duracao_ms": 1700,
+          "tipo": "remotion",
+          "texto_animado": "Tudo baseado em conversa de bar.",
+          "animacao_remotion": "palavra_por_palavra",
+          "arquivo_final": "cenas/026-02.mp4"
         }
       ]
     },
     {
       "id": "027",
-      "bloco": "A Queda - Dinheiro escapando",
+      "bloco": "BLOCO 2",
       "inicio_ms": 171433,
       "fim_ms": 178000,
       "duracao_ms": 6567,
       "texto": "de bar. E o dinheiro? Foi indo. Devagar no começo. Depois mais rápido. Aí cê",
-      "terco": "agressivo",
-      "intensidade": 7,
-      "tipo_momento": "causo",
-      "ritmo_corte_ms": 4000,
+      "terco": "duvidoso",
+      "intensidade": 8,
+      "tipo_momento": "progressão_perdas",
+      "ritmo_corte_ms": 5000,
       "total_clips": 2,
-      "avatar": {
-        "visivel": true,
-        "posicao": "bottom-right",
-        "tamanho_percent": 35
-      },
       "clips": [
         {
           "clip_id": "027-01",
           "inicio_relativo_ms": 0,
-          "fim_relativo_ms": 3500,
-          "duracao_ms": 3500,
+          "fim_relativo_ms": 5000,
+          "duracao_ms": 5000,
           "tipo": "video_stock",
           "queries": [
-            "money slipping through fingers close up",
-            "empty wallet old hands",
-            "coins falling table rustic"
+            "money flowing away diminishing hands losing wealth",
+            "bank account declining financial loss concept",
+            "man watching savings disappear worried expression"
           ],
           "arquivo_final": "cenas/027-01.mp4",
           "fallback_tipo": "imagem_ia",
-          "fallback_prompt": "Weathered calloused hands of a 50 year old farmer watching coins slowly fall through his fingers, rustic wooden bar table, warm amber lighting with #D4651A orange tones and #8B4513 brown shadows, nostalgic sepia mood, cinematic shallow depth of field, Brazilian countryside interior atmosphere"
+          "fallback_prompt": "Close-up of weathered hands holding empty wallet or decreasing money stack on wooden table, expression of realization and regret, warm lamplight casting long shadows, cinematic intimate moment, nostalgic mood, #D4651A #8B4513 sepia tones, sense of loss and urgency"
         },
         {
           "clip_id": "027-02",
-          "inicio_relativo_ms": 3500,
+          "inicio_relativo_ms": 5000,
           "fim_relativo_ms": 6567,
-          "duracao_ms": 3067,
+          "duracao_ms": 1567,
           "tipo": "remotion",
-          "texto_animado": "Foi indo. Devagar... depois mais rápido.",
-          "animacao_remotion": "fade_in_por_letra",
+          "texto_animado": "O dinheiro foi indo. Depois mais rápido.",
+          "animacao_remotion": "palavra_por_palavra",
           "arquivo_final": "cenas/027-02.mp4"
         }
       ]
     },
     {
       "id": "028",
-      "bloco": "virada emocional - revelação íntima",
+      "bloco": "BLOCO 2",
       "inicio_ms": 178033,
       "fim_ms": 184633,
       "duracao_ms": 6600,
       "texto": "olha e já perdeu. Mas o que me pegou de verdade… não foi o dinheiro que saiu.",
       "terco": "duvidoso",
-      "intensidade": 7,
-      "tipo_momento": "clímax",
+      "intensidade": 9,
+      "tipo_momento": "ponto_virada",
       "ritmo_corte_ms": 5000,
-      "total_clips": 1,
-      "avatar": {
-        "visivel": true,
-        "posicao": "fullscreen",
-        "tamanho_percent": 100
-      },
+      "total_clips": 2,
       "clips": [
         {
           "clip_id": "028-01",
           "inicio_relativo_ms": 0,
-          "fim_relativo_ms": 6600,
-          "duracao_ms": 6600,
-          "tipo": "remotion",
-          "texto_animado": "não foi o dinheiro que saiu",
-          "animacao_remotion": "fade_in_por_letra",
+          "fim_relativo_ms": 5000,
+          "duracao_ms": 5000,
+          "tipo": "imagem_ia",
+          "prompt": "Man in his 40s-50s sitting alone in dim room, face showing deep regret and reflection, hands clasped in worry, warm single light source creating dramatic shadows, clock on wall suggesting lost time, cinematic contemplative mood, nostalgic film grain, #D4651A #8B4513 dark warm tones, profound loss feeling",
           "arquivo_final": "cenas/028-01.mp4"
+        },
+        {
+          "clip_id": "028-02",
+          "inicio_relativo_ms": 5000,
+          "fim_relativo_ms": 6600,
+          "duracao_ms": 1600,
+          "tipo": "remotion",
+          "texto_animado": "Não foi o dinheiro. Foi o tempo.",
+          "animacao_remotion": "palavra_por_palavra",
+          "arquivo_final": "cenas/028-02.mp4"
         }
       ]
     },
     {
       "id": "029",
-      "bloco": "arrependimento e tomada de consciência",
+      "bloco": "BLOCO 3",
       "inicio_ms": 184633,
       "fim_ms": 191300,
       "duracao_ms": 6667,
       "texto": "Foi o tempo que eu deixei passar. Eu sempre achei que ainda tinha tempo. 'Mais",
-      "terco": "duvidoso",
-      "intensidade": 8,
-      "tipo_momento": "reflexão",
-      "ritmo_corte_ms": 5000,
-      "total_clips": 1,
-      "avatar": {
-        "visivel": true,
-        "posicao": "fullscreen",
-        "tamanho_percent": 100
-      },
+      "terco": "esperançoso",
+      "intensidade": 6,
+      "tipo_momento": "remorso",
+      "ritmo_corte_ms": 6000,
+      "total_clips": 2,
       "clips": [
         {
           "clip_id": "029-01",
           "inicio_relativo_ms": 0,
+          "fim_relativo_ms": 6000,
+          "duracao_ms": 6000,
+          "tipo": "video_stock",
+          "queries": [
+            "old man watching sunset from porch reflection regret",
+            "elderly man gazing sunset rural landscape time passing",
+            "man contemplating horizon golden hour peaceful moment"
+          ],
+          "arquivo_final": "cenas/029-01.mp4",
+          "fallback_tipo": "imagem_ia",
+          "fallback_prompt": "Silhouette of man in his 60s sitting on wooden porch railing watching golden sunset over rural landscape, contemplative posture, warm orange sky fading to darker tones, cinematic wide shot, nostalgic mood, #D4651A #F5C842 warm color grade, sense of time and regret mixed with acceptance"
+        },
+        {
+          "clip_id": "029-02",
+          "inicio_relativo_ms": 6000,
           "fim_relativo_ms": 6667,
-          "duracao_ms": 6667,
+          "duracao_ms": 667,
           "tipo": "remotion",
-          "texto_animado": "Eu sempre achei que ainda tinha tempo.",
-          "animacao_remotion": "fade_in_por_letra",
-          "arquivo_final": "cenas/029-01.mp4"
+          "texto_animado": "Sempre achei que tinha mais tempo.",
+          "animacao_remotion": "palavra_por_palavra",
+          "arquivo_final": "cenas/029-02.mp4"
         }
       ]
     },
     {
       "id": "030",
-      "bloco": "procrastinação financeira",
+      "bloco": "BLOCO 3",
       "inicio_ms": 191333,
       "fim_ms": 197733,
       "duracao_ms": 6400,
       "texto": "pra frente eu organizo isso.' 'Quando melhorar um pouco mais, eu começo a",
-      "terco": "duvidoso",
+      "terco": "esperançoso",
       "intensidade": 5,
-      "tipo_momento": "causo",
-      "ritmo_corte_ms": 5000,
-      "total_clips": 1,
-      "avatar": {
-        "visivel": true,
-        "posicao": "bottom-right",
-        "tamanho_percent": 35
-      },
+      "tipo_momento": "lição_aprendida",
+      "ritmo_corte_ms": 6000,
+      "total_clips": 2,
       "clips": [
         {
           "clip_id": "030-01",
           "inicio_relativo_ms": 0,
+          "fim_relativo_ms": 6000,
+          "duracao_ms": 6000,
+          "tipo": "imagem_ia",
+          "prompt": "Man in his 60s sitting on wooden bench at sunset, peaceful contemplative expression, warm nostalgic lighting casting gentle shadows, rural farm landscape in soft focus background, cinematic composition, acceptance and wisdom in posture, #D4651A #F5C842 warm golden tones, hopeful but reflective mood, moment of clarity"
+        },
+        {
+          "clip_id": "030-02",
+          "inicio_relativo_ms": 6000,
           "fim_relativo_ms": 6400,
-          "duracao_ms": 6400,
-          "tipo": "imagem_ia",
-          "prompt": "Weathered hands of an elderly Brazilian farmer resting on a wooden kitchen table with scattered unpaid bills and old papers, warm sepia tones with #D4651A amber lighting through dusty window, rural farmhouse interior, nostalgic melancholic atmosphere, cinematic shallow depth of field, earthy browns #8B4513, golden hour light #F5C842",
-          "animacao_remotion": "ken_burns_zoom_in",
-          "zoom_fator": 1.08,
-          "arquivo_final": "cenas/030-01.mp4"
-        }
-      ]
-    },
-    {
-      "id": "031",
-      "bloco": "autoengano temporal",
-      "inicio_ms": 197766,
-      "fim_ms": 204266,
-      "duracao_ms": 6500,
-      "texto": "guardar.' 'Ainda tenho anos pela frente.' Rapaz… quando eu fiz as contas de",
-      "terco": "duvidoso",
-      "intensidade": 6,
-      "tipo_momento": "reflexão",
-      "ritmo_corte_ms": 5000,
-      "total_clips": 1,
-      "avatar": {
-        "visivel": true,
-        "posicao": "bottom-right",
-        "tamanho_percent": 35
-      },
-      "clips": [
-        {
-          "clip_id": "031-01",
-          "inicio_relativo_ms": 0,
-          "fim_relativo_ms": 6500,
-          "duracao_ms": 6500,
+          "duracao_ms": 400,
           "tipo": "remotion",
-          "texto_animado": "Ainda tenho anos pela frente...",
-          "animacao_remotion": "fade_in_por_letra",
-          "cor_texto": "#F5C842",
-          "cor_fundo": "#8B4513",
-          "arquivo_final": "cenas/031-01.mp4"
-        }
-      ]
-    },
-    {
-      "id": "032",
-      "bloco": "revelação do susto financeiro",
-      "inicio_ms": 204266,
-      "fim_ms": 210966,
-      "duracao_ms": 6700,
-      "texto": "verdade — não na cabeça, no papel — eu levei um susto que nunca mais esqueci. A",
-      "terco": "agressivo",
-      "intensidade": 8,
-      "tipo_momento": "clímax",
-      "ritmo_corte_ms": 4000,
-      "total_clips": 2,
-      "avatar": {
-        "visivel": true,
-        "posicao": "fullscreen",
-        "tamanho_percent": 100
-      },
-      "clips": [
-        {
-          "clip_id": "032-01",
-          "inicio_relativo_ms": 0,
-          "fim_relativo_ms": 3500,
-          "duracao_ms": 3500,
-          "tipo": "video_stock",
-          "queries": [
-            "elderly hands writing on paper close up",
-            "person calculating finances paper notebook",
-            "weathered hands holding pen writing numbers"
-          ],
-          "arquivo_final": "cenas/032-01.mp4",
-          "fallback_tipo": "imagem_ia",
-          "fallback_prompt": "Close-up of weathered, calloused hands writing numbers on old yellowed paper, warm earthy tones with #D4651A orange ambient light, #8B4513 wooden table surface, #F5C842 golden afternoon sunlight streaming in, nostalgic rural Brazilian interior, cinematic shallow depth of field, photorealistic"
-        },
-        {
-          "clip_id": "032-02",
-          "inicio_relativo_ms": 3500,
-          "fim_relativo_ms": 6700,
-          "duracao_ms": 3200,
-          "tipo": "remotion",
-          "texto_animado": "levei um susto que nunca mais esqueci",
-          "animacao_remotion": "fade_in_por_letra",
-          "arquivo_final": "cenas/032-02.mp4"
-        }
-      ]
-    },
-    {
-      "id": "033",
-      "bloco": "arrependimento_janela_perdida",
-      "inicio_ms": 211000,
-      "fim_ms": 217500,
-      "duracao_ms": 6500,
-      "texto": "janela que eu tinha nos quarenta e poucos anos… ela num tava mais aberta do",
-      "terco": "duvidoso",
-      "intensidade": 7,
-      "tipo_momento": "reflexão",
-      "ritmo_corte_ms": 5000,
-      "total_clips": 1,
-      "avatar": {
-        "visivel": true,
-        "posicao": "bottom-right",
-        "tamanho_percent": 35
-      },
-      "clips": [
-        {
-          "clip_id": "033-01",
-          "inicio_relativo_ms": 0,
-          "fim_relativo_ms": 6500,
-          "duracao_ms": 6500,
-          "tipo": "imagem_ia",
-          "prompt": "Old wooden window frame slowly closing at sunset, warm orange light #D4651A filtering through dusty glass, rural Brazilian farmhouse interior, weathered hands reaching towards the window, nostalgic sepia tones #8B4513, golden hour rays #F5C842, cinematic composition, melancholic atmosphere, photorealistic style",
-          "animacao_remotion": "ken_burns_zoom_in",
-          "zoom_fator": 1.08,
-          "arquivo_final": "cenas/033-01.mp4"
-        }
-      ]
-    },
-    {
-      "id": "034",
-      "bloco": "arrependimento_tempo_perdido",
-      "inicio_ms": 217533,
-      "fim_ms": 224000,
-      "duracao_ms": 6467,
-      "texto": "mesmo jeito. Eu tinha deixado passar uma parte boa dela. E eu me lembro de",
-      "terco": "duvidoso",
-      "intensidade": 7,
-      "tipo_momento": "reflexão",
-      "ritmo_corte_ms": 5000,
-      "total_clips": 1,
-      "avatar": {
-        "visivel": true,
-        "posicao": "bottom-right",
-        "tamanho_percent": 35
-      },
-      "clips": [
-        {
-          "clip_id": "034-01",
-          "inicio_relativo_ms": 0,
-          "fim_relativo_ms": 6467,
-          "duracao_ms": 6467,
-          "tipo": "imagem_ia",
-          "prompt": "Cinematic close-up of weathered elderly hands holding an old faded photograph, warm sepia tones with #D4651A orange sunset light streaming through a farmhouse window, wooden table surface, nostalgic atmosphere, soft bokeh background showing rural interior, color palette #8B4513 brown shadows and #F5C842 golden highlights, photorealistic, melancholic mood, 35mm film grain",
-          "animacao_remotion": "ken_burns_zoom_in",
-          "zoom_fator": 1.08,
-          "arquivo_final": "cenas/034-01.mp4"
-        }
-      ]
-    },
-    {
-      "id": "035",
-      "bloco": "Dilema do presente vs. futuro",
-      "inicio_ms": 224000,
-      "fim_ms": 230666,
-      "duracao_ms": 6666,
-      "texto": "pensar: 'Mas a vida é agora, né? Amanhã não é garantido.' E é verdade — amanhã",
-      "terco": "duvidoso",
-      "intensidade": 7,
-      "tipo_momento": "reflexão",
-      "ritmo_corte_ms": 5000,
-      "total_clips": 1,
-      "avatar": {
-        "visivel": true,
-        "posicao": "bottom-right",
-        "tamanho_percent": 35
-      },
-      "clips": [
-        {
-          "clip_id": "035-01",
-          "inicio_relativo_ms": 0,
-          "fim_relativo_ms": 6666,
-          "duracao_ms": 6666,
-          "tipo": "imagem_ia",
-          "prompt": "Elderly weathered hands holding an old pocket watch, warm sunset light streaming through farmhouse window, sepia and orange tones #D4651A #8B4513, rustic wooden table with coffee cup, dust particles in golden light, nostalgic mood, cinematic photography style, shallow depth of field, Brazilian countryside atmosphere",
-          "animacao_remotion": "ken_burns_zoom_in",
-          "zoom_fator": 1.08,
-          "arquivo_final": "cenas/035-01.mp4"
-        }
-      ]
-    },
-    {
-      "id": "036",
-      "bloco": "questionamento sobre garantias",
-      "inicio_ms": 230700,
-      "fim_ms": 237366,
-      "duracao_ms": 6666,
-      "texto": "não é garantido. Só que o problema é que a maioria das pessoas que eu conheço…",
-      "terco": "duvidoso",
-      "intensidade": 5,
-      "tipo_momento": "reflexão",
-      "ritmo_corte_ms": 5000,
-      "total_clips": 1,
-      "avatar": {
-        "visivel": true,
-        "posicao": "bottom-right",
-        "tamanho_percent": 35
-      },
-      "clips": [
-        {
-          "clip_id": "036-01",
-          "inicio_relativo_ms": 0,
-          "fim_relativo_ms": 6666,
-          "duracao_ms": 6666,
-          "tipo": "video_stock",
-          "queries": [
-            "elderly people gathering talking rural Brazil",
-            "group of mature adults conversation countryside",
-            "neighbors chatting small town porch sunset"
-          ],
-          "arquivo_final": "cenas/036-01.mp4",
-          "fallback_tipo": "imagem_ia",
-          "fallback_prompt": "Cinematic wide shot of weathered hands gesturing during a conversation at a rustic wooden table, warm orange sunset light streaming through window, sepia tones with #D4651A amber highlights and #8B4513 brown shadows, rural Brazilian interior, coffee cups visible, nostalgic documentary photography style, shallow depth of field, golden hour warmth with #F5C842 accents"
-        }
-      ]
-    },
-    {
-      "id": "037",
-      "bloco": "consequência_inevitável",
-      "inicio_ms": 237366,
-      "fim_ms": 243666,
-      "duracao_ms": 6300,
-      "texto": "chegou nos setenta. Chegou nos oitenta. E a conta chegou junto. Hoje me",
-      "terco": "agressivo",
-      "intensidade": 8,
-      "tipo_momento": "clímax",
-      "ritmo_corte_ms": 4000,
-      "total_clips": 2,
-      "avatar": {
-        "visivel": true,
-        "posicao": "fullscreen",
-        "tamanho_percent": 100
-      },
-      "clips": [
-        {
-          "clip_id": "037-01",
-          "inicio_relativo_ms": 0,
-          "fim_relativo_ms": 3500,
-          "duracao_ms": 3500,
-          "tipo": "imagem_ia",
-          "prompt": "Cinematic close-up of weathered elderly hands holding unpaid bills and invoices on a rustic wooden table, warm sepia tones with #D4651A orange lighting, #8B4513 brown shadows, dramatic side lighting suggesting financial burden, rural Brazilian interior atmosphere, nostalgic documentary style, shallow depth of field",
-          "animacao_remotion": "ken_burns_zoom_in",
-          "zoom_fator": 1.08,
-          "arquivo_final": "cenas/037-01.mp4"
-        },
-        {
-          "clip_id": "037-02",
-          "inicio_relativo_ms": 3500,
-          "fim_relativo_ms": 6300,
-          "duracao_ms": 2800,
-          "tipo": "remotion",
-          "texto_animado": "E a conta chegou junto.",
-          "animacao_remotion": "fade_in_bloco",
-          "arquivo_final": "cenas/037-02.mp4"
-        }
-      ]
-    },
-    {
-      "id": "038",
-      "bloco": "arrependimento_pessoal",
-      "inicio_ms": 243700,
-      "fim_ms": 250366,
-      "duracao_ms": 6666,
-      "texto": "arrependo de não ter entendido isso antes. Eu podia ter feito diferente. E num",
-      "terco": "duvidoso",
-      "intensidade": 8,
-      "tipo_momento": "reflexão",
-      "ritmo_corte_ms": 5000,
-      "total_clips": 1,
-      "avatar": {
-        "visivel": true,
-        "posicao": "fullscreen",
-        "tamanho_percent": 100
-      },
-      "clips": [
-        {
-          "clip_id": "038-01",
-          "inicio_relativo_ms": 0,
-          "fim_relativo_ms": 6666,
-          "duracao_ms": 6666,
-          "tipo": "remotion",
-          "texto_animado": "Eu podia ter feito diferente.",
-          "animacao_remotion": "fade_in_por_letra",
-          "arquivo_final": "cenas/038-01.mp4"
-        }
-      ]
-    },
-    {
-      "id": "039",
-      "bloco": "Transição filosófica para causo",
-      "inicio_ms": 250366,
-      "fim_ms": 256966,
-      "duracao_ms": 6600,
-      "texto": "fiz. Dinheiro cê pode recuperar. Tempo… não.\" \"Tem um vizinho meu aqui perto.",
-      "terco": "esperançoso",
-      "intensidade": 8,
-      "tipo_momento": "reflexão",
-      "ritmo_corte_ms": 6000,
-      "total_clips": 1,
-      "avatar": {
-        "visivel": true,
-        "posicao": "fullscreen",
-        "tamanho_percent": 100
-      },
-      "clips": [
-        {
-          "clip_id": "039-01",
-          "inicio_relativo_ms": 0,
-          "fim_relativo_ms": 6600,
-          "duracao_ms": 6600,
-          "tipo": "remotion",
-          "texto_animado": "Tempo… não.",
-          "animacao_remotion": "fade_in_por_letra",
-          "arquivo_final": "cenas/039-01.mp4"
-        }
-      ]
-    },
-    {
-      "id": "040",
-      "bloco": "apresentação do personagem",
-      "inicio_ms": 257000,
-      "fim_ms": 263700,
-      "duracao_ms": 6700,
-      "texto": "Chama Geraldo. Sessenta anos. Geraldo num ficou rico. Cê olha pra ele, num acha",
-      "terco": "agressivo",
-      "intensidade": 6,
-      "tipo_momento": "abertura",
-      "ritmo_corte_ms": 4000,
-      "total_clips": 2,
-      "avatar": {
-        "visivel": true,
-        "posicao": "bottom-right",
-        "tamanho_percent": 35
-      },
-      "clips": [
-        {
-          "clip_id": "040-01",
-          "inicio_relativo_ms": 0,
-          "fim_relativo_ms": 3500,
-          "duracao_ms": 3500,
-          "tipo": "imagem_ia",
-          "prompt": "Cinematic portrait of a 60 year old Brazilian rural man named Geraldo, weathered face with deep wrinkles, humble expression, wearing simple worn clothes, sitting on wooden chair on farmhouse porch, warm sunset light, color palette dominated by #D4651A orange and #8B4513 brown tones, #F5C842 golden highlights from sunset, rustic countryside background, nostalgic sepia mood, photorealistic style",
-          "animacao_remotion": "ken_burns_zoom_in",
-          "zoom_fator": 1.08,
-          "arquivo_final": "cenas/040-01.mp4"
-        },
-        {
-          "clip_id": "040-02",
-          "inicio_relativo_ms": 3500,
-          "fim_relativo_ms": 6700,
-          "duracao_ms": 3200,
-          "tipo": "video_stock",
-          "queries": [
-            "elderly Brazilian man humble life rural",
-            "simple farmer sitting porch sunset",
-            "old man weathered hands countryside"
-          ],
-          "arquivo_final": "cenas/040-02.mp4",
-          "fallback_tipo": "imagem_ia",
-          "fallback_prompt": "Wide shot of humble rural Brazilian home, simple wooden furniture, elderly man silhouette looking at horizon, warm #D4651A sunset colors, #8B4513 earth tones, dusty farm path, cattle in distance, #F5C842 golden hour lighting, nostalgic documentary photography style, cinematic composition"
-        }
-      ]
-    },
-    {
-      "id": "041",
-      "bloco": "apresentação do personagem Geraldo",
-      "inicio_ms": 263733,
-      "fim_ms": 270333,
-      "duracao_ms": 6600,
-      "texto": "que tem dinheiro não. Carro velho, casa simples. Mas Geraldo… aos cinquenta e",
-      "terco": "duvidoso",
-      "intensidade": 5,
-      "tipo_momento": "causo",
-      "ritmo_corte_ms": 5000,
-      "total_clips": 1,
-      "avatar": {
-        "visivel": true,
-        "posicao": "bottom-right",
-        "tamanho_percent": 35
-      },
-      "clips": [
-        {
-          "clip_id": "041-01",
-          "inicio_relativo_ms": 0,
-          "fim_relativo_ms": 6600,
-          "duracao_ms": 6600,
-          "tipo": "imagem_ia",
-          "prompt": "Cinematic wide shot of a humble rural Brazilian home, old weathered pickup truck parked outside, simple wooden house with terracotta roof, golden hour lighting with warm tones #D4651A and #8B4513, dust particles in sunlight, countryside setting, nostalgic mood, earthy color palette with #F5C842 accent in sunset sky, photorealistic style",
-          "animacao_remotion": "ken_burns_zoom_out",
-          "zoom_fator": 1.08,
-          "arquivo_final": "cenas/041-01.mp4"
-        }
-      ]
-    },
-    {
-      "id": "042",
-      "bloco": "recompensa_liberdade",
-      "inicio_ms": 270366,
-      "fim_ms": 276966,
-      "duracao_ms": 6600,
-      "texto": "cinco anos, parou de trabalhar por obrigação. Hoje ele pesca. Cuida da horta.",
-      "terco": "esperançoso",
-      "intensidade": 8,
-      "tipo_momento": "clímax",
-      "ritmo_corte_ms": 6000,
-      "total_clips": 1,
-      "avatar": {
-        "visivel": true,
-        "posicao": "fullscreen",
-        "tamanho_percent": 100
-      },
-      "clips": [
-        {
-          "clip_id": "042-01",
-          "inicio_relativo_ms": 0,
-          "fim_relativo_ms": 6600,
-          "duracao_ms": 6600,
-          "tipo": "imagem_ia",
-          "prompt": "Elderly Brazilian man fishing peacefully at golden hour by a small pond, warm earthy tones #D4651A and #8B4513, rural countryside setting, vegetable garden visible in background, serene expression of contentment, weathered hands holding fishing rod, soft orange sunset light, cinematic composition, nostalgic atmosphere, #F5C842 sun rays filtering through trees, matte painting style",
-          "animacao_remotion": "ken_burns_zoom_out",
-          "zoom_fator": 1.08,
-          "arquivo_final": "cenas/042-01.mp4"
-        }
-      ]
-    },
-    {
-      "id": "043",
-      "bloco": "Contraste de vidas - história dos conhecidos",
-      "inicio_ms": 276966,
-      "fim_ms": 283333,
-      "duracao_ms": 6367,
-      "texto": "Vê os netos crescer. E tem outro conhecido da cidade — da mesma idade do",
-      "terco": "esperançoso",
-      "intensidade": 7,
-      "tipo_momento": "causo",
-      "ritmo_corte_ms": 6000,
-      "total_clips": 1,
-      "avatar": {
-        "visivel": true,
-        "posicao": "bottom-right",
-        "tamanho_percent": 35
-      },
-      "clips": [
-        {
-          "clip_id": "043-01",
-          "inicio_relativo_ms": 0,
-          "fim_relativo_ms": 6367,
-          "duracao_ms": 6367,
-          "tipo": "video_stock",
-          "queries": [
-            "grandfather watching grandchildren playing garden sunset",
-            "elderly man smiling grandkids rural home",
-            "senior watching kids play backyard golden hour"
-          ],
-          "arquivo_final": "cenas/043-01.mp4",
-          "fallback_tipo": "imagem_ia",
-          "fallback_prompt": "Elderly Brazilian man in his 60s sitting on a wooden chair on a farmhouse porch, watching grandchildren playing in the yard, warm sunset light, rural countryside setting, orange and sepia tones #D4651A #8B4513, weathered hands resting on knees, nostalgic atmosphere, cinematic composition, soft golden hour lighting #F5C842"
-        }
-      ]
-    },
-    {
-      "id": "044",
-      "bloco": "apresentação do personagem - rotina árdua",
-      "inicio_ms": 283366,
-      "fim_ms": 289966,
-      "duracao_ms": 6600,
-      "texto": "Geraldo, quase dia a dia. Acorda no escuro. Pega ônibus. Trabalha o dia todo.",
-      "terco": "agressivo",
-      "intensidade": 7,
-      "tipo_momento": "causo",
-      "ritmo_corte_ms": 4000,
-      "total_clips": 2,
-      "avatar": {
-        "visivel": true,
-        "posicao": "bottom-right",
-        "tamanho_percent": 35
-      },
-      "clips": [
-        {
-          "clip_id": "044-01",
-          "inicio_relativo_ms": 0,
-          "fim_relativo_ms": 3300,
-          "duracao_ms": 3300,
-          "tipo": "video_stock",
-          "queries": [
-            "man waking up early dark morning alarm clock",
-            "worker getting up before sunrise tired",
-            "humble bedroom dawn darkness waking up"
-          ],
-          "arquivo_final": "cenas/044-01.mp4",
-          "fallback_tipo": "imagem_ia",
-          "fallback_prompt": "Brazilian working class man in his 50s waking up in dark humble bedroom, early morning before sunrise, worn wooden furniture, warm amber tones #D4651A #8B4513, nostalgic cinematic style, soft golden light from small lamp, realistic photography"
-        },
-        {
-          "clip_id": "044-02",
-          "inicio_relativo_ms": 3300,
-          "fim_relativo_ms": 6600,
-          "duracao_ms": 3300,
-          "tipo": "imagem_ia",
-          "prompt": "Tired Brazilian worker waiting at bus stop in early morning darkness, worn work clothes, calloused hands holding lunch bag, orange street lamp casting warm #D4651A glow, earthy brown tones #8B4513, sepia nostalgic mood, cinematic composition, small town interior Brazil setting, photorealistic",
-          "animacao_remotion": "ken_burns_zoom_in",
-          "zoom_fator": 1.08,
-          "arquivo_final": "cenas/044-02.mp4"
-        }
-      ]
-    },
-    {
-      "id": "045",
-      "bloco": "história dos dois homens - apresentação do conflito",
-      "inicio_ms": 289966,
-      "fim_ms": 296533,
-      "duracao_ms": 6567,
-      "texto": "Num porque quer. Porque não tem como parar. Eu olhei pra esses dois homens e",
-      "terco": "duvidoso",
-      "intensidade": 7,
-      "tipo_momento": "causo",
-      "ritmo_corte_ms": 5000,
-      "total_clips": 1,
-      "avatar": {
-        "visivel": true,
-        "posicao": "bottom-right",
-        "tamanho_percent": 35
-      },
-      "clips": [
-        {
-          "clip_id": "045-01",
-          "inicio_relativo_ms": 0,
-          "fim_relativo_ms": 6567,
-          "duracao_ms": 6567,
-          "tipo": "imagem_ia",
-          "prompt": "Two elderly Brazilian rural men sitting on wooden bench, weathered hands resting on knees, tired but dignified expressions, warm sunset light casting long shadows, rustic farm background with wooden fence, cinematic composition, warm color palette with #D4651A orange tones and #8B4513 brown earth tones, #F5C842 golden hour highlights, nostalgic sepia atmosphere, 35mm film grain, documentary style portrait",
-          "animacao_remotion": "ken_burns_zoom_in",
-          "zoom_fator": 1.08,
-          "arquivo_final": "cenas/045-01.mp4"
-        }
-      ]
-    },
-    {
-      "id": "046",
-      "bloco": "Questionamento sobre diferenças de destino",
-      "inicio_ms": 296566,
-      "fim_ms": 303233,
-      "duracao_ms": 6667,
-      "texto": "fiquei pensando: o que separou esses dois? Não foi sorte. Não foi herança. Não",
-      "terco": "duvidoso",
-      "intensidade": 7,
-      "tipo_momento": "reflexão",
-      "ritmo_corte_ms": 5000,
-      "total_clips": 1,
-      "avatar": {
-        "visivel": true,
-        "posicao": "bottom-right",
-        "tamanho_percent": 35
-      },
-      "clips": [
-        {
-          "clip_id": "046-01",
-          "inicio_relativo_ms": 0,
-          "fim_relativo_ms": 6667,
-          "duracao_ms": 6667,
-          "tipo": "imagem_ia",
-          "prompt": "Two diverging dirt roads in Brazilian countryside at golden hour, one path leading to a humble wooden farmhouse, the other fading into uncertainty, warm sepia tones with #D4651A orange sunset glow and #8B4513 earth colors, #F5C842 golden light rays, nostalgic cinematic style, rural interior aesthetic, reflective mood",
-          "animacao_remotion": "ken_burns_zoom_out",
-          "zoom_fator": 1.08,
-          "arquivo_final": "cenas/046-01.mp4"
-        }
-      ]
-    },
-    {
-      "id": "047",
-      "bloco": "contraste de escolhas na meia-idade",
-      "inicio_ms": 303233,
-      "fim_ms": 309600,
-      "duracao_ms": 6367,
-      "texto": "foi o salário. Foi o que cada um fez entre os quarenta e os cinquenta. O",
-      "terco": "duvidoso",
-      "intensidade": 6,
-      "tipo_momento": "reflexão",
-      "ritmo_corte_ms": 5000,
-      "total_clips": 1,
-      "avatar": {
-        "visivel": true,
-        "posicao": "bottom-right",
-        "tamanho_percent": 35
-      },
-      "clips": [
-        {
-          "clip_id": "047-01",
-          "inicio_relativo_ms": 0,
-          "fim_relativo_ms": 6367,
-          "duracao_ms": 6367,
-          "tipo": "imagem_ia",
-          "prompt": "Two different paths diverging in a rural Brazilian countryside at golden hour, one path leading to a humble farmhouse with warm orange light #D4651A, the other fading into shadow, weathered wooden fence posts, sepia tones #8B4513, nostalgic atmosphere, cinematic composition, warm earthy colors with accent of #F5C842 in the sunset sky, 40-50 year old man silhouette contemplating at the crossroads, dust particles in warm light",
-          "animacao_remotion": "ken_burns_zoom_out",
-          "zoom_fator": 1.08,
-          "arquivo_final": "cenas/047-01.mp4"
-        }
-      ]
-    },
-    {
-      "id": "048",
-      "bloco": "história do Geraldo - introdução da dificuldade",
-      "inicio_ms": 309600,
-      "fim_ms": 316200,
-      "duracao_ms": 6600,
-      "texto": "Geraldo me contou uma vez que passou aperto pra guardar naquela época. Que os",
-      "terco": "duvidoso",
-      "intensidade": 5,
-      "tipo_momento": "causo",
-      "ritmo_corte_ms": 5000,
-      "total_clips": 1,
-      "avatar": {
-        "visivel": true,
-        "posicao": "bottom-right",
-        "tamanho_percent": 35
-      },
-      "clips": [
-        {
-          "clip_id": "048-01",
-          "inicio_relativo_ms": 0,
-          "fim_relativo_ms": 6600,
-          "duracao_ms": 6600,
-          "tipo": "imagem_ia",
-          "prompt": "Cinematic photograph of weathered elderly Brazilian farmer hands holding worn leather wallet with few crumpled bills, rustic wooden table background, warm sepia tones with #D4651A orange sunset light streaming through window, #8B4513 brown earth tones, nostalgic mood, shallow depth of field, rural farmhouse interior, dramatic lighting, photorealistic",
-          "animacao_remotion": "ken_burns_zoom_in",
-          "zoom_fator": 1.08,
-          "arquivo_final": "cenas/048-01.mp4"
-        }
-      ]
-    },
-    {
-      "id": "049",
-      "bloco": "comparação social / pressão externa",
-      "inicio_ms": 316233,
-      "fim_ms": 322733,
-      "duracao_ms": 6500,
-      "texto": "amigos compraram carro e ele ficou no mesmo. Que a esposa queria reformar a",
-      "terco": "agressivo",
-      "intensidade": 6,
-      "tipo_momento": "causo",
-      "ritmo_corte_ms": 4000,
-      "total_clips": 2,
-      "avatar": {
-        "visivel": true,
-        "posicao": "bottom-right",
-        "tamanho_percent": 35
-      },
-      "clips": [
-        {
-          "clip_id": "049-01",
-          "inicio_relativo_ms": 0,
-          "fim_relativo_ms": 3500,
-          "duracao_ms": 3500,
-          "tipo": "video_stock",
-          "queries": [
-            "man looking at neighbor new car envious",
-            "person watching friends driving new vehicle",
-            "middle aged man alone while others celebrate"
-          ],
-          "arquivo_final": "cenas/049-01.mp4",
-          "fallback_tipo": "imagem_ia",
-          "fallback_prompt": "Brazilian middle-aged man in simple clothes standing alone in a rural dirt road, watching a shiny new car pass by in the distance, warm sunset light with #D4651A orange tones, #8B4513 earth colors, nostalgic melancholic mood, cinematic composition, dust in the air, countryside setting"
-        },
-        {
-          "clip_id": "049-02",
-          "inicio_relativo_ms": 3500,
-          "fim_relativo_ms": 6500,
-          "duracao_ms": 3000,
-          "tipo": "imagem_ia",
-          "prompt": "Humble Brazilian couple discussing home renovation, wife pointing at old cracked wall of simple countryside house, worried expressions, warm #D4651A interior lighting, #8B4513 wooden furniture, #F5C842 golden afternoon light through window, rustic kitchen setting, worn hands, nostalgic documentary style, cinematic shallow depth of field",
-          "animacao_remotion": "ken_burns_zoom_in",
-          "zoom_fator": 1.08,
-          "arquivo_final": "cenas/049-02.mp4"
-        }
-      ]
-    },
-    {
-      "id": "050",
-      "bloco": "tensão_familiar",
-      "inicio_ms": 322766,
-      "fim_ms": 329233,
-      "duracao_ms": 6467,
-      "texto": "casa e ele disse 'espera mais um pouco.' Que a pressão era grande. Mas ele",
-      "terco": "duvidoso",
-      "intensidade": 7,
-      "tipo_momento": "causo",
-      "ritmo_corte_ms": 5000,
-      "total_clips": 1,
-      "avatar": {
-        "visivel": true,
-        "posicao": "bottom-right",
-        "tamanho_percent": 35
-      },
-      "clips": [
-        {
-          "clip_id": "050-01",
-          "inicio_relativo_ms": 0,
-          "fim_relativo_ms": 6467,
-          "duracao_ms": 6467,
-          "tipo": "imagem_ia",
-          "prompt": "Weathered Brazilian farmer's hands gripping a wooden table edge, tense moment, warm sepia tones with #D4651A orange sunset light streaming through rustic window, #8B4513 brown wooden furniture, rural farmhouse interior, cinematic shallow depth of field, emotional tension, nostalgic atmosphere, 1970s Brazilian countryside aesthetic",
-          "animacao_remotion": "ken_burns_zoom_in",
-          "zoom_fator": 1.08,
-          "arquivo_final": "cenas/050-01.mp4"
-        }
-      ]
-    },
-    {
-      "id": "051",
-      "bloco": "contraste final - destinos opostos",
-      "inicio_ms": 329233,
-      "fim_ms": 335633,
-      "duracao_ms": 6400,
-      "texto": "segurou. E hoje… ele tá pescando. E o outro tá pegando ônibus no escuro.\"",
-      "terco": "esperançoso",
-      "intensidade": 9,
-      "tipo_momento": "clímax",
-      "ritmo_corte_ms": 6000,
-      "total_clips": 2,
-      "avatar": {
-        "visivel": true,
-        "posicao": "fullscreen",
-        "tamanho_percent": 100
-      },
-      "clips": [
-        {
-          "clip_id": "051-01",
-          "inicio_relativo_ms": 0,
-          "fim_relativo_ms": 3200,
-          "duracao_ms": 3200,
-          "tipo": "imagem_ia",
-          "prompt": "Elderly Brazilian man fishing peacefully at golden hour on a calm lake, warm orange sunset tones #D4651A and #F5C842, rustic wooden boat, serene expression of contentment, cinematic composition, nostalgic atmosphere, soft natural lighting, rural Brazilian countryside background with #8B4513 earth tones",
-          "animacao_remotion": "ken_burns_zoom_out",
-          "zoom_fator": 1.08,
-          "arquivo_final": "cenas/051-01.mp4"
-        },
-        {
-          "clip_id": "051-02",
-          "inicio_relativo_ms": 3200,
-          "fim_relativo_ms": 6400,
-          "duracao_ms": 3200,
-          "tipo": "video_stock",
-          "queries": [
-            "elderly man waiting bus stop early morning dark",
-            "old person at bus station dawn lonely",
-            "senior citizen public transportation winter morning"
-          ],
-          "arquivo_final": "cenas/051-02.mp4",
-          "fallback_tipo": "imagem_ia",
-          "fallback_prompt": "Tired elderly man waiting alone at dark bus stop before dawn, cold blue shadows contrasting with distant warm streetlight #D4651A, worn clothes, weathered hands holding bus ticket, melancholic atmosphere, cinematic photography style, #8B4513 brown jacket, sense of regret and exhaustion"
-        }
-      ]
-    },
-    {
-      "id": "052",
-      "bloco": "introdução do conceito - gancho de curiosidade",
-      "inicio_ms": 335666,
-      "fim_ms": 342266,
-      "duracao_ms": 6600,
-      "texto": "\"Quando eu falo em janela… cê talvez teja pensando: 'Mas Aroldo, que janela é",
-      "terco": "agressivo",
-      "intensidade": 5,
-      "tipo_momento": "abertura",
-      "ritmo_corte_ms": 4000,
-      "total_clips": 2,
-      "avatar": {
-        "visivel": true,
-        "posicao": "fullscreen",
-        "tamanho_percent": 100
-      },
-      "clips": [
-        {
-          "clip_id": "052-01",
-          "inicio_relativo_ms": 0,
-          "fim_relativo_ms": 3300,
-          "duracao_ms": 3300,
-          "tipo": "video_stock",
-          "queries": [
-            "old wooden window farmhouse sunlight",
-            "rustic window countryside morning light",
-            "vintage window frame rural house warm tones"
-          ],
-          "arquivo_final": "cenas/052-01.mp4",
-          "fallback_tipo": "imagem_ia",
-          "fallback_prompt": "Cinematic shot of an old rustic wooden window frame in a countryside farmhouse, warm sunlight streaming through, dust particles in the air, earthy tones with #D4651A orange and #8B4513 brown colors, nostalgic atmosphere, shallow depth of field, golden hour lighting"
-        },
-        {
-          "clip_id": "052-02",
-          "inicio_relativo_ms": 3300,
-          "fim_relativo_ms": 6600,
-          "duracao_ms": 3300,
-          "tipo": "remotion",
-          "texto_animado": "Que janela é essa?",
-          "animacao_remotion": "fade_in_por_letra",
-          "arquivo_final": "cenas/052-02.mp4"
-        }
-      ]
-    },
-    {
-      "id": "053",
-      "bloco": "introdução_explicativa",
-      "inicio_ms": 342300,
-      "fim_ms": 348666,
-      "duracao_ms": 6366,
-      "texto": "essa?' Deixa eu te explicar do jeito que eu entendi. Quando cê chega nos",
-      "terco": "agressivo",
-      "intensidade": 5,
-      "tipo_momento": "abertura",
-      "ritmo_corte_ms": 4000,
-      "total_clips": 2,
-      "avatar": {
-        "visivel": true,
-        "posicao": "fullscreen",
-        "tamanho_percent": 100
-      },
-      "clips": [
-        {
-          "clip_id": "053-01",
-          "inicio_relativo_ms": 0,
-          "fim_relativo_ms": 3200,
-          "duracao_ms": 3200,
-          "tipo": "video_stock",
-          "queries": [
-            "elderly man explaining talking hands close up",
-            "mature man conversation gesturing warmly",
-            "old farmer speaking wisdom rural setting"
-          ],
-          "arquivo_final": "cenas/053-01.mp4",
-          "fallback_tipo": "imagem_ia",
-          "fallback_prompt": "Close-up of weathered hands of an elderly man gesturing while explaining something, warm earthy tones #D4651A and #8B4513, rustic wooden table background, golden hour lighting #F5C842, nostalgic sepia mood, cinematic style, shallow depth of field"
-        },
-        {
-          "clip_id": "053-02",
-          "inicio_relativo_ms": 3200,
-          "fim_relativo_ms": 6366,
-          "duracao_ms": 3166,
-          "tipo": "imagem_ia",
-          "prompt": "Elderly Brazilian man sitting on wooden chair on farmhouse porch, leaning forward as if about to share wisdom, warm sunset light #D4651A casting long shadows, coffee cup on side table, rural countryside background with orange sky #F5C842, earth tones #8B4513, nostalgic reflective atmosphere, cinematic photography style",
-          "animacao_remotion": "ken_burns_zoom_in",
-          "zoom_fator": 1.08,
-          "arquivo_final": "cenas/053-02.mp4"
-        }
-      ]
-    },
-    {
-      "id": "054",
-      "bloco": "gancho inicial - paradoxo dos 40",
-      "inicio_ms": 348666,
-      "fim_ms": 355166,
-      "duracao_ms": 6500,
-      "texto": "quarenta, uma coisa estranha acontece. Cê começa a ganhar mais do que nunca",
-      "terco": "agressivo",
-      "intensidade": 6,
-      "tipo_momento": "abertura",
-      "ritmo_corte_ms": 4000,
-      "total_clips": 2,
-      "avatar": {
-        "visivel": true,
-        "posicao": "fullscreen",
-        "tamanho_percent": 100
-      },
-      "clips": [
-        {
-          "clip_id": "054-01",
-          "inicio_relativo_ms": 0,
-          "fim_relativo_ms": 3500,
-          "duracao_ms": 3500,
-          "tipo": "video_stock",
-          "queries": [
-            "middle aged man counting money warm light",
-            "mature person receiving paycheck sunset tones",
-            "40 year old professional success warm colors"
-          ],
-          "arquivo_final": "cenas/054-01.mp4",
-          "fallback_tipo": "imagem_ia",
-          "fallback_prompt": "Cinematic shot of weathered hands holding Brazilian money bills, warm sepia tones with #D4651A orange glow, rustic wooden table background, #8B4513 brown shadows, nostalgic atmosphere, shallow depth of field, golden hour lighting through farmhouse window"
-        },
-        {
-          "clip_id": "054-02",
-          "inicio_relativo_ms": 3500,
-          "fim_relativo_ms": 6500,
-          "duracao_ms": 3000,
-          "tipo": "remotion",
-          "texto_animado": "ganhar mais do que nunca",
-          "animacao_remotion": "fade_in_por_letra",
-          "cor_texto": "#F5C842",
-          "cor_fundo": "#D4651A",
-          "arquivo_final": "cenas/054-02.mp4"
-        }
-      ]
-    },
-    {
-      "id": "055",
-      "bloco": "estabilidade conquistada",
-      "inicio_ms": 355200,
-      "fim_ms": 361600,
-      "duracao_ms": 6400,
-      "texto": "ganhou na vida. As conta da casa tendem a estabilizar — filho já cresceu,",
-      "terco": "esperançoso",
-      "intensidade": 5,
-      "tipo_momento": "reflexão",
-      "ritmo_corte_ms": 6000,
-      "total_clips": 1,
-      "avatar": {
-        "visivel": true,
-        "posicao": "bottom-right",
-        "tamanho_percent": 35
-      },
-      "clips": [
-        {
-          "clip_id": "055-01",
-          "inicio_relativo_ms": 0,
-          "fim_relativo_ms": 6400,
-          "duracao_ms": 6400,
-          "tipo": "imagem_ia",
-          "prompt": "Brazilian rural home interior, wooden table with paid bills and documents neatly organized, warm morning light through window, empty nest feeling, grown child's old photo frame on shelf, coffee cup steaming, warm earthy tones #D4651A and #8B4513, golden accent light #F5C842, nostalgic sepia atmosphere, cinematic composition, peaceful domestic scene",
-          "animacao_remotion": "ken_burns_zoom_out",
-          "zoom_fator": 1.08,
-          "arquivo_final": "cenas/055-01.mp4"
-        }
-      ]
-    },
-    {
-      "id": "056",
-      "bloco": "transição temporal - perspectiva futura",
-      "inicio_ms": 361633,
-      "fim_ms": 368333,
-      "duracao_ms": 6700,
-      "texto": "dívida de começo de vida já foi. E cê ainda tem uns vinte anos de trabalho pela",
-      "terco": "esperançoso",
-      "intensidade": 6,
-      "tipo_momento": "reflexão",
-      "ritmo_corte_ms": 6000,
-      "total_clips": 1,
-      "avatar": {
-        "visivel": true,
-        "posicao": "bottom-right",
-        "tamanho_percent": 35
-      },
-      "clips": [
-        {
-          "clip_id": "056-01",
-          "inicio_relativo_ms": 0,
-          "fim_relativo_ms": 6700,
-          "duracao_ms": 6700,
-          "tipo": "imagem_ia",
-          "prompt": "Cinematic wide shot of a middle-aged Brazilian rural man looking at a long dirt road stretching toward a warm orange sunset horizon, symbolizing years ahead, farm landscape with cattle silhouettes in background, golden hour lighting, warm earthy tones with #D4651A orange sky, #8B4513 brown earth, #F5C842 golden sun rays, nostalgic sepia mood, weathered hands resting on wooden fence post, contemplative hopeful atmosphere, photorealistic style",
-          "animacao_remotion": "ken_burns_zoom_out",
-          "zoom_fator": 1.08,
-          "arquivo_final": "cenas/056-01.mp4"
-        }
-      ]
-    },
-    {
-      "id": "057",
-      "bloco": "revelação sobre momento único da vida",
-      "inicio_ms": 368366,
-      "fim_ms": 374933,
-      "duracao_ms": 6567,
-      "texto": "frente. É a única época da vida onde essas três coisa aparecem juntas. Mas a",
-      "terco": "esperançoso",
-      "intensidade": 7,
-      "tipo_momento": "reflexão",
-      "ritmo_corte_ms": 6000,
-      "total_clips": 1,
-      "avatar": {
-        "visivel": true,
-        "posicao": "bottom-right",
-        "tamanho_percent": 35
-      },
-      "clips": [
-        {
-          "clip_id": "057-01",
-          "inicio_relativo_ms": 0,
-          "fim_relativo_ms": 6567,
-          "duracao_ms": 6567,
-          "tipo": "remotion",
-          "texto_animado": "três coisas juntas",
-          "animacao_remotion": "fade_in_bloco",
-          "cor_texto": "#F5C842",
-          "cor_fundo_overlay": "#D4651A",
-          "arquivo_final": "cenas/057-01.mp4"
-        }
-      ]
-    },
-    {
-      "id": "058",
-      "bloco": "diagnóstico do problema",
-      "inicio_ms": 374933,
-      "fim_ms": 381633,
-      "duracao_ms": 6700,
-      "texto": "maioria das pessoas nessa idade… tá no piloto automático. Tá ocupada demais. Tá",
-      "terco": "agressivo",
-      "intensidade": 7,
-      "tipo_momento": "reflexão",
-      "ritmo_corte_ms": 4000,
-      "total_clips": 2,
-      "avatar": {
-        "visivel": true,
-        "posicao": "bottom-right",
-        "tamanho_percent": 35
-      },
-      "clips": [
-        {
-          "clip_id": "058-01",
-          "inicio_relativo_ms": 0,
-          "fim_relativo_ms": 3500,
-          "duracao_ms": 3500,
-          "tipo": "video_stock",
-          "queries": [
-            "middle aged person rushing busy routine",
-            "man walking fast crowded street autopilot",
-            "tired worker commuting daily routine"
-          ],
-          "arquivo_final": "cenas/058-01.mp4",
-          "fallback_tipo": "imagem_ia",
-          "fallback_prompt": "Cinematic wide shot of a tired middle-aged man in work clothes walking mechanically through a dusty rural town at golden hour, warm tones #D4651A and #8B4513, sepia mood, shallow depth of field, nostalgic Brazilian countryside atmosphere"
-        },
-        {
-          "clip_id": "058-02",
-          "inicio_relativo_ms": 3500,
-          "fim_relativo_ms": 6700,
-          "duracao_ms": 3200,
-          "tipo": "remotion",
-          "texto_animado": "piloto automático",
-          "animacao_remotion": "fade_in_por_letra",
-          "arquivo_final": "cenas/058-02.mp4"
-        }
-      ]
-    },
-    {
-      "id": "059",
-      "bloco": "procrastinação financeira",
-      "inicio_ms": 381666,
-      "fim_ms": 388333,
-      "duracao_ms": 6667,
-      "texto": "achando que essa fase vai durar mais um pouco. Que dá pra começar depois. E aí",
-      "terco": "duvidoso",
-      "intensidade": 7,
-      "tipo_momento": "reflexão",
-      "ritmo_corte_ms": 5000,
-      "total_clips": 1,
-      "avatar": {
-        "visivel": true,
-        "posicao": "bottom-right",
-        "tamanho_percent": 35
-      },
-      "clips": [
-        {
-          "clip_id": "059-01",
-          "inicio_relativo_ms": 0,
-          "fim_relativo_ms": 6667,
-          "duracao_ms": 6667,
-          "tipo": "imagem_ia",
-          "prompt": "Weathered wooden hourglass on rustic farm table, sand almost completely fallen to bottom, warm sunset light streaming through old window, sepia and orange tones #D4651A #8B4513, dust particles floating in golden light #F5C842, nostalgic rural Brazilian interior, worn tablecloth, shallow depth of field, cinematic photography style, melancholic mood of time passing",
-          "animacao_remotion": "ken_burns_zoom_in",
-          "zoom_fator": 1.08,
-          "arquivo_final": "cenas/059-01.mp4"
-        }
-      ]
-    },
-    {
-      "id": "060",
-      "bloco": "revelação do susto - momento de virada",
-      "inicio_ms": 388333,
-      "fim_ms": 394900,
-      "duracao_ms": 6567,
-      "texto": "passa. Eu quase deixei passar. Se não fosse um susto que eu tomei… talvez eu",
-      "terco": "duvidoso",
-      "intensidade": 8,
-      "tipo_momento": "clímax",
-      "ritmo_corte_ms": 5000,
-      "total_clips": 1,
-      "avatar": {
-        "visivel": true,
-        "posicao": "fullscreen",
-        "tamanho_percent": 100
-      },
-      "clips": [
-        {
-          "clip_id": "060-01",
-          "inicio_relativo_ms": 0,
-          "fim_relativo_ms": 6567,
-          "duracao_ms": 6567,
-          "tipo": "imagem_ia",
-          "prompt": "Cinematic close-up of weathered elderly hands gripping a wooden chair armrest in moment of shock, warm amber lighting with #D4651A orange tones and #8B4513 brown shadows, rustic farmhouse interior, dramatic chiaroscuro, golden hour light through window casting long shadows, dust particles in air, nostalgic sepia mood with #F5C842 accent highlights, photorealistic, shallow depth of field",
-          "animacao_remotion": "ken_burns_zoom_in",
-          "zoom_fator": 1.12,
-          "arquivo_final": "cenas/060-01.mp4"
-        }
-      ]
-    },
-    {
-      "id": "061",
-      "bloco": "virada emocional - reconhecimento do erro",
-      "inicio_ms": 394933,
-      "fim_ms": 401533,
-      "duracao_ms": 6600,
-      "texto": "tivesse do lado errado dessa conta. Mas tomei o susto. E mudei o rumo. Tarde,",
-      "terco": "duvidoso",
-      "intensidade": 7,
-      "tipo_momento": "clímax",
-      "ritmo_corte_ms": 5000,
-      "total_clips": 1,
-      "avatar": {
-        "visivel": true,
-        "posicao": "fullscreen",
-        "tamanho_percent": 100
-      },
-      "clips": [
-        {
-          "clip_id": "061-01",
-          "inicio_relativo_ms": 0,
-          "fim_relativo_ms": 6600,
-          "duracao_ms": 6600,
-          "tipo": "remotion",
-          "texto_animado": "E mudei o rumo.",
-          "animacao_remotion": "fade_in_bloco",
-          "arquivo_final": "cenas/061-01.mp4"
-        }
-      ]
-    },
-    {
-      "id": "062",
-      "bloco": "engajamento_comentarios",
-      "inicio_ms": 401533,
-      "fim_ms": 408133,
-      "duracao_ms": 6600,
-      "texto": "mas ainda deu. Me conta aí nos comentários: você tá mais perto do vizinho que",
-      "terco": "esperançoso",
-      "intensidade": 6,
-      "tipo_momento": "cta",
-      "ritmo_corte_ms": 6000,
-      "total_clips": 1,
-      "avatar": {
-        "visivel": true,
-        "posicao": "fullscreen",
-        "tamanho_percent": 100
-      },
-      "clips": [
-        {
-          "clip_id": "062-01",
-          "inicio_relativo_ms": 0,
-          "fim_relativo_ms": 6600,
-          "duracao_ms": 6600,
-          "tipo": "video_stock",
-          "queries": [
-            "elderly man talking to camera warm lighting",
-            "senior farmer speaking countryside sunset",
-            "mature man storytelling rural porch golden hour"
-          ],
-          "arquivo_final": "cenas/062-01.mp4",
-          "fallback_tipo": "imagem_ia",
-          "fallback_prompt": "Warm cinematic shot of a weathered wooden porch with an empty rocking chair, smartphone resting on armrest showing comment section, golden sunset light streaming through, colors #D4651A orange tones, #8B4513 brown wood textures, #F5C842 golden sunlight rays, rural Brazilian farm atmosphere, nostalgic sepia mood, shallow depth of field"
-        }
-      ]
-    },
-    {
-      "id": "063",
-      "bloco": "acolhimento e validação",
-      "inicio_ms": 408166,
-      "fim_ms": 414866,
-      "duracao_ms": 6700,
-      "texto": "descansa ou do que ainda pega ônibus no escuro? Num precisa se envergonhar não.",
-      "terco": "esperançoso",
-      "intensidade": 7,
-      "tipo_momento": "reflexão",
-      "ritmo_corte_ms": 6000,
-      "total_clips": 1,
-      "avatar": {
-        "visivel": true,
-        "posicao": "fullscreen",
-        "tamanho_percent": 100
-      },
-      "clips": [
-        {
-          "clip_id": "063-01",
-          "inicio_relativo_ms": 0,
-          "fim_relativo_ms": 6700,
-          "duracao_ms": 6700,
-          "tipo": "imagem_ia",
-          "prompt": "Elderly Brazilian man with weathered hands sitting at a rustic wooden bus stop bench in early morning darkness, warm orange street lamp casting #D4651A glow on his tired but dignified face, rural countryside background with #8B4513 earth tones, mist in the air, worn work clothes, cinematic lighting, nostalgic sepia atmosphere with #F5C842 golden highlights, photorealistic, emotional, respectful portrayal of working class dignity",
-          "animacao_remotion": "ken_burns_zoom_in",
-          "zoom_fator": 1.08,
-          "arquivo_final": "cenas/063-01.mp4"
-        }
-      ]
-    },
-    {
-      "id": "064",
-      "bloco": "virada pessoal / redenção",
-      "inicio_ms": 414900,
-      "fim_ms": 421600,
-      "duracao_ms": 6700,
-      "texto": "Eu também já estive do lado errado. O que importa é onde cê decide ir daqui pra",
-      "terco": "esperançoso",
-      "intensidade": 7,
-      "tipo_momento": "reflexão",
-      "ritmo_corte_ms": 6000,
-      "total_clips": 1,
-      "avatar": {
-        "visivel": true,
-        "posicao": "fullscreen",
-        "tamanho_percent": 100
-      },
-      "clips": [
-        {
-          "clip_id": "064-01",
-          "inicio_relativo_ms": 0,
-          "fim_relativo_ms": 6700,
-          "duracao_ms": 6700,
-          "tipo": "imagem_ia",
-          "prompt": "Cinematic wide shot of a weathered Brazilian farmer standing at a dirt crossroads in rural countryside at golden hour, warm orange and sepia tones #D4651A #8B4513, one path leading to darkness behind him, another path illuminated by warm sunset light #F5C842 ahead, his calloused hands visible, worn leather boots, dust particles in golden light, nostalgic atmosphere, film grain, contemplative mood, 35mm photography style",
-          "animacao_remotion": "ken_burns_zoom_out",
-          "zoom_fator": 1.08,
-          "arquivo_final": "cenas/064-01.mp4"
-        }
-      ]
-    },
-    {
-      "id": "065",
-      "bloco": "introdução de causo",
-      "inicio_ms": 421633,
-      "fim_ms": 428233,
-      "duracao_ms": 6600,
-      "texto": "frente.\" \"Eu já ouvi causo de gente que passou a vida toda pra aposentadoria.",
-      "terco": "agressivo",
-      "intensidade": 6,
-      "tipo_momento": "causo",
-      "ritmo_corte_ms": 4000,
-      "total_clips": 2,
-      "avatar": {
-        "visivel": true,
-        "posicao": "bottom-right",
-        "tamanho_percent": 35
-      },
-      "clips": [
-        {
-          "clip_id": "065-01",
-          "inicio_relativo_ms": 0,
-          "fim_relativo_ms": 3300,
-          "duracao_ms": 3300,
-          "tipo": "video_stock",
-          "queries": [
-            "elderly hands counting money savings",
-            "old person looking at retirement papers",
-            "senior worker tired end of day"
-          ],
-          "arquivo_final": "cenas/065-01.mp4",
-          "fallback_tipo": "imagem_ia",
-          "fallback_prompt": "Weathered hands of an elderly rural worker holding old coins and worn paper money, warm sepia tones with #D4651A orange sunset light streaming through a farmhouse window, #8B4513 wooden table surface, nostalgic cinematic atmosphere, shallow depth of field"
-        },
-        {
-          "clip_id": "065-02",
-          "inicio_relativo_ms": 3300,
-          "fim_relativo_ms": 6600,
-          "duracao_ms": 3300,
-          "tipo": "imagem_ia",
-          "prompt": "Silhouette of a tired farmer sitting alone on a wooden fence at sunset, looking at the horizon, warm #D4651A orange and #F5C842 golden sky, #8B4513 earth tones, rural Brazilian countryside with cattle in background, melancholic nostalgic mood, cinematic composition, film grain texture",
-          "animacao_remotion": "ken_burns_zoom_in",
-          "zoom_fator": 1.08,
-          "arquivo_final": "cenas/065-02.mp4"
-        }
-      ]
-    },
-    {
-      "id": "066",
-      "bloco": "história de sacrifício",
-      "inicio_ms": 428266,
-      "fim_ms": 434966,
-      "duracao_ms": 6700,
-      "texto": "Economizou tudo. Abriu mão de viagem, de festa, de presente pros filhos. E dois",
-      "terco": "agressivo",
-      "intensidade": 7,
-      "tipo_momento": "causo",
-      "ritmo_corte_ms": 4000,
-      "total_clips": 2,
-      "avatar": {
-        "visivel": true,
-        "posicao": "bottom-right",
-        "tamanho_percent": 35
-      },
-      "clips": [
-        {
-          "clip_id": "066-01",
-          "inicio_relativo_ms": 0,
-          "fim_relativo_ms": 3500,
-          "duracao_ms": 3500,
-          "tipo": "imagem_ia",
-          "prompt": "Worn weathered hands of an elderly farmer counting old crumpled money bills on a rustic wooden table, warm sepia tones with #D4651A orange sunset light filtering through window, #8B4513 brown wooden textures, nostalgic rural Brazilian interior, cinematic shallow depth of field, emotional atmosphere of sacrifice and frugality",
-          "animacao_remotion": "ken_burns_zoom_in",
-          "zoom_fator": 1.08,
-          "arquivo_final": "cenas/066-01.mp4"
-        },
-        {
-          "clip_id": "066-02",
-          "inicio_relativo_ms": 3500,
-          "fim_relativo_ms": 6700,
-          "duracao_ms": 3200,
-          "tipo": "video_stock",
-          "queries": [
-            "empty suitcase never used dusty shelf",
-            "family celebration watching from distance sad",
-            "old man alone looking at family photos"
-          ],
-          "arquivo_final": "cenas/066-02.mp4",
-          "fallback_tipo": "imagem_ia",
-          "fallback_prompt": "Empty dusty old leather suitcase on a wooden shelf in a rural Brazilian farmhouse, warm #D4651A orange light, #F5C842 golden dust particles floating in sunbeam, #8B4513 brown rustic walls, symbol of trips never taken, melancholic nostalgic mood, cinematic composition"
-        }
-      ]
-    },
-    {
-      "id": "067",
-      "bloco": "morte após aposentadoria - perda total",
-      "inicio_ms": 434966,
-      "fim_ms": 441566,
-      "duracao_ms": 6600,
-      "texto": "anos depois de aposentar… foi embora. Num chegou a aproveitar nada. E ouvi do",
-      "terco": "agressivo",
-      "intensidade": 9,
-      "tipo_momento": "clímax",
-      "ritmo_corte_ms": 4000,
-      "total_clips": 2,
-      "avatar": {
-        "visivel": true,
-        "posicao": "fullscreen",
-        "tamanho_percent": 100
-      },
-      "clips": [
-        {
-          "clip_id": "067-01",
-          "inicio_relativo_ms": 0,
-          "fim_relativo_ms": 3300,
-          "duracao_ms": 3300,
-          "tipo": "imagem_ia",
-          "prompt": "Empty wooden rocking chair on a rustic farmhouse porch at golden hour, warm sepia tones with #D4651A orange sunset light, untouched coffee cup on small table, symbolizing absence and loss, cinematic photography style, shallow depth of field, nostalgic Brazilian countryside aesthetic, #8B4513 brown wood textures, dust particles in warm light",
-          "animacao_remotion": "ken_burns_zoom_in",
-          "zoom_fator": 1.12,
-          "arquivo_final": "cenas/067-01.mp4"
-        },
-        {
-          "clip_id": "067-02",
-          "inicio_relativo_ms": 3300,
-          "fim_relativo_ms": 6600,
-          "duracao_ms": 3300,
-          "tipo": "remotion",
-          "texto_animado": "Num chegou a aproveitar nada.",
-          "animacao_remotion": "fade_in_por_letra",
-          "cor_texto": "#F5C842",
-          "cor_fundo": "#1A0D00",
-          "arquivo_final": "cenas/067-02.mp4"
-        }
-      ]
-    },
-    {
-      "id": "068",
-      "bloco": "história de quem gastou tudo",
-      "inicio_ms": 441600,
-      "fim_ms": 448300,
-      "duracao_ms": 6700,
-      "texto": "outro lado também — gente que viveu tudo no presente. Gastou tudo. E chegou nos",
-      "terco": "duvidoso",
-      "intensidade": 7,
-      "tipo_momento": "causo",
-      "ritmo_corte_ms": 5000,
-      "total_clips": 1,
-      "avatar": {
-        "visivel": true,
-        "posicao": "bottom-right",
-        "tamanho_percent": 35
-      },
-      "clips": [
-        {
-          "clip_id": "068-01",
-          "inicio_relativo_ms": 0,
-          "fim_relativo_ms": 6700,
-          "duracao_ms": 6700,
-          "tipo": "imagem_ia",
-          "prompt": "Cinematic photo of an empty worn leather wallet lying open on a rustic wooden table, warm sepia tones with #D4651A orange sunset light streaming through a farmhouse window, weathered hands of an elderly person visible at edge of frame, nostalgic melancholic mood, shallow depth of field, #8B4513 brown wood textures, #F5C842 golden dust particles in light, Brazilian countryside interior aesthetic",
-          "animacao_remotion": "ken_burns_zoom_in",
-          "zoom_fator": 1.08,
-          "arquivo_final": "cenas/068-01.mp4"
-        }
-      ]
-    },
-    {
-      "id": "069",
-      "bloco": "consequência devastadora",
-      "inicio_ms": 448333,
-      "fim_ms": 455000,
-      "duracao_ms": 6667,
-      "texto": "setenta sem ter pra onde correr. Dependendo de filho. Com saúde falhando e sem",
-      "terco": "agressivo",
-      "intensidade": 9,
-      "tipo_momento": "clímax",
-      "ritmo_corte_ms": 4000,
-      "total_clips": 2,
-      "avatar": {
-        "visivel": true,
-        "posicao": "fullscreen",
-        "tamanho_percent": 100
-      },
-      "clips": [
-        {
-          "clip_id": "069-01",
-          "inicio_relativo_ms": 0,
-          "fim_relativo_ms": 3500,
-          "duracao_ms": 3500,
-          "tipo": "imagem_ia",
-          "prompt": "Elderly Brazilian man sitting alone on old wooden chair in humble rural kitchen, head bowed in despair, warm orange tones #D4651A and brown #8B4513, late afternoon light through small window, worn hands on knees, empty medicine bottles on table, cinematic photography, nostalgic sepia mood, shallow depth of field",
-          "animacao_remotion": "ken_burns_zoom_in",
-          "zoom_fator": 1.1,
-          "arquivo_final": "cenas/069-01.mp4"
-        },
-        {
-          "clip_id": "069-02",
-          "inicio_relativo_ms": 3500,
-          "fim_relativo_ms": 6667,
-          "duracao_ms": 3167,
-          "tipo": "remotion",
-          "texto_animado": "Dependendo de filho.",
-          "animacao_remotion": "fade_in_por_letra",
-          "cor_texto": "#F5C842",
-          "cor_fundo": "#8B4513",
-          "arquivo_final": "cenas/069-02.mp4"
-        }
-      ]
-    },
-    {
-      "id": "070",
-      "bloco": "equilíbrio entre extremos",
-      "inicio_ms": 455000,
-      "fim_ms": 461566,
-      "duracao_ms": 6566,
-      "texto": "dinheiro. Nenhum dos dois tá certo. A resposta tá no meio. É entender que cê",
-      "terco": "duvidoso",
-      "intensidade": 5,
-      "tipo_momento": "reflexão",
-      "ritmo_corte_ms": 5000,
-      "total_clips": 1,
-      "avatar": {
-        "visivel": true,
-        "posicao": "fullscreen",
-        "tamanho_percent": 100
-      },
-      "clips": [
-        {
-          "clip_id": "070-01",
-          "inicio_relativo_ms": 0,
-          "fim_relativo_ms": 6566,
-          "duracao_ms": 6566,
-          "tipo": "remotion",
-          "texto_animado": "A resposta tá no meio.",
-          "animacao_remotion": "fade_in_bloco",
-          "arquivo_final": "cenas/070-01.mp4"
-        }
-      ]
-    },
-    {
-      "id": "071",
-      "bloco": "equilíbrio presente-futuro",
-      "inicio_ms": 461600,
-      "fim_ms": 467866,
-      "duracao_ms": 6266,
-      "texto": "precisa viver hoje — mas não de um jeito que vai cobrar caro amanhã. É",
-      "terco": "duvidoso",
-      "intensidade": 6,
-      "tipo_momento": "reflexão",
-      "ritmo_corte_ms": 5000,
-      "total_clips": 1,
-      "avatar": {
-        "visivel": true,
-        "posicao": "bottom-right",
-        "tamanho_percent": 35
-      },
-      "clips": [
-        {
-          "clip_id": "071-01",
-          "inicio_relativo_ms": 0,
-          "fim_relativo_ms": 6266,
-          "duracao_ms": 6266,
-          "tipo": "imagem_ia",
-          "prompt": "Cinematic wide shot of an old wooden scale balance on a rustic farmhouse table, one side holding golden coins, the other side holding a warm cup of coffee and fresh bread, warm sunset light streaming through window, color palette dominated by #D4651A orange and #8B4513 brown tones with #F5C842 golden accents, nostalgic sepia atmosphere, shallow depth of field, rural Brazilian interior aesthetic",
-          "animacao_remotion": "ken_burns_zoom_in",
-          "zoom_fator": 1.08,
-          "arquivo_final": "cenas/071-01.mp4"
-        }
-      ]
-    },
-    {
-      "id": "072",
-      "bloco": "transição para construção de equilíbrio",
-      "inicio_ms": 467866,
-      "fim_ms": 474466,
-      "duracao_ms": 6600,
-      "texto": "equilíbrio. E o equilíbrio começa a ser construído nos quarenta. Cê que tá me",
-      "terco": "esperançoso",
-      "intensidade": 6,
-      "tipo_momento": "reflexão",
-      "ritmo_corte_ms": 6000,
-      "total_clips": 1,
-      "avatar": {
-        "visivel": true,
-        "posicao": "fullscreen",
-        "tamanho_percent": 100
-      },
-      "clips": [
-        {
-          "clip_id": "072-01",
-          "inicio_relativo_ms": 0,
-          "fim_relativo_ms": 6600,
-          "duracao_ms": 6600,
-          "tipo": "remotion",
-          "texto_animado": "O equilíbrio começa nos quarenta",
-          "animacao_remotion": "fade_in_por_letra",
-          "arquivo_final": "cenas/072-01.mp4"
-        }
-      ]
-    },
-    {
-      "id": "073",
-      "bloco": "convite à reflexão",
-      "inicio_ms": 474500,
-      "fim_ms": 481166,
-      "duracao_ms": 6666,
-      "texto": "ouvindo agora — seja com quarenta, cinquenta ou sessenta — essa reflexão não é",
-      "terco": "duvidoso",
-      "intensidade": 5,
-      "tipo_momento": "reflexão",
-      "ritmo_corte_ms": 5000,
-      "total_clips": 1,
-      "avatar": {
-        "visivel": true,
-        "posicao": "fullscreen",
-        "tamanho_percent": 100
-      },
-      "clips": [
-        {
-          "clip_id": "073-01",
-          "inicio_relativo_ms": 0,
-          "fim_relativo_ms": 6666,
-          "duracao_ms": 6666,
-          "tipo": "imagem_ia",
-          "prompt": "Cinematic portrait of weathered hands holding an old photograph, warm sepia tones with #D4651A orange ambient light, rustic wooden table, soft nostalgic atmosphere, Brazilian countryside interior, afternoon golden hour lighting, shallow depth of field, contemplative mood, #8B4513 brown wood textures, #F5C842 golden accents from window light",
-          "animacao_remotion": "ken_burns_zoom_in",
-          "zoom_fator": 1.08,
-          "arquivo_final": "cenas/073-01.mp4"
-        }
-      ]
-    },
-    {
-      "id": "074",
-      "bloco": "chamada para ação",
-      "inicio_ms": 481166,
-      "fim_ms": 487866,
-      "duracao_ms": 6700,
-      "texto": "pra te assustar. É pra te acordar. Se você quer mais histórias assim — de erro,",
-      "terco": "esperançoso",
-      "intensidade": 7,
-      "tipo_momento": "cta",
-      "ritmo_corte_ms": 6000,
-      "total_clips": 1,
-      "avatar": {
-        "visivel": true,
-        "posicao": "fullscreen",
-        "tamanho_percent": 100
-      },
-      "clips": [
-        {
-          "clip_id": "074-01",
-          "inicio_relativo_ms": 0,
-          "fim_relativo_ms": 6700,
-          "duracao_ms": 6700,
-          "tipo": "remotion",
-          "texto_animado": "É pra te acordar.",
-          "animacao_remotion": "fade_in_bloco",
-          "arquivo_final": "cenas/074-01.mp4"
-        }
-      ]
-    },
-    {
-      "id": "075",
-      "bloco": "chamada para ação / inscrição",
-      "inicio_ms": 487900,
-      "fim_ms": 494566,
-      "duracao_ms": 6666,
-      "texto": "de aprendizado, de quem errou e teve coragem de assumir — se inscreve aqui. Eu",
-      "terco": "esperançoso",
-      "intensidade": 7,
-      "tipo_momento": "cta",
-      "ritmo_corte_ms": 6000,
-      "total_clips": 1,
-      "avatar": {
-        "visivel": true,
-        "posicao": "fullscreen",
-        "tamanho_percent": 100
-      },
-      "clips": [
-        {
-          "clip_id": "075-01",
-          "inicio_relativo_ms": 0,
-          "fim_relativo_ms": 6666,
-          "duracao_ms": 6666,
-          "tipo": "remotion",
-          "texto_animado": "quem errou e teve coragem de assumir",
-          "animacao_remotion": "fade_in_por_letra",
-          "arquivo_final": "cenas/075-01.mp4"
-        }
-      ]
-    },
-    {
-      "id": "076",
-      "bloco": "chamada para ação / encerramento",
-      "inicio_ms": 494566,
-      "fim_ms": 501166,
-      "duracao_ms": 6600,
-      "texto": "conto o que vivi pra você não pagar o mesmo preço.\" \"E antes de terminar… tem",
-      "terco": "esperançoso",
-      "intensidade": 8,
-      "tipo_momento": "cta",
-      "ritmo_corte_ms": 6000,
-      "total_clips": 1,
-      "avatar": {
-        "visivel": true,
-        "posicao": "fullscreen",
-        "tamanho_percent": 100
-      },
-      "clips": [
-        {
-          "clip_id": "076-01",
-          "inicio_relativo_ms": 0,
-          "fim_relativo_ms": 6600,
-          "duracao_ms": 6600,
-          "tipo": "remotion",
-          "texto_animado": "pra você não pagar o mesmo preço",
-          "animacao_remotion": "fade_in_por_letra",
-          "arquivo_final": "cenas/076-01.mp4"
-        }
-      ]
-    },
-    {
-      "id": "077",
-      "bloco": "gancho_inicial",
-      "inicio_ms": 501200,
-      "fim_ms": 507266,
-      "duracao_ms": 6066,
-      "texto": "uma coisa que eu aprendi que eu não consigo não falar. Num é sobre",
-      "terco": "agressivo",
-      "intensidade": 6,
-      "tipo_momento": "abertura",
-      "ritmo_corte_ms": 4000,
-      "total_clips": 2,
-      "avatar": {
-        "visivel": true,
-        "posicao": "fullscreen",
-        "tamanho_percent": 100
-      },
-      "clips": [
-        {
-          "clip_id": "077-01",
-          "inicio_relativo_ms": 0,
-          "fim_relativo_ms": 4000,
-          "duracao_ms": 4000,
-          "tipo": "video_stock",
-          "queries": [
-            "elderly man talking sincerely sunset golden hour",
-            "mature farmer speaking wisdom rural setting",
-            "old man reflective conversation warm light"
-          ],
-          "arquivo_final": "cenas/077-01.mp4",
-          "fallback_tipo": "imagem_ia",
-          "fallback_prompt": "Cinematic close-up of a weathered Brazilian farmer in his 60s, earnest expression, about to share wisdom, warm sunset light casting #D4651A orange tones on his face, rustic wooden porch background with #8B4513 brown tones, golden hour atmosphere with #F5C842 highlights, shallow depth of field, nostalgic sepia mood"
-        },
-        {
-          "clip_id": "077-02",
-          "inicio_relativo_ms": 4000,
-          "fim_relativo_ms": 6066,
-          "duracao_ms": 2066,
-          "tipo": "remotion",
-          "texto_animado": "uma coisa que eu aprendi...",
-          "animacao_remotion": "fade_in_por_letra",
-          "arquivo_final": "cenas/077-02.mp4"
-        }
-      ]
-    },
-    {
-      "id": "078",
-      "bloco": "Reflexão sobre decisão pessoal",
-      "inicio_ms": 507266,
-      "fim_ms": 513866,
-      "duracao_ms": 6600,
-      "texto": "investimento. Num é sobre o governo. É sobre uma decisão. O que eu aprendi, é",
-      "terco": "esperançoso",
-      "intensidade": 7,
-      "tipo_momento": "lição",
-      "ritmo_corte_ms": 6000,
-      "total_clips": 1,
-      "avatar": {
-        "visivel": true,
-        "posicao": "fullscreen",
-        "tamanho_percent": 100
-      },
-      "clips": [
-        {
-          "clip_id": "078-01",
-          "inicio_relativo_ms": 0,
-          "fim_relativo_ms": 6600,
-          "duracao_ms": 6600,
-          "tipo": "remotion",
-          "texto_animado": "É sobre uma decisão.",
-          "animacao_remotion": "fade_in_bloco",
-          "arquivo_final": "cenas/078-01.mp4"
-        }
-      ]
-    },
-    {
-      "id": "079",
-      "bloco": "chamado à ação pessoal",
-      "inicio_ms": 513900,
-      "fim_ms": 520300,
-      "duracao_ms": 6400,
-      "texto": "que se você ainda pode fazer algo, faça! Não dependa só de auxilio, só de",
-      "terco": "esperançoso",
-      "intensidade": 7,
-      "tipo_momento": "lição",
-      "ritmo_corte_ms": 6000,
-      "total_clips": 1,
-      "avatar": {
-        "visivel": true,
-        "posicao": "fullscreen",
-        "tamanho_percent": 100
-      },
-      "clips": [
-        {
-          "clip_id": "079-01",
-          "inicio_relativo_ms": 0,
-          "fim_relativo_ms": 6400,
-          "duracao_ms": 6400,
-          "tipo": "remotion",
-          "texto_animado": "FAÇA ALGO!",
-          "animacao_remotion": "fade_in_bloco",
-          "arquivo_final": "cenas/079-01.mp4"
-        }
-      ]
-    },
-    {
-      "id": "080",
-      "bloco": "crítica à dependência de benefícios e chamada para ação",
-      "inicio_ms": 520333,
-      "fim_ms": 527033,
-      "duracao_ms": 6700,
-      "texto": "benefício do governo. Porque isso é insuficiente demais. Crie algo, venda algo,",
-      "terco": "agressivo",
-      "intensidade": 7,
-      "tipo_momento": "lição",
-      "ritmo_corte_ms": 4000,
-      "total_clips": 2,
-      "avatar": {
-        "visivel": true,
-        "posicao": "fullscreen",
-        "tamanho_percent": 100
-      },
-      "clips": [
-        {
-          "clip_id": "080-01",
-          "inicio_relativo_ms": 0,
-          "fim_relativo_ms": 3500,
-          "duracao_ms": 3500,
-          "tipo": "video_stock",
-          "queries": [
-            "elderly hands counting few coins wooden table",
-            "senior person worried about money rural home",
-            "empty wallet weathered hands close up"
-          ],
-          "arquivo_final": "cenas/080-01.mp4",
-          "fallback_tipo": "imagem_ia",
-          "fallback_prompt": "Close-up of weathered calloused hands of an elderly farmer counting small coins on a rustic wooden table, warm sepia tones with #D4651A orange sunset light streaming through window, #8B4513 brown wood textures, melancholic mood, cinematic shallow depth of field, nostalgic rural Brazilian interior"
-        },
-        {
-          "clip_id": "080-02",
-          "inicio_relativo_ms": 3500,
-          "fim_relativo_ms": 6700,
-          "duracao_ms": 3200,
-          "tipo": "imagem_ia",
-          "prompt": "Elderly Brazilian man in simple clothes standing at a small market stall selling homemade goods, warm #D4651A orange and #F5C842 golden hour lighting, #8B4513 earthy brown wooden crates with vegetables and crafts, hopeful determined expression, rural countryside background, cinematic composition, nostalgic warm color grading, inspirational entrepreneurial spirit",
-          "animacao_remotion": "ken_burns_zoom_in",
-          "zoom_fator": 1.08,
-          "arquivo_final": "cenas/080-02.mp4"
-        }
-      ]
-    },
-    {
-      "id": "081",
-      "bloco": "consciência do tempo de vida",
-      "inicio_ms": 527066,
-      "fim_ms": 533633,
-      "duracao_ms": 6567,
-      "texto": "e vá viver... Nós já estamos de meio dia pra tarde. Meio dia pra tarde. Isso",
-      "terco": "esperançoso",
-      "intensidade": 7,
-      "tipo_momento": "reflexão",
-      "ritmo_corte_ms": 6000,
-      "total_clips": 1,
-      "avatar": {
-        "visivel": true,
-        "posicao": "fullscreen",
-        "tamanho_percent": 100
-      },
-      "clips": [
-        {
-          "clip_id": "081-01",
-          "inicio_relativo_ms": 0,
-          "fim_relativo_ms": 6567,
-          "duracao_ms": 6567,
-          "tipo": "remotion",
-          "texto_animado": "Meio dia pra tarde.",
-          "animacao_remotion": "fade_in_bloco",
-          "arquivo_final": "cenas/081-01.mp4"
-        }
-      ]
-    },
-    {
-      "id": "082",
-      "bloco": "metáfora do pôr do sol - urgência esperançosa",
-      "inicio_ms": 533633,
-      "fim_ms": 540300,
-      "duracao_ms": 6667,
-      "texto": "significa que ainda tem luz. Ainda tem tempo. Mas o sol tá descendo. E cê sabe",
-      "terco": "esperançoso",
-      "intensidade": 7,
-      "tipo_momento": "reflexão",
-      "ritmo_corte_ms": 6000,
-      "total_clips": 1,
-      "avatar": {
-        "visivel": true,
-        "posicao": "bottom-right",
-        "tamanho_percent": 35
-      },
-      "clips": [
-        {
-          "clip_id": "082-01",
-          "inicio_relativo_ms": 0,
-          "fim_relativo_ms": 6667,
-          "duracao_ms": 6667,
-          "tipo": "imagem_ia",
-          "prompt": "Cinematic wide shot of a Brazilian countryside sunset, golden sun descending on horizon, warm orange and sepia tones #D4651A #8B4513, rustic farm silhouette in background, dramatic sky with amber clouds #F5C842, nostalgic melancholic mood, photorealistic, shallow depth of field, rural interior of Brazil, peaceful yet urgent atmosphere",
-          "animacao_remotion": "ken_burns_zoom_out",
-          "zoom_fator": 1.12,
-          "arquivo_final": "cenas/082-01.mp4"
-        }
-      ]
-    },
-    {
-      "id": "083",
-      "bloco": "introdução de personagem - história do Zé Raimundo",
-      "inicio_ms": 540300,
-      "fim_ms": 546966,
-      "duracao_ms": 6666,
-      "texto": "melhor do que ninguém o que precisa fazer.\" \"Quando o Zé Raimundo me perguntou",
-      "terco": "duvidoso",
-      "intensidade": 5,
-      "tipo_momento": "causo",
-      "ritmo_corte_ms": 5000,
-      "total_clips": 1,
-      "avatar": {
-        "visivel": true,
-        "posicao": "bottom-right",
-        "tamanho_percent": 35
-      },
-      "clips": [
-        {
-          "clip_id": "083-01",
-          "inicio_relativo_ms": 0,
-          "fim_relativo_ms": 6666,
-          "duracao_ms": 6666,
-          "tipo": "imagem_ia",
-          "prompt": "Elderly Brazilian rural man sitting on wooden chair at farmhouse porch, weathered hands resting on knees, warm sunset light casting orange #D4651A and brown #8B4513 tones, sepia nostalgic atmosphere, coffee cup nearby, countryside background with pasture, cinematic composition, contemplative mood, golden hour #F5C842 highlights",
-          "animacao_remotion": "ken_burns_zoom_in",
-          "zoom_fator": 1.08,
-          "arquivo_final": "cenas/083-01.mp4"
-        }
-      ]
-    },
-    {
-      "id": "084",
-      "bloco": "Diálogo com Zé - momento do susto",
-      "inicio_ms": 547000,
-      "fim_ms": 553400,
-      "duracao_ms": 6400,
-      "texto": "como eu consegui parar… Eu respondi assim: 'Zé, eu tomei um susto na hora",
-      "terco": "duvidoso",
-      "intensidade": 7,
-      "tipo_momento": "causo",
-      "ritmo_corte_ms": 5000,
-      "total_clips": 1,
-      "avatar": {
-        "visivel": true,
-        "posicao": "bottom-right",
-        "tamanho_percent": 35
-      },
-      "clips": [
-        {
-          "clip_id": "084-01",
-          "inicio_relativo_ms": 0,
-          "fim_relativo_ms": 6400,
-          "duracao_ms": 6400,
-          "tipo": "imagem_ia",
-          "prompt": "Close-up of two weathered hands of elderly Brazilian farmer holding a coffee cup, warm earthy tones with #D4651A orange sunset light streaming through rustic wooden window, #8B4513 brown wooden table, rural farmhouse interior, intimate conversation moment, cinematic shallow depth of field, nostalgic sepia mood, #F5C842 golden highlights on ceramic cup",
-          "animacao_remotion": "ken_burns_zoom_in",
-          "zoom_fator": 1.08,
-          "arquivo_final": "cenas/084-01.mp4"
-        }
-      ]
-    },
-    {
-      "id": "085",
-      "bloco": "momento de silêncio reflexivo",
-      "inicio_ms": 553433,
-      "fim_ms": 559933,
-      "duracao_ms": 6500,
-      "texto": "certa. E tive sorte de ainda ter uma janela aberta.' Ele ficou em silêncio.",
-      "terco": "esperançoso",
-      "intensidade": 7,
-      "tipo_momento": "clímax",
-      "ritmo_corte_ms": 6000,
-      "total_clips": 1,
-      "avatar": {
-        "visivel": true,
-        "posicao": "fullscreen",
-        "tamanho_percent": 100
-      },
-      "clips": [
-        {
-          "clip_id": "085-01",
-          "inicio_relativo_ms": 0,
-          "fim_relativo_ms": 6500,
-          "duracao_ms": 6500,
-          "tipo": "imagem_ia",
-          "prompt": "Elderly Brazilian farmer sitting in silence on a worn wooden chair on farmhouse porch, golden hour sunset light streaming through, weathered hands resting on knees, contemplative expression looking at horizon, warm earthy tones with #D4651A orange sunset glow and #8B4513 brown wooden textures, #F5C842 golden light accents, rural Brazilian countryside background, cinematic composition, nostalgic sepia mood, emotional stillness moment",
-          "animacao_remotion": "ken_burns_zoom_in",
-          "zoom_fator": 1.06,
-          "arquivo_final": "cenas/085-01.mp4"
-        }
-      ]
-    },
-    {
-      "id": "086",
-      "bloco": "desenvolvimento da história - partida misteriosa",
-      "inicio_ms": 559933,
-      "fim_ms": 566633,
-      "duracao_ms": 6700,
-      "texto": "Tomou o café. E foi embora. Num sei o que ele vai fazer com isso. Mas sei que a",
-      "terco": "duvidoso",
-      "intensidade": 6,
-      "tipo_momento": "causo",
-      "ritmo_corte_ms": 5000,
-      "total_clips": 1,
-      "avatar": {
-        "visivel": true,
-        "posicao": "bottom-right",
-        "tamanho_percent": 35
-      },
-      "clips": [
-        {
-          "clip_id": "086-01",
-          "inicio_relativo_ms": 0,
-          "fim_relativo_ms": 6700,
-          "duracao_ms": 6700,
-          "tipo": "video_stock",
-          "queries": [
-            "man walking away rural road sunrise",
-            "person leaving farmhouse morning mist",
-            "silhouette man departing countryside path"
-          ],
-          "arquivo_final": "cenas/086-01.mp4",
-          "fallback_tipo": "imagem_ia",
-          "fallback_prompt": "Cinematic wide shot of a man's silhouette walking away on a dusty rural dirt road at golden hour, warm earthy tones with #D4651A orange sunset light, #8B4513 brown earth path, farmland and wooden fences in background, mist rising from the ground, nostalgic melancholic mood, film grain texture, 35mm photography style"
-        }
-      ]
-    },
-    {
-      "id": "087",
-      "bloco": "chamada para engajamento",
-      "inicio_ms": 566666,
-      "fim_ms": 573333,
-      "duracao_ms": 6667,
-      "texto": "história fica. Comenta aí se você faz uma renda extra, se você de alguma forma",
-      "terco": "esperançoso",
-      "intensidade": 6,
-      "tipo_momento": "cta",
-      "ritmo_corte_ms": 6000,
-      "total_clips": 1,
-      "avatar": {
-        "visivel": true,
-        "posicao": "fullscreen",
-        "tamanho_percent": 100
-      },
-      "clips": [
-        {
-          "clip_id": "087-01",
-          "inicio_relativo_ms": 0,
-          "fim_relativo_ms": 6667,
-          "duracao_ms": 6667,
-          "tipo": "remotion",
-          "texto_animado": "Você faz uma renda extra?",
-          "animacao_remotion": "fade_in_bloco",
-          "cor_texto": "#F5C842",
-          "cor_fundo": "#8B4513",
-          "arquivo_final": "cenas/087-01.mp4"
-        }
-      ]
-    },
-    {
-      "id": "088",
-      "bloco": "chamada para engajamento",
-      "inicio_ms": 573366,
-      "fim_ms": 580066,
-      "duracao_ms": 6700,
-      "texto": "complementa a sua aposentadoria. Eu leio tudo. E se essa história te fez pensar",
-      "terco": "esperançoso",
-      "intensidade": 7,
-      "tipo_momento": "cta",
-      "ritmo_corte_ms": 6000,
-      "total_clips": 1,
-      "avatar": {
-        "visivel": true,
-        "posicao": "fullscreen",
-        "tamanho_percent": 100
-      },
-      "clips": [
-        {
-          "clip_id": "088-01",
-          "inicio_relativo_ms": 0,
-          "fim_relativo_ms": 6700,
-          "duracao_ms": 6700,
-          "tipo": "remotion",
-          "texto_animado": "Eu leio tudo.",
-          "animacao_remotion": "fade_in_bloco",
-          "arquivo_final": "cenas/088-01.mp4"
-        }
-      ]
-    },
-    {
-      "id": "089",
-      "bloco": "chamada para compartilhamento",
-      "inicio_ms": 580066,
-      "fim_ms": 586433,
-      "duracao_ms": 6367,
-      "texto": "em alguém — manda pra ele. Às vezes a gente precisa ouvir de fora. Até a",
-      "terco": "esperançoso",
-      "intensidade": 6,
-      "tipo_momento": "cta",
-      "ritmo_corte_ms": 6000,
-      "total_clips": 1,
-      "avatar": {
-        "visivel": true,
-        "posicao": "fullscreen",
-        "tamanho_percent": 100
-      },
-      "clips": [
-        {
-          "clip_id": "089-01",
-          "inicio_relativo_ms": 0,
-          "fim_relativo_ms": 6367,
-          "duracao_ms": 6367,
-          "tipo": "video_stock",
-          "queries": [
-            "elderly hands sharing phone message warm light",
-            "mature person sending message to friend sunset",
-            "family sharing conversation rural home cozy"
-          ],
-          "arquivo_final": "cenas/089-01.mp4",
-          "fallback_tipo": "imagem_ia",
-          "fallback_prompt": "Warm cinematic scene of weathered hands holding a smartphone, sharing a message with someone dear, soft orange sunset light through rustic window, wooden table with coffee cup nearby, earthy tones with #D4651A warm highlights, #8B4513 wooden textures, #F5C842 golden light accents, nostalgic rural Brazilian interior, intimate and hopeful mood, photorealistic style"
-        }
-      ]
-    },
-    {
-      "id": "090",
-      "bloco": "transição/encerramento",
-      "inicio_ms": 586466,
-      "fim_ms": 591233,
-      "duracao_ms": 4767,
-      "texto": "próxima.\"",
-      "terco": "esperançoso",
-      "intensidade": 3,
-      "tipo_momento": "encerramento",
-      "ritmo_corte_ms": 6000,
-      "total_clips": 1,
-      "avatar": {
-        "visivel": true,
-        "posicao": "fullscreen",
-        "tamanho_percent": 100
-      },
-      "clips": [
-        {
-          "clip_id": "090-01",
-          "inicio_relativo_ms": 0,
-          "fim_relativo_ms": 4767,
-          "duracao_ms": 4767,
-          "tipo": "video_stock",
-          "queries": [
-            "elderly man nodding wisdom sunset farm",
-            "old farmer contemplative moment golden hour",
-            "mature man peaceful expression rural setting"
-          ],
-          "arquivo_final": "cenas/090-01.mp4",
-          "fallback_tipo": "imagem_ia",
-          "fallback_prompt": "Close-up of weathered hands resting on wooden fence post, warm sunset light casting orange glow #D4651A, rural Brazilian farm background with cattle silhouettes, sepia tones #8B4513, golden accent light #F5C842, nostalgic cinematic atmosphere, shallow depth of field, peaceful contemplative mood"
+          "texto_animado": "Quando melhorar, eu começo.",
+          "animacao_remotion": "palavra_por_palavra",
+          "arquivo_final": "cenas/030-02.mp4"
         }
       ]
     }

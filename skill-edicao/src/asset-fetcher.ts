@@ -175,7 +175,6 @@ export async function gerarImagemReplicate(
         num_outputs: 1,
         output_format: "jpg",
         output_quality: 85,
-        go_fast: true,
       },
     };
 
@@ -185,7 +184,7 @@ export async function gerarImagemReplicate(
       const req = https.request(
         {
           hostname: "api.replicate.com",
-          path: "/v1/models/black-forest-labs/flux-schnell/predictions",
+          path: "/v1/models/google/imagen-3-fast/predictions",
           method: "POST",
           headers: {
             Authorization: `Bearer ${REPLICATE_KEY}`,
