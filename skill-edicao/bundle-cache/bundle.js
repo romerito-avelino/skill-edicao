@@ -2,7 +2,7 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ 5336
+/***/ 5602
 (__unused_webpack_module, __unused_webpack___webpack_exports__, __webpack_require__) {
 
 
@@ -343,7 +343,668 @@ const FundoPadrao = ({
   ] });
 };
 
+;// ./src/compositions/TituloParticulas.tsx
+
+
+
+const PARTICULAS = Array.from({ length: 30 }, (_, i) => ({
+  id: i,
+  x: i * 137.508 % 100,
+  y: i * 53.13 % 100,
+  tamanho: 2 + i % 4,
+  delay: i * 7 % 35,
+  ciclo: 18 + i % 22
+}));
+const TituloParticulas = ({ texto, corTexto }) => {
+  const frame = (0,esm.useCurrentFrame)();
+  const { durationInFrames } = (0,esm.useVideoConfig)();
+  const palavras = texto.split(" ");
+  const opacidade = (0,esm.interpolate)(
+    frame,
+    [0, 10, durationInFrames - 10, durationInFrames],
+    [0, 1, 1, 0],
+    { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
+  );
+  const escalaTexto = (0,esm.interpolate)(frame, [0, 25], [0.85, 1], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp"
+  });
+  const linhaLargura = (0,esm.interpolate)(frame, [20, 50], [0, 300], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp"
+  });
+  return /* @__PURE__ */ (0,jsx_runtime.jsxs)(esm.AbsoluteFill, { style: { overflow: "hidden" }, children: [
+    /* @__PURE__ */ (0,jsx_runtime.jsx)(
+      esm.AbsoluteFill,
+      {
+        style: {
+          background: "linear-gradient(135deg, #08081a 0%, #12122e 50%, #0a0a1c 100%)"
+        }
+      }
+    ),
+    /* @__PURE__ */ (0,jsx_runtime.jsx)(
+      esm.AbsoluteFill,
+      {
+        style: {
+          background: "radial-gradient(ellipse at center, transparent 35%, rgba(0,0,0,0.85) 100%)"
+        }
+      }
+    ),
+    PARTICULAS.map((p) => {
+      const frameLocal = (frame + p.delay) % p.ciclo;
+      const opPart = (0,esm.interpolate)(
+        frameLocal,
+        [0, p.ciclo * 0.3, p.ciclo * 0.7, p.ciclo],
+        [0.15, 0.95, 0.95, 0.15],
+        { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
+      );
+      const floatY = (0,esm.interpolate)(frame, [0, durationInFrames], [0, -(15 + p.id % 18)], {
+        extrapolateLeft: "clamp",
+        extrapolateRight: "clamp"
+      });
+      return /* @__PURE__ */ (0,jsx_runtime.jsx)(
+        "div",
+        {
+          style: {
+            position: "absolute",
+            left: `${p.x}%`,
+            top: `${p.y}%`,
+            width: p.tamanho,
+            height: p.tamanho,
+            borderRadius: "50%",
+            backgroundColor: "#F5C842",
+            opacity: opPart,
+            transform: `translateY(${floatY}px)`,
+            boxShadow: `0 0 ${p.tamanho * 3}px #F5C842`
+          }
+        },
+        p.id
+      );
+    }),
+    /* @__PURE__ */ (0,jsx_runtime.jsxs)(
+      esm.AbsoluteFill,
+      {
+        style: {
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          padding: "0 120px",
+          opacity: opacidade
+        },
+        children: [
+          /* @__PURE__ */ (0,jsx_runtime.jsx)(
+            "p",
+            {
+              style: {
+                color: corTexto || "#FFFFFF",
+                fontSize: 80,
+                fontFamily: "Georgia, serif",
+                textAlign: "center",
+                lineHeight: 1.3,
+                margin: 0,
+                transform: `scale(${escalaTexto})`,
+                textShadow: "0 0 40px rgba(245,200,66,0.4), 0 2px 20px rgba(0,0,0,0.95)"
+              },
+              children: palavras.map((palavra, i) => {
+                const framesPorPalavra = Math.max(1, Math.floor(durationInFrames * 0.6 / palavras.length));
+                const op = (0,esm.interpolate)(frame, [i * framesPorPalavra, i * framesPorPalavra + 8], [0, 1], {
+                  extrapolateLeft: "clamp",
+                  extrapolateRight: "clamp"
+                });
+                return /* @__PURE__ */ (0,jsx_runtime.jsx)("span", { style: { opacity: op, display: "inline-block", marginRight: "0.3em" }, children: palavra }, i);
+              })
+            }
+          ),
+          /* @__PURE__ */ (0,jsx_runtime.jsx)(
+            "div",
+            {
+              style: {
+                marginTop: 32,
+                height: 2,
+                width: linhaLargura,
+                background: "linear-gradient(90deg, transparent, #F5C842, transparent)"
+              }
+            }
+          )
+        ]
+      }
+    )
+  ] });
+};
+
+;// ./src/compositions/TextoExplosaoCentro.tsx
+
+
+
+const TextoExplosaoCentro = ({ texto, corTexto }) => {
+  const frame = (0,esm.useCurrentFrame)();
+  const { durationInFrames } = (0,esm.useVideoConfig)();
+  const escala = (0,esm.interpolate)(frame, [0, 14], [0.35, 1], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp"
+  });
+  const opacidade = (0,esm.interpolate)(
+    frame,
+    [0, 8, durationInFrames - 8, durationInFrames],
+    [0, 1, 1, 0],
+    { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
+  );
+  const brilhoInicial = (0,esm.interpolate)(frame, [0, 12, 20], [2.5, 1.4, 1], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp"
+  });
+  const raioGlow = (0,esm.interpolate)(frame, [0, 14], [120, 60], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp"
+  });
+  return /* @__PURE__ */ (0,jsx_runtime.jsxs)(esm.AbsoluteFill, { style: { overflow: "hidden" }, children: [
+    /* @__PURE__ */ (0,jsx_runtime.jsx)(
+      esm.AbsoluteFill,
+      {
+        style: {
+          background: "linear-gradient(135deg, #0a0000 0%, #1a0808 40%, #080808 100%)"
+        }
+      }
+    ),
+    /* @__PURE__ */ (0,jsx_runtime.jsx)(
+      esm.AbsoluteFill,
+      {
+        style: {
+          background: `radial-gradient(ellipse at center, rgba(100,10,10,0.25) 0%, transparent 55%)`
+        }
+      }
+    ),
+    /* @__PURE__ */ (0,jsx_runtime.jsx)(
+      esm.AbsoluteFill,
+      {
+        style: {
+          background: "radial-gradient(ellipse at center, transparent 45%, rgba(0,0,0,0.95) 100%)"
+        }
+      }
+    ),
+    /* @__PURE__ */ (0,jsx_runtime.jsxs)(
+      esm.AbsoluteFill,
+      {
+        style: {
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          padding: "0 120px",
+          opacity: opacidade
+        },
+        children: [
+          /* @__PURE__ */ (0,jsx_runtime.jsx)(
+            "div",
+            {
+              style: {
+                position: "absolute",
+                width: raioGlow * 2,
+                height: raioGlow * 2,
+                borderRadius: "50%",
+                background: "radial-gradient(circle, rgba(255,60,60,0.12) 0%, transparent 70%)"
+              }
+            }
+          ),
+          /* @__PURE__ */ (0,jsx_runtime.jsx)(
+            "p",
+            {
+              style: {
+                color: corTexto || "#FFFFFF",
+                fontSize: 84,
+                fontFamily: "Georgia, serif",
+                textAlign: "center",
+                lineHeight: 1.3,
+                margin: 0,
+                transform: `scale(${escala})`,
+                filter: `brightness(${brilhoInicial})`,
+                textShadow: "0 4px 30px rgba(0,0,0,1), 0 2px 8px rgba(0,0,0,1), 0 0 60px rgba(255,255,255,0.08)"
+              },
+              children: texto
+            }
+          )
+        ]
+      }
+    )
+  ] });
+};
+
+;// ./src/compositions/TextoManuscrito.tsx
+
+
+
+const TextoManuscrito = ({ texto }) => {
+  const frame = (0,esm.useCurrentFrame)();
+  const { durationInFrames } = (0,esm.useVideoConfig)();
+  const opacidade = (0,esm.interpolate)(
+    frame,
+    [0, 12, durationInFrames - 12, durationInFrames],
+    [0, 1, 1, 0],
+    { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
+  );
+  const charsVisiveis = Math.floor(
+    (0,esm.interpolate)(frame, [5, durationInFrames * 0.68], [0, texto.length], {
+      extrapolateLeft: "clamp",
+      extrapolateRight: "clamp"
+    })
+  );
+  const cursor = frame % 14 < 7 ? "|" : "";
+  const linhaLargura = (0,esm.interpolate)(frame, [10, 40], [0, 200], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp"
+  });
+  return /* @__PURE__ */ (0,jsx_runtime.jsxs)(esm.AbsoluteFill, { style: { overflow: "hidden" }, children: [
+    /* @__PURE__ */ (0,jsx_runtime.jsx)(
+      esm.AbsoluteFill,
+      {
+        style: {
+          background: "linear-gradient(135deg, #3D1C0A 0%, #4A2010 45%, #2D1408 100%)"
+        }
+      }
+    ),
+    /* @__PURE__ */ (0,jsx_runtime.jsx)(
+      esm.AbsoluteFill,
+      {
+        style: {
+          background: "repeating-linear-gradient(45deg, transparent, transparent 2px, rgba(0,0,0,0.05) 2px, rgba(0,0,0,0.05) 4px)"
+        }
+      }
+    ),
+    /* @__PURE__ */ (0,jsx_runtime.jsx)(
+      esm.AbsoluteFill,
+      {
+        style: {
+          background: "repeating-linear-gradient(-45deg, transparent, transparent 3px, rgba(255,220,150,0.02) 3px, rgba(255,220,150,0.02) 6px)"
+        }
+      }
+    ),
+    /* @__PURE__ */ (0,jsx_runtime.jsx)(
+      esm.AbsoluteFill,
+      {
+        style: {
+          background: "radial-gradient(ellipse at center, transparent 38%, rgba(0,0,0,0.78) 100%)"
+        }
+      }
+    ),
+    /* @__PURE__ */ (0,jsx_runtime.jsxs)(
+      esm.AbsoluteFill,
+      {
+        style: {
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          padding: "0 140px",
+          opacity: opacidade
+        },
+        children: [
+          /* @__PURE__ */ (0,jsx_runtime.jsxs)(
+            "p",
+            {
+              style: {
+                color: "#F5E6C8",
+                fontSize: 72,
+                fontFamily: "Georgia, 'Times New Roman', serif",
+                textAlign: "center",
+                lineHeight: 1.45,
+                margin: 0,
+                textShadow: "0 2px 12px rgba(0,0,0,0.85), 0 1px 3px rgba(0,0,0,0.9)",
+                letterSpacing: "0.01em"
+              },
+              children: [
+                texto.substring(0, charsVisiveis),
+                /* @__PURE__ */ (0,jsx_runtime.jsx)("span", { style: { opacity: 0.7, color: "#D4A853" }, children: cursor })
+              ]
+            }
+          ),
+          /* @__PURE__ */ (0,jsx_runtime.jsx)(
+            "div",
+            {
+              style: {
+                marginTop: 28,
+                height: 1,
+                width: linhaLargura,
+                background: "linear-gradient(90deg, transparent, #D4A853, transparent)",
+                opacity: 0.6
+              }
+            }
+          )
+        ]
+      }
+    )
+  ] });
+};
+
+;// ./src/compositions/FadeTextoFlutuante.tsx
+
+
+
+const FadeTextoFlutuante = ({ texto, corTexto }) => {
+  const frame = (0,esm.useCurrentFrame)();
+  const { durationInFrames } = (0,esm.useVideoConfig)();
+  const opacidade = (0,esm.interpolate)(
+    frame,
+    [0, 18, durationInFrames - 18, durationInFrames],
+    [0, 1, 1, 0],
+    { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
+  );
+  const floatY = (0,esm.interpolate)(frame, [0, durationInFrames], [10, -10], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp"
+  });
+  return /* @__PURE__ */ (0,jsx_runtime.jsxs)(esm.AbsoluteFill, { style: { overflow: "hidden" }, children: [
+    /* @__PURE__ */ (0,jsx_runtime.jsx)(
+      esm.AbsoluteFill,
+      {
+        style: {
+          background: "linear-gradient(160deg, #050505 0%, #0a0a0a 60%, #030303 100%)"
+        }
+      }
+    ),
+    /* @__PURE__ */ (0,jsx_runtime.jsx)(
+      esm.AbsoluteFill,
+      {
+        style: {
+          background: "radial-gradient(ellipse at center, rgba(20,20,30,0.6) 0%, transparent 65%)"
+        }
+      }
+    ),
+    /* @__PURE__ */ (0,jsx_runtime.jsx)(
+      esm.AbsoluteFill,
+      {
+        style: {
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          padding: "0 160px"
+        },
+        children: /* @__PURE__ */ (0,jsx_runtime.jsx)(
+          "p",
+          {
+            style: {
+              color: corTexto || "#FFFFFF",
+              fontSize: 68,
+              fontFamily: "Georgia, serif",
+              textAlign: "center",
+              lineHeight: 1.5,
+              margin: 0,
+              opacity: opacidade,
+              transform: `translateY(${floatY}px)`,
+              textShadow: "0 2px 20px rgba(0,0,0,0.7), 0 0 40px rgba(255,255,255,0.04)"
+            },
+            children: texto
+          }
+        )
+      }
+    )
+  ] });
+};
+
+;// ./src/compositions/NosConectados.tsx
+
+
+
+const NOS = [
+  { x: 12, y: 18 },
+  { x: 32, y: 12 },
+  { x: 58, y: 15 },
+  { x: 82, y: 20 },
+  { x: 92, y: 42 },
+  { x: 78, y: 68 },
+  { x: 56, y: 82 },
+  { x: 28, y: 78 },
+  { x: 8, y: 58 },
+  { x: 18, y: 38 },
+  { x: 50, y: 28 },
+  { x: 46, y: 56 }
+];
+const CONEXOES = [
+  [0, 1],
+  [1, 2],
+  [2, 3],
+  [3, 4],
+  [4, 5],
+  [5, 6],
+  [6, 7],
+  [7, 8],
+  [8, 9],
+  [9, 10],
+  [10, 11],
+  [11, 0],
+  [0, 10],
+  [1, 11],
+  [2, 10],
+  [3, 5],
+  [6, 9]
+];
+const NosConectados = ({ texto, corTexto }) => {
+  const frame = (0,esm.useCurrentFrame)();
+  const { durationInFrames } = (0,esm.useVideoConfig)();
+  const W = 1920;
+  const H = 1080;
+  const opacidade = (0,esm.interpolate)(
+    frame,
+    [0, 12, durationInFrames - 12, durationInFrames],
+    [0, 1, 1, 0],
+    { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
+  );
+  return /* @__PURE__ */ (0,jsx_runtime.jsxs)(esm.AbsoluteFill, { style: { overflow: "hidden" }, children: [
+    /* @__PURE__ */ (0,jsx_runtime.jsx)(
+      esm.AbsoluteFill,
+      {
+        style: {
+          background: "linear-gradient(135deg, #050510 0%, #0c0c1e 55%, #050508 100%)"
+        }
+      }
+    ),
+    /* @__PURE__ */ (0,jsx_runtime.jsx)(
+      esm.AbsoluteFill,
+      {
+        style: {
+          background: "radial-gradient(ellipse at center, transparent 45%, rgba(0,0,0,0.9) 100%)"
+        }
+      }
+    ),
+    /* @__PURE__ */ (0,jsx_runtime.jsxs)(esm.AbsoluteFill, { style: { opacity: opacidade }, children: [
+      /* @__PURE__ */ (0,jsx_runtime.jsxs)("svg", { width: W, height: H, style: { position: "absolute" }, children: [
+        CONEXOES.map(([a, b], i) => {
+          const atraso = i * 4;
+          const progresso = (0,esm.interpolate)(frame, [atraso, atraso + 22], [0, 1], {
+            extrapolateLeft: "clamp",
+            extrapolateRight: "clamp"
+          });
+          const x1 = NOS[a].x / 100 * W;
+          const y1 = NOS[a].y / 100 * H;
+          const x2 = NOS[b].x / 100 * W;
+          const y2 = NOS[b].y / 100 * H;
+          return /* @__PURE__ */ (0,jsx_runtime.jsx)(
+            "line",
+            {
+              x1,
+              y1,
+              x2: x1 + (x2 - x1) * progresso,
+              y2: y1 + (y2 - y1) * progresso,
+              stroke: "#F5C842",
+              strokeWidth: 1.2,
+              opacity: 0.32
+            },
+            i
+          );
+        }),
+        NOS.map((no, i) => {
+          const pulso = (0,esm.interpolate)(
+            (frame + i * 8) % 50,
+            [0, 25, 50],
+            [3, 6, 3],
+            { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
+          );
+          const aparece = (0,esm.interpolate)(frame, [i * 3, i * 3 + 12], [0, 1], {
+            extrapolateLeft: "clamp",
+            extrapolateRight: "clamp"
+          });
+          const cx = no.x / 100 * W;
+          const cy = no.y / 100 * H;
+          return /* @__PURE__ */ (0,jsx_runtime.jsxs)("g", { opacity: aparece, children: [
+            /* @__PURE__ */ (0,jsx_runtime.jsx)("circle", { cx, cy, r: pulso + 5, fill: "rgba(245,200,66,0.10)" }),
+            /* @__PURE__ */ (0,jsx_runtime.jsx)("circle", { cx, cy, r: pulso, fill: "#F5C842" })
+          ] }, i);
+        })
+      ] }),
+      /* @__PURE__ */ (0,jsx_runtime.jsx)(
+        esm.AbsoluteFill,
+        {
+          style: {
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: "0 200px"
+          },
+          children: /* @__PURE__ */ (0,jsx_runtime.jsx)(
+            "p",
+            {
+              style: {
+                color: corTexto || "#FFFFFF",
+                fontSize: 64,
+                fontFamily: "Georgia, serif",
+                textAlign: "center",
+                lineHeight: 1.4,
+                margin: 0,
+                textShadow: "0 2px 30px rgba(0,0,0,0.95), 0 0 50px rgba(245,200,66,0.15)"
+              },
+              children: texto
+            }
+          )
+        }
+      )
+    ] })
+  ] });
+};
+
+;// ./src/compositions/LinhaTempoAnimada.tsx
+
+
+
+const TOTAL_PONTOS = 5;
+const LinhaTempoAnimada = ({ texto, corTexto }) => {
+  const frame = (0,esm.useCurrentFrame)();
+  const { durationInFrames } = (0,esm.useVideoConfig)();
+  const W = 1920;
+  const H = 1080;
+  const startX = 260;
+  const endX = W - 260;
+  const lineY = H * 0.65;
+  const segmento = (endX - startX) / (TOTAL_PONTOS - 1);
+  const opacidade = (0,esm.interpolate)(
+    frame,
+    [0, 10, durationInFrames - 10, durationInFrames],
+    [0, 1, 1, 0],
+    { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
+  );
+  const linhaProgresso = (0,esm.interpolate)(frame, [5, 42], [0, endX - startX], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp"
+  });
+  return /* @__PURE__ */ (0,jsx_runtime.jsxs)(esm.AbsoluteFill, { style: { overflow: "hidden" }, children: [
+    /* @__PURE__ */ (0,jsx_runtime.jsx)(
+      esm.AbsoluteFill,
+      {
+        style: {
+          background: "linear-gradient(160deg, #060612 0%, #0e0e22 60%, #060608 100%)"
+        }
+      }
+    ),
+    /* @__PURE__ */ (0,jsx_runtime.jsx)(
+      esm.AbsoluteFill,
+      {
+        style: {
+          background: "radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.9) 100%)"
+        }
+      }
+    ),
+    /* @__PURE__ */ (0,jsx_runtime.jsxs)(esm.AbsoluteFill, { style: { opacity: opacidade }, children: [
+      /* @__PURE__ */ (0,jsx_runtime.jsx)(
+        esm.AbsoluteFill,
+        {
+          style: {
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "flex-start",
+            paddingTop: 160,
+            padding: "160px 140px 0"
+          },
+          children: /* @__PURE__ */ (0,jsx_runtime.jsx)(
+            "p",
+            {
+              style: {
+                color: corTexto || "#FFFFFF",
+                fontSize: 68,
+                fontFamily: "Georgia, serif",
+                textAlign: "center",
+                lineHeight: 1.35,
+                margin: 0,
+                textShadow: "0 2px 20px rgba(0,0,0,0.95)"
+              },
+              children: texto
+            }
+          )
+        }
+      ),
+      /* @__PURE__ */ (0,jsx_runtime.jsxs)("svg", { width: W, height: H, style: { position: "absolute" }, children: [
+        /* @__PURE__ */ (0,jsx_runtime.jsx)(
+          "line",
+          {
+            x1: startX,
+            y1: lineY,
+            x2: startX + linhaProgresso,
+            y2: lineY,
+            stroke: "#F5C842",
+            strokeWidth: 2,
+            opacity: 0.55
+          }
+        ),
+        Array.from({ length: TOTAL_PONTOS }).map((_, i) => {
+          const cx = startX + i * segmento;
+          const atraso = 10 + i * 9;
+          const aparece = (0,esm.interpolate)(frame, [atraso, atraso + 12], [0, 1], {
+            extrapolateLeft: "clamp",
+            extrapolateRight: "clamp"
+          });
+          const pulso = (0,esm.interpolate)(
+            (frame + i * 11) % 48,
+            [0, 24, 48],
+            [7, 12, 7],
+            { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
+          );
+          return /* @__PURE__ */ (0,jsx_runtime.jsxs)("g", { opacity: aparece, children: [
+            /* @__PURE__ */ (0,jsx_runtime.jsx)("circle", { cx, cy: lineY, r: pulso + 5, fill: "rgba(245,200,66,0.10)" }),
+            /* @__PURE__ */ (0,jsx_runtime.jsx)("circle", { cx, cy: lineY, r: pulso, fill: "#F5C842" }),
+            /* @__PURE__ */ (0,jsx_runtime.jsx)(
+              "line",
+              {
+                x1: cx,
+                y1: lineY - pulso,
+                x2: cx,
+                y2: lineY - 38,
+                stroke: "#F5C842",
+                strokeWidth: 1,
+                opacity: 0.38
+              }
+            )
+          ] }, i);
+        })
+      ] })
+    ] })
+  ] });
+};
+
 ;// ./src/Root.tsx
+
+
+
+
+
+
 
 
 
@@ -404,6 +1065,120 @@ const RemotionRoot = () => {
           estilo: "madeira",
           corTexto: "#F5E6D3",
           corDestaque: "#D4A853"
+        }
+      }
+    ),
+    /* @__PURE__ */ (0,jsx_runtime.jsx)(
+      esm.Composition,
+      {
+        id: "titulo-particulas",
+        component: TituloParticulas,
+        durationInFrames: 270,
+        fps: 30,
+        width: 1920,
+        height: 1080,
+        defaultProps: {
+          texto: "Dinheiro c\xEA pode recuperar. Tempo\u2026 n\xE3o.",
+          corTexto: "#FFFFFF",
+          corFundo: "rgba(0,0,0,0.9)",
+          tamanhoFonte: 80,
+          animacao: "palavra_por_palavra",
+          fundoUrl: ""
+        }
+      }
+    ),
+    /* @__PURE__ */ (0,jsx_runtime.jsx)(
+      esm.Composition,
+      {
+        id: "texto-explosao-centro",
+        component: TextoExplosaoCentro,
+        durationInFrames: 210,
+        fps: 30,
+        width: 1920,
+        height: 1080,
+        defaultProps: {
+          texto: "Dinheiro c\xEA pode recuperar. Tempo\u2026 n\xE3o.",
+          corTexto: "#FFFFFF",
+          corFundo: "rgba(0,0,0,0.92)",
+          tamanhoFonte: 84,
+          animacao: "fade_bloco",
+          fundoUrl: ""
+        }
+      }
+    ),
+    /* @__PURE__ */ (0,jsx_runtime.jsx)(
+      esm.Composition,
+      {
+        id: "texto-manuscrito",
+        component: TextoManuscrito,
+        durationInFrames: 180,
+        fps: 30,
+        width: 1920,
+        height: 1080,
+        defaultProps: {
+          texto: "Dinheiro c\xEA pode recuperar. Tempo\u2026 n\xE3o.",
+          corTexto: "#F5E6C8",
+          corFundo: "rgba(61,28,10,0.9)",
+          tamanhoFonte: 72,
+          animacao: "maquina_escrever",
+          fundoUrl: ""
+        }
+      }
+    ),
+    /* @__PURE__ */ (0,jsx_runtime.jsx)(
+      esm.Composition,
+      {
+        id: "fade-texto-flutuante",
+        component: FadeTextoFlutuante,
+        durationInFrames: 135,
+        fps: 30,
+        width: 1920,
+        height: 1080,
+        defaultProps: {
+          texto: "Dinheiro c\xEA pode recuperar. Tempo\u2026 n\xE3o.",
+          corTexto: "#FFFFFF",
+          corFundo: "rgba(0,0,0,0.8)",
+          tamanhoFonte: 68,
+          animacao: "fade_bloco",
+          fundoUrl: ""
+        }
+      }
+    ),
+    /* @__PURE__ */ (0,jsx_runtime.jsx)(
+      esm.Composition,
+      {
+        id: "nos-conectados",
+        component: NosConectados,
+        durationInFrames: 270,
+        fps: 30,
+        width: 1920,
+        height: 1080,
+        defaultProps: {
+          texto: "Dinheiro c\xEA pode recuperar. Tempo\u2026 n\xE3o.",
+          corTexto: "#FFFFFF",
+          corFundo: "rgba(0,0,0,0.9)",
+          tamanhoFonte: 64,
+          animacao: "fade_bloco",
+          fundoUrl: ""
+        }
+      }
+    ),
+    /* @__PURE__ */ (0,jsx_runtime.jsx)(
+      esm.Composition,
+      {
+        id: "linha-tempo-animada",
+        component: LinhaTempoAnimada,
+        durationInFrames: 240,
+        fps: 30,
+        width: 1920,
+        height: 1080,
+        defaultProps: {
+          texto: "Dinheiro c\xEA pode recuperar. Tempo\u2026 n\xE3o.",
+          corTexto: "#FFFFFF",
+          corFundo: "rgba(0,0,0,0.9)",
+          tamanhoFonte: 68,
+          animacao: "fade_bloco",
+          fundoUrl: ""
         }
       }
     )
@@ -28354,7 +29129,7 @@ var NoReactInternals = {
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module is referenced by other modules so it can't be inlined
 /******/ 	__webpack_require__(1469);
-/******/ 	__webpack_require__(5336);
+/******/ 	__webpack_require__(5602);
 /******/ 	__webpack_require__(1524);
 /******/ 	var __webpack_exports__ = __webpack_require__(4724);
 /******/ 	

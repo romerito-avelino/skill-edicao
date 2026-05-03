@@ -57,6 +57,28 @@ function baixarArquivo(url: string, destino: string): Promise<void> {
   });
 }
 
+const BLACKLIST_PATH = path.resolve(__dirname, "../assets/pexels-blacklist.json");
+
+function carregarBlacklist(): Set<number> {
+  try {
+    const raw = fs.readFileSync(BLACKLIST_PATH, "utf-8");
+    const ids: number[] = JSON.parse(raw);
+    return new Set(ids);
+  } catch {
+    return new Set();
+  }
+}
+
+function salvarNaBlacklist(videoId: number): void {
+  try {
+    const blacklist = carregarBlacklist();
+    blacklist.add(videoId);
+    fs.writeFileSync(BLACKLIST_PATH, JSON.stringify([...blacklist], null, 2), "utf-8");
+  } catch (e: any) {
+    console.log(`  ⚠ Blacklist: não foi possível salvar ID ${videoId} — ${e.message}`);
+  }
+}
+
 export async function buscarPexelsVideo(
   queries: string[],
   duracao_ms: number,
@@ -75,55 +97,45 @@ export async function buscarPexelsVideo(
     };
   }
 
+  const blacklist = carregarBlacklist();
   const duracao_seg = Math.ceil(duracao_ms / 1000);
 
   for (const query of queries) {
     try {
       const queryEncoded = encodeURIComponent(query);
-      const url = `https://api.pexels.com/videos/search?query=${queryEncoded}&per_page=5&min_duration=${duracao_seg}&orientation=landscape`;
+      const url = `https://api.pexels.com/videos/search?query=${queryEncoded}&per_page=10&min_duration=${duracao_seg}&orientation=landscape`;
 
       const dados = await new Promise<any>((resolve, reject) => {
         https
-          .get(
-            url,
-            {
-              headers: {
-                Authorization: PEXELS_KEY,
-              },
-            },
-            (res) => {
-              let body = "";
-              res.on("data", (chunk) => (body += chunk));
-              res.on("end", () => {
-                try {
-                  resolve(JSON.parse(body));
-                } catch (e) {
-                  reject(e);
-                }
-              });
-            }
-          )
+          .get(url, { headers: { Authorization: PEXELS_KEY } }, (res) => {
+            let body = "";
+            res.on("data", (chunk) => (body += chunk));
+            res.on("end", () => {
+              try { resolve(JSON.parse(body)); }
+              catch (e) { reject(e); }
+            });
+          })
           .on("error", reject);
       });
 
       if (dados.videos && dados.videos.length > 0) {
-        const video = dados.videos[0];
-        const arquivo_hd = video.video_files.find(
-          (f: any) =>
-            f.quality === "hd" &&
-            f.width >= 1280
-        ) || video.video_files[0];
+        const candidatos: any[] = dados.videos.filter((v: any) => !blacklist.has(v.id));
 
-        const destino = path.join(
-          pastaDestino,
-          `${clip_id}_source.mp4`
-        );
+        if (candidatos.length === 0) {
+          console.log(`  ⚠ Todos os resultados para "${query}" estão na blacklist, tentando próxima query...`);
+          continue;
+        }
 
-        console.log(
-          `  Baixando Pexels: "${query}" → ${arquivo_hd.link.substring(0, 60)}...`
-        );
+        const video = candidatos[0];
+        const arquivo_hd =
+          video.video_files.find((f: any) => f.quality === "hd" && f.width >= 1280) ||
+          video.video_files[0];
 
+        const destino = path.join(pastaDestino, `${clip_id}_source.mp4`);
+        console.log(`  Baixando Pexels: "${query}" → ${arquivo_hd.link.substring(0, 60)}...`);
         await baixarArquivo(arquivo_hd.link, destino);
+
+        salvarNaBlacklist(video.id);
 
         return {
           clip_id,
@@ -225,7 +237,7 @@ export async function gerarImagemReplicate(
       const prediction_id = resposta.id;
       let tentativas = 0;
 
-      while (tentativas < 40) {
+      while (tentativas < 80) {
         await new Promise((r) => setTimeout(r, 3000));
         process.stdout.write(".");
 
@@ -262,7 +274,7 @@ export async function gerarImagemReplicate(
     }
 
     if (!url_imagem) {
-      throw new Error("Timeout — imagem não gerada em 2 minutos");
+      throw new Error("Timeout — imagem não gerada em 4 minutos");
     }
 
     const destino = path.join(pastaDestino, `${clip_id}_source.jpg`);

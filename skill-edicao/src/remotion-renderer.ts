@@ -105,7 +105,8 @@ export async function renderizarFraseImpacto(
   texto: string,
   arquivo_saida: string,
   duracao_ms: number,
-  estilo: "agressivo" | "duvidoso" | "esperancoso" = "agressivo"
+  estilo: "agressivo" | "duvidoso" | "esperancoso" = "agressivo",
+  compositionId: string = "FraseImpacto"
 ): Promise<ResultadoRenderizacao> {
   try {
     const duracao_final = Math.max(3000, duracao_ms);
@@ -151,11 +152,10 @@ export async function renderizarFraseImpacto(
       fundoUrl: "",
     };
 
-    const composition = await selectComposition({
-      serveUrl: bundle,
-      id: "FraseImpacto",
-      inputProps: props,
-    });
+    // Tenta o compositionId do preset; cai em FraseImpacto se não existir
+    const idFinal = compositionId && compositionId !== "none" ? compositionId : "FraseImpacto";
+    const composition = await selectComposition({ serveUrl: bundle, id: idFinal, inputProps: props })
+      .catch(() => selectComposition({ serveUrl: bundle, id: "FraseImpacto", inputProps: props }));
 
     await renderMedia({
       composition: {
@@ -172,11 +172,11 @@ export async function renderizarFraseImpacto(
       logLevel: "error",
     });
 
-    console.log(`    ✓ FraseImpacto (${estilo}): ${path.basename(arquivo_saida)}`);
+    console.log(`    ✓ Remotion (${idFinal}/${estilo}): ${path.basename(arquivo_saida)}`);
     return { sucesso: true, arquivo_saida };
 
   } catch (erro: any) {
-    console.log(`    ✗ FraseImpacto falhou: ${erro.message?.substring(0, 80)}`);
+    console.log(`    ✗ Remotion falhou: ${erro.message?.substring(0, 80)}`);
     return { sucesso: false, arquivo_saida: "", erro: erro.message };
   }
 }

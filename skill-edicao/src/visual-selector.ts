@@ -4,10 +4,11 @@ dotenv.config({ path: path.resolve(__dirname, "../.env") });
 
 import Anthropic from "@anthropic-ai/sdk";
 import { Segmento } from "./srt-parser";
+import { ConfigEditorial } from "./editorial";
 
 const client = new Anthropic();
 
-export type TipoAsset = "video_stock" | "imagem_ia" | "remotion";
+export type TipoAsset = "video_stock" | "imagem_ia" | "remotion_animacao";
 export type Terco = "agressivo" | "duvidoso" | "esperançoso";
 
 export interface PaletaThumbnail {
@@ -57,20 +58,62 @@ export interface SegmentoProcessado {
   clips: Clip[];
 }
 
+function descricaoEstiloImagem(estilo: number): string {
+  const estilos: Record<number, string> = {
+    1: "fotorrealista, fotografia documental, sem filtros artísticos",
+    2: "pintura artística, estilo impressionista ou óleo",
+    3: "cinematográfico, grão de filme, paleta rica",
+    4: "ilustração ou desenho, linhas definidas",
+    5: "escolher o estilo mais adequado para a cena",
+  };
+  return estilos[estilo] || estilos[5];
+}
+
+function descricaoEspecificidade(esp: number): string {
+  const tipos: Record<number, string> = {
+    1: "cenas genéricas: paisagens, símbolos, ambientes sem personagens específicos",
+    2: "cenas específicas: personagem principal, ação concreta, detalhe narrativo",
+    3: "misturar genéricas e específicas conforme a emoção do trecho",
+  };
+  return tipos[esp] || tipos[3];
+}
+
+function descricaoTom(tom: number): string {
+  const tons: Record<number, string> = {
+    1: "dramático e emocional — alto contraste, sombras, tensão visual",
+    2: "inspiracional e esperançoso — luz quente, abertura, leveza",
+    3: "reflexivo e melancólico — tons frios ou sépia, silêncio visual",
+    4: "neutro e documental — luz natural, composição limpa",
+  };
+  return tons[tom] || tons[1];
+}
+
+function ferramentasHabilitadas(config: ConfigEditorial): TipoAsset[] {
+  const tools: TipoAsset[] = [];
+  if (config.usarVideoStock) tools.push("video_stock");
+  if (config.usarImagemIA) tools.push("imagem_ia");
+  if (config.usarRemotion) tools.push("remotion_animacao");
+  return tools.length > 0 ? tools : ["video_stock", "imagem_ia", "remotion_animacao"];
+}
+
 export async function processarTodosSegmentos(
   segmentos: Segmento[],
   infoCanal: InfoCanal,
-  paleta: PaletaThumbnail
+  paleta: PaletaThumbnail,
+  configEditorial: ConfigEditorial
 ): Promise<SegmentoProcessado[]> {
+
+  const tools = ferramentasHabilitadas(configEditorial);
+  const toolsStr = tools.join(", ");
 
   const TAMANHO_LOTE = 15;
   const lotes: Segmento[][] = [];
-
   for (let i = 0; i < segmentos.length; i += TAMANHO_LOTE) {
     lotes.push(segmentos.slice(i, i + TAMANHO_LOTE));
   }
 
   console.log(`Processando ${segmentos.length} segmentos em ${lotes.length} lotes de ${TAMANHO_LOTE}...`);
+  console.log(`Ferramentas ativas: ${toolsStr}`);
 
   const todosProcessados: SegmentoProcessado[] = [];
 
@@ -94,11 +137,19 @@ GAP DE EDIÇÃO: ${infoCanal.gap_de_edicao}
 ESTILO: ${infoCanal.estilo_visual}
 PALETA: primaria=${paleta.cor_primaria} secundaria=${paleta.cor_secundaria} acento=${paleta.cor_acento}
 
+FERRAMENTAS HABILITADAS (use APENAS esses tipos): ${toolsStr}
+TOM VISUAL: ${descricaoTom(configEditorial.tomVisual)}
+${configEditorial.usarImagemIA ? `ESTILO IMAGEM IA: ${descricaoEstiloImagem(configEditorial.estiloImagem)}` : ""}
+${configEditorial.usarImagemIA ? `ESPECIFICIDADE: ${descricaoEspecificidade(configEditorial.especificidadeImagem)}` : ""}
+
 REGRAS:
 - Terço: primeiros 33% dos segmentos=agressivo, meio 33%=duvidoso, últimos 33%=esperançoso
 - Ritmo: agressivo=4000ms, duvidoso=5000ms, esperançoso=6000ms
 - num_clips = max(1, round(duracao_ms / ritmo_ms))
-- Tipos: video_stock (cenas genéricas filmáveis), imagem_ia (abstrato/emocional/específico), remotion (frases impactantes)
+- Tipos disponíveis: ${toolsStr}
+- video_stock: cenas genéricas filmáveis (query em inglês)
+- imagem_ia: abstrato/emocional/específico (prompt em inglês detalhado)
+- remotion_animacao: frases impactantes com animação gráfica
 - NUNCA mais de 2 clips do mesmo tipo seguidos
 - Queries Pexels SEMPRE em inglês, específicas e cinematográficas
 - Prompts imagem_ia: SEMPRE em inglês, cinematográficos e detalhados
@@ -110,8 +161,6 @@ Todo prompt de imagem_ia DEVE seguir esta estrutura:
 Exemplos de prompts CORRETOS para o canal Aroldo do Pix:
 - "Elderly Brazilian man in his 60s sitting alone on wooden porch at sunset, looking at rural landscape, warm golden backlight, cinematic photography, shallow depth of field, 35mm film grain, color palette ${paleta.cor_primaria} ${paleta.cor_secundaria}"
 - "Close-up of weathered calloused hands holding unpaid bills on worn wooden table, single window casting warm shadow, nostalgic mood, cinematic close-up, natural lighting, ${paleta.cor_primaria} warm tones"
-- "Two elderly Brazilian men sitting on farm porch, serious conversation at dusk, silhouette against orange sunset sky, wide shot, cinematic, warm nostalgic atmosphere, ${paleta.cor_primaria} color grade"
-- "Rural Brazilian farm at golden hour, simple farmhouse, dirt road, cattle grazing, dramatic orange sky, cinematic wide angle, National Geographic style, ${paleta.cor_primaria} ${paleta.cor_secundaria} tones"
 
 EVITAR nos prompts de imagem_ia:
 - Rostos próximos (geram distorções)
@@ -120,7 +169,7 @@ EVITAR nos prompts de imagem_ia:
 - Cenários urbanos modernos
 - Pessoas jovens
 
-REGRAS DE PROMPT PARA REMOTION:
+REGRAS DE PROMPT PARA remotion_animacao:
 O campo texto_animado DEVE conter uma frase curta e impactante do segmento.
 Máximo 10 palavras. Preferencialmente uma frase que o avatar disse.
 NUNCA deixar texto_animado vazio.
@@ -131,7 +180,6 @@ Exemplos CORRETOS:
 - "elderly man wooden porch coffee sunset rural"
 - "weathered hands holding document worried"
 - "Brazilian farm cattle golden hour sunset"
-- "old man alone thinking regret"
 
 SEGMENTOS:
 ${JSON.stringify(segmentosResumidos)}
@@ -143,7 +191,7 @@ Retorne APENAS JSON válido sem texto adicional:
       "id": "001",
       "terco": "agressivo",
       "intensidade": 7,
-      "tipo_momento": "abertura",
+      "tipo_momento": "abertura_historia",
       "bloco": "BLOCO 1",
       "ritmo_corte_ms": 4000,
       "total_clips": 2,
@@ -164,19 +212,19 @@ Retorne APENAS JSON válido sem texto adicional:
   ]
 }
 
-Para clips remotion use:
+Para clips remotion_animacao use:
 {
   "clip_id": "001-03",
   "inicio_relativo_ms": 8000,
   "fim_relativo_ms": 14000,
   "duracao_ms": 6000,
-  "tipo": "remotion",
+  "tipo": "remotion_animacao",
   "texto_animado": "OBRIGATÓRIO: copie aqui a frase exata mais impactante do segmento",
   "animacao_remotion": "palavra_por_palavra",
   "arquivo_final": "cenas/001-03.mp4"
 }
 
-ATENÇÃO: O campo texto_animado é OBRIGATÓRIO em clips do tipo remotion.
+ATENÇÃO: O campo texto_animado é OBRIGATÓRIO em clips do tipo remotion_animacao.
 Sempre copie uma frase curta e impactante do texto do segmento.
 NUNCA deixe texto_animado vazio ou ausente.`;
 
