@@ -444,7 +444,14 @@ const TituloParticulas = ({ texto, corTexto }) => {
                 lineHeight: 1.3,
                 margin: 0,
                 transform: `scale(${escalaTexto})`,
-                textShadow: "0 0 40px rgba(245,200,66,0.4), 0 2px 20px rgba(0,0,0,0.95)"
+                textShadow: "0 0 40px rgba(245,200,66,0.4), 0 2px 20px rgba(0,0,0,0.95)",
+                backgroundColor: "rgba(0,0,0,0.65)",
+                borderRadius: 8,
+                padding: "8px 14px",
+                wordWrap: "break-word",
+                whiteSpace: "pre-wrap",
+                overflowWrap: "break-word",
+                overflow: "hidden"
               },
               children: palavras.map((palavra, i) => {
                 const framesPorPalavra = Math.max(1, Math.floor(durationInFrames * 0.6 / palavras.length));
@@ -541,10 +548,16 @@ const TextoExplosaoCentro = ({ texto, frase, corTexto }) => {
               textAlign: "center",
               lineHeight: 1.1,
               margin: 0,
-              padding: "0 80px",
+              padding: "8px 24px",
               transform: `scale(${escala})`,
               fontWeight: ehUltima ? "bold" : "normal",
-              textShadow: ehUltima ? "0 0 60px rgba(245,200,66,0.4), 0 4px 30px rgba(0,0,0,1)" : "0 4px 30px rgba(0,0,0,1)"
+              textShadow: ehUltima ? "0 0 60px rgba(245,200,66,0.4), 0 4px 30px rgba(0,0,0,1)" : "0 4px 30px rgba(0,0,0,1)",
+              backgroundColor: "rgba(0,0,0,0.65)",
+              borderRadius: 8,
+              wordWrap: "break-word",
+              whiteSpace: "pre-wrap",
+              overflowWrap: "break-word",
+              overflow: "hidden"
             },
             children: palavras[palavraAtual] || ""
           }
@@ -678,7 +691,14 @@ const TextoManuscrito = ({ texto, frase }) => {
               lineHeight: 1.55,
               margin: 0,
               textShadow: "0 2px 12px rgba(0,0,0,0.85), 0 1px 3px rgba(0,0,0,0.9)",
-              letterSpacing: "0.02em"
+              letterSpacing: "0.02em",
+              backgroundColor: "rgba(0,0,0,0.65)",
+              borderRadius: 8,
+              padding: "8px 14px",
+              wordWrap: "break-word",
+              whiteSpace: "pre-wrap",
+              overflowWrap: "break-word",
+              overflow: "hidden"
             },
             children: [
               fraseExibida.substring(0, charsVisiveis),
@@ -746,7 +766,15 @@ const FadeTextoFlutuante = ({ texto, corTexto }) => {
               margin: 0,
               opacity: opacidade,
               transform: `translateY(${floatY}px)`,
-              textShadow: "0 2px 20px rgba(0,0,0,0.7), 0 0 40px rgba(255,255,255,0.04)"
+              textShadow: "0 2px 20px rgba(0,0,0,0.7), 0 0 40px rgba(255,255,255,0.04)",
+              backgroundColor: "rgba(0,0,0,0.65)",
+              borderRadius: 8,
+              padding: "8px 14px",
+              wordWrap: "break-word",
+              whiteSpace: "pre-wrap",
+              overflowWrap: "break-word",
+              overflow: "hidden",
+              maxWidth: "80%"
             },
             children: texto
           }
@@ -808,6 +836,21 @@ const CONEXOES_FALLBACK = [
   [3, 5],
   [6, 9]
 ];
+const estiloLabelNo = {
+  backgroundColor: "rgba(0,0,0,0.65)",
+  borderRadius: 4,
+  padding: "4px 8px",
+  color: "#F5C842",
+  fontSize: 16,
+  fontFamily: "Georgia, serif",
+  textAlign: "center",
+  wordWrap: "break-word",
+  whiteSpace: "pre-wrap",
+  overflowWrap: "break-word",
+  maxWidth: 120,
+  lineHeight: 1.3,
+  display: "inline-block"
+};
 const NosConectados = ({
   texto,
   corTexto,
@@ -868,85 +911,117 @@ const NosConectados = ({
           }
         }
       ),
-      /* @__PURE__ */ (0,jsx_runtime.jsx)(esm.AbsoluteFill, { style: { opacity: opacidade }, children: /* @__PURE__ */ (0,jsx_runtime.jsxs)("svg", { width: W, height: H, style: { position: "absolute" }, children: [
+      /* @__PURE__ */ (0,jsx_runtime.jsxs)(esm.AbsoluteFill, { style: { opacity: opacidade }, children: [
+        /* @__PURE__ */ (0,jsx_runtime.jsxs)("svg", { width: W, height: H, style: { position: "absolute" }, children: [
+          nosAnteriores.map((_, i) => {
+            const pos = POSICOES_NOS[i % POSICOES_NOS.length];
+            const cx = pos.x / 100 * W;
+            const cy = pos.y / 100 * H;
+            return /* @__PURE__ */ (0,jsx_runtime.jsxs)("g", { children: [
+              /* @__PURE__ */ (0,jsx_runtime.jsx)(
+                "line",
+                {
+                  x1: cx0,
+                  y1: cy0,
+                  x2: cx,
+                  y2: cy,
+                  stroke: "#F5C842",
+                  strokeWidth: 1,
+                  opacity: 0.22
+                }
+              ),
+              /* @__PURE__ */ (0,jsx_runtime.jsx)("circle", { cx, cy, r: 5, fill: "#F5C842", opacity: 0.38 })
+            ] }, `prev-${i}`);
+          }),
+          /* @__PURE__ */ (0,jsx_runtime.jsx)(
+            "line",
+            {
+              x1: cx0,
+              y1: cy0,
+              x2: cx0 + (destX - cx0) * linhaProgress,
+              y2: cy0 + (destY - cy0) * linhaProgress,
+              stroke: "#F5C842",
+              strokeWidth: 1.5,
+              opacity: 0.55 * linhaProgress
+            }
+          ),
+          /* @__PURE__ */ (0,jsx_runtime.jsx)("circle", { cx: curX, cy: curY, r: 14, fill: "rgba(245,200,66,0.18)", opacity: noOpacity }),
+          /* @__PURE__ */ (0,jsx_runtime.jsx)("circle", { cx: curX, cy: curY, r: 8, fill: "#F5C842", opacity: noOpacity }),
+          /* @__PURE__ */ (0,jsx_runtime.jsx)("circle", { cx: cx0, cy: cy0, r: 26, fill: "rgba(245,200,66,0.18)" }),
+          /* @__PURE__ */ (0,jsx_runtime.jsx)("circle", { cx: cx0, cy: cy0, r: 16, fill: "#F5C842" })
+        ] }),
         nosAnteriores.map((no, i) => {
           const pos = POSICOES_NOS[i % POSICOES_NOS.length];
           const cx = pos.x / 100 * W;
           const cy = pos.y / 100 * H;
-          const label = no.length > 12 ? no.substring(0, 12) + "\u2026" : no;
-          return /* @__PURE__ */ (0,jsx_runtime.jsxs)("g", { children: [
-            /* @__PURE__ */ (0,jsx_runtime.jsx)(
-              "line",
-              {
-                x1: cx0,
-                y1: cy0,
-                x2: cx,
-                y2: cy,
-                stroke: "#F5C842",
-                strokeWidth: 1,
-                opacity: 0.22
-              }
-            ),
-            /* @__PURE__ */ (0,jsx_runtime.jsx)("circle", { cx, cy, r: 5, fill: "#F5C842", opacity: 0.38 }),
-            /* @__PURE__ */ (0,jsx_runtime.jsx)(
-              "text",
-              {
-                x: cx,
-                y: cy - 14,
-                textAnchor: "middle",
-                fill: "#F5C842",
-                fontSize: 18,
+          return /* @__PURE__ */ (0,jsx_runtime.jsx)(
+            "div",
+            {
+              style: {
+                position: "absolute",
+                left: cx - 65,
+                top: cy - 90,
+                width: 130,
                 opacity: 0.38,
-                fontFamily: "Georgia, serif",
-                children: label
-              }
-            )
-          ] }, `prev-${i}`);
+                display: "flex",
+                justifyContent: "center"
+              },
+              children: /* @__PURE__ */ (0,jsx_runtime.jsx)("div", { style: estiloLabelNo, children: no })
+            },
+            `label-prev-${i}`
+          );
         }),
         /* @__PURE__ */ (0,jsx_runtime.jsx)(
-          "line",
+          "div",
           {
-            x1: cx0,
-            y1: cy0,
-            x2: cx0 + (destX - cx0) * linhaProgress,
-            y2: cy0 + (destY - cy0) * linhaProgress,
-            stroke: "#F5C842",
-            strokeWidth: 1.5,
-            opacity: 0.55 * linhaProgress
+            style: {
+              position: "absolute",
+              left: destX - 65,
+              top: destY - 110,
+              width: 130,
+              opacity: linhaProgress,
+              display: "flex",
+              justifyContent: "center"
+            },
+            children: /* @__PURE__ */ (0,jsx_runtime.jsx)("div", { style: { ...estiloLabelNo, fontSize: 20, fontWeight: "bold" }, children: noAtual })
           }
         ),
-        /* @__PURE__ */ (0,jsx_runtime.jsx)("circle", { cx: curX, cy: curY, r: 14, fill: "rgba(245,200,66,0.18)", opacity: noOpacity }),
-        /* @__PURE__ */ (0,jsx_runtime.jsx)("circle", { cx: curX, cy: curY, r: 8, fill: "#F5C842", opacity: noOpacity }),
-        /* @__PURE__ */ (0,jsx_runtime.jsx)(
-          "text",
-          {
-            x: destX,
-            y: destY - 24,
-            textAnchor: "middle",
-            fill: "#F5C842",
-            fontSize: 24,
-            opacity: linhaProgress,
-            fontFamily: "Georgia, serif",
-            fontWeight: "bold",
-            children: noAtual.length > 16 ? noAtual.substring(0, 16) + "\u2026" : noAtual
-          }
-        ),
-        /* @__PURE__ */ (0,jsx_runtime.jsx)("circle", { cx: cx0, cy: cy0, r: 26, fill: "rgba(245,200,66,0.18)" }),
-        /* @__PURE__ */ (0,jsx_runtime.jsx)("circle", { cx: cx0, cy: cy0, r: 16, fill: "#F5C842" }),
         temaCentral ? /* @__PURE__ */ (0,jsx_runtime.jsx)(
-          "text",
+          "div",
           {
-            x: cx0,
-            y: cy0 + 44,
-            textAnchor: "middle",
-            fill: "#F5C842",
-            fontSize: 22,
-            fontFamily: "Georgia, serif",
-            opacity: 0.85,
-            children: temaCentral.length > 22 ? temaCentral.substring(0, 22) + "\u2026" : temaCentral
+            style: {
+              position: "absolute",
+              left: cx0 - 215,
+              top: cy0 + 28,
+              width: 430,
+              opacity: 0.85,
+              display: "flex",
+              justifyContent: "center"
+            },
+            children: /* @__PURE__ */ (0,jsx_runtime.jsx)(
+              "div",
+              {
+                style: {
+                  backgroundColor: "rgba(0,0,0,0.65)",
+                  borderRadius: 6,
+                  padding: "6px 12px",
+                  color: "#F5C842",
+                  fontSize: 20,
+                  fontFamily: "Georgia, serif",
+                  textAlign: "center",
+                  wordWrap: "break-word",
+                  whiteSpace: "pre-wrap",
+                  overflowWrap: "break-word",
+                  maxWidth: 400,
+                  lineHeight: 1.3,
+                  display: "inline-block"
+                },
+                children: temaCentral
+              }
+            )
           }
         ) : null
-      ] }) })
+      ] })
     ] });
   }
   return /* @__PURE__ */ (0,jsx_runtime.jsxs)(esm.AbsoluteFill, { style: { overflow: "hidden" }, children: [
@@ -1021,15 +1096,23 @@ const NosConectados = ({
             padding: "0 200px"
           },
           children: /* @__PURE__ */ (0,jsx_runtime.jsx)(
-            "p",
+            "div",
             {
               style: {
+                backgroundColor: "rgba(0,0,0,0.65)",
+                borderRadius: 8,
+                padding: "8px 14px",
+                display: "inline-block",
+                maxWidth: "80%",
+                wordWrap: "break-word",
+                whiteSpace: "pre-wrap",
+                overflowWrap: "break-word",
+                overflow: "hidden",
                 color: corTexto || "#FFFFFF",
                 fontSize: 64,
                 fontFamily: "Georgia, serif",
                 textAlign: "center",
                 lineHeight: 1.4,
-                margin: 0,
                 textShadow: "0 2px 30px rgba(0,0,0,0.95), 0 0 50px rgba(245,200,66,0.15)"
               },
               children: texto
@@ -1087,6 +1170,8 @@ const LinhaTempoAnimada = ({
       extrapolateLeft: "clamp",
       extrapolateRight: "clamp"
     });
+    const ixAtual = pontosAnteriores.length;
+    const cxAtual = startX + ixAtual * segmento;
     return /* @__PURE__ */ (0,jsx_runtime.jsxs)(esm.AbsoluteFill, { style: { overflow: "hidden" }, children: [
       /* @__PURE__ */ (0,jsx_runtime.jsx)(
         esm.AbsoluteFill,
@@ -1118,9 +1203,8 @@ const LinhaTempoAnimada = ({
               opacity: 0.6
             }
           ),
-          pontosAnteriores.map((ponto, i) => {
+          pontosAnteriores.map((_, i) => {
             const cx = startX + i * segmento;
-            const label = ponto.length > 14 ? ponto.substring(0, 14) + "\u2026" : ponto;
             return /* @__PURE__ */ (0,jsx_runtime.jsxs)("g", { children: [
               /* @__PURE__ */ (0,jsx_runtime.jsx)("circle", { cx, cy: lineY, r: 6, fill: "#F5C842", opacity: 0.4 }),
               /* @__PURE__ */ (0,jsx_runtime.jsx)(
@@ -1134,58 +1218,99 @@ const LinhaTempoAnimada = ({
                   strokeWidth: 1,
                   opacity: 0.25
                 }
-              ),
-              /* @__PURE__ */ (0,jsx_runtime.jsx)(
-                "text",
-                {
-                  x: cx,
-                  y: lineY - 52,
-                  textAnchor: "middle",
-                  fill: "#F5C842",
-                  fontSize: 20,
-                  opacity: 0.4,
-                  fontFamily: "Georgia, serif",
-                  children: label
-                }
               )
             ] }, `prev-${i}`);
           }),
-          (() => {
-            const ix = pontosAnteriores.length;
-            const cx = startX + ix * segmento;
-            const label = pontoAtual.length > 18 ? pontoAtual.substring(0, 18) + "\u2026" : pontoAtual;
-            return /* @__PURE__ */ (0,jsx_runtime.jsxs)("g", { children: [
-              /* @__PURE__ */ (0,jsx_runtime.jsx)("circle", { cx, cy: lineY, r: raioAtual + 12, fill: "rgba(245,200,66,0.15)" }),
-              /* @__PURE__ */ (0,jsx_runtime.jsx)("circle", { cx, cy: lineY, r: raioAtual, fill: "#F5C842" }),
-              /* @__PURE__ */ (0,jsx_runtime.jsx)(
-                "line",
+          /* @__PURE__ */ (0,jsx_runtime.jsx)("circle", { cx: cxAtual, cy: lineY, r: raioAtual + 12, fill: "rgba(245,200,66,0.15)" }),
+          /* @__PURE__ */ (0,jsx_runtime.jsx)("circle", { cx: cxAtual, cy: lineY, r: raioAtual, fill: "#F5C842" }),
+          /* @__PURE__ */ (0,jsx_runtime.jsx)(
+            "line",
+            {
+              x1: cxAtual,
+              y1: lineY - raioAtual,
+              x2: cxAtual,
+              y2: lineY - 55,
+              stroke: "#F5C842",
+              strokeWidth: 1.5,
+              opacity: 0.55 * textoAtualOp
+            }
+          )
+        ] }),
+        pontosAnteriores.map((ponto, i) => {
+          const cx = startX + i * segmento;
+          return /* @__PURE__ */ (0,jsx_runtime.jsx)(
+            "div",
+            {
+              style: {
+                position: "absolute",
+                left: cx - 80,
+                top: lineY - 155,
+                width: 160,
+                opacity: 0.4,
+                display: "flex",
+                justifyContent: "center"
+              },
+              children: /* @__PURE__ */ (0,jsx_runtime.jsx)(
+                "div",
                 {
-                  x1: cx,
-                  y1: lineY - raioAtual,
-                  x2: cx,
-                  y2: lineY - 55,
-                  stroke: "#F5C842",
-                  strokeWidth: 1.5,
-                  opacity: 0.55 * textoAtualOp
-                }
-              ),
-              /* @__PURE__ */ (0,jsx_runtime.jsx)(
-                "text",
-                {
-                  x: cx,
-                  y: lineY - 68,
-                  textAnchor: "middle",
-                  fill: "#F5C842",
-                  fontSize: 26,
-                  opacity: textoAtualOp,
-                  fontFamily: "Georgia, serif",
-                  fontWeight: "bold",
-                  children: label
+                  style: {
+                    backgroundColor: "rgba(0,0,0,0.65)",
+                    borderRadius: 4,
+                    padding: "4px 8px",
+                    color: "#F5C842",
+                    fontSize: 18,
+                    fontFamily: "Georgia, serif",
+                    textAlign: "center",
+                    wordWrap: "break-word",
+                    whiteSpace: "pre-wrap",
+                    overflowWrap: "break-word",
+                    maxWidth: 150,
+                    lineHeight: 1.3,
+                    display: "inline-block"
+                  },
+                  children: ponto
                 }
               )
-            ] });
-          })()
-        ] }),
+            },
+            `label-prev-${i}`
+          );
+        }),
+        /* @__PURE__ */ (0,jsx_runtime.jsx)(
+          "div",
+          {
+            style: {
+              position: "absolute",
+              left: cxAtual - 160,
+              top: lineY - 210,
+              width: 320,
+              opacity: textoAtualOp,
+              display: "flex",
+              justifyContent: "center"
+            },
+            children: /* @__PURE__ */ (0,jsx_runtime.jsx)(
+              "div",
+              {
+                style: {
+                  backgroundColor: "rgba(0,0,0,0.65)",
+                  borderRadius: 6,
+                  padding: "6px 12px",
+                  color: "#F5C842",
+                  fontSize: 22,
+                  fontFamily: "Georgia, serif",
+                  fontWeight: "bold",
+                  textAlign: "center",
+                  wordWrap: "break-word",
+                  whiteSpace: "pre-wrap",
+                  overflowWrap: "break-word",
+                  maxWidth: 300,
+                  lineHeight: 1.35,
+                  display: "inline-block"
+                },
+                children: pontoAtual
+              }
+            )
+          }
+        ),
         /* @__PURE__ */ (0,jsx_runtime.jsx)(
           "div",
           {
@@ -1250,15 +1375,23 @@ const LinhaTempoAnimada = ({
             padding: "160px 140px 0"
           },
           children: /* @__PURE__ */ (0,jsx_runtime.jsx)(
-            "p",
+            "div",
             {
               style: {
+                backgroundColor: "rgba(0,0,0,0.65)",
+                borderRadius: 8,
+                padding: "8px 14px",
+                display: "inline-block",
+                maxWidth: "80%",
+                wordWrap: "break-word",
+                whiteSpace: "pre-wrap",
+                overflowWrap: "break-word",
+                overflow: "hidden",
                 color: corTexto || "#FFFFFF",
                 fontSize: 68,
                 fontFamily: "Georgia, serif",
                 textAlign: "center",
                 lineHeight: 1.35,
-                margin: 0,
                 textShadow: "0 2px 20px rgba(0,0,0,0.95)"
               },
               children: texto

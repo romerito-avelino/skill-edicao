@@ -1,5 +1,6 @@
 import * as fs from "fs";
 import * as path from "path";
+import * as readline from "readline";
 import { buscarPexelsVideo, gerarImagemReplicate } from "./asset-fetcher";
 import { gerarComandoVideoStock, executarFFmpeg } from "./ffmpeg-processor";
 import { renderizarFraseImpacto, renderizarKenBurns, ContextoRenderizacao } from "./remotion-renderer";
@@ -178,6 +179,41 @@ function gerarRelatorio(
   console.log(`\nRelatório salvo: ${arquivo}`);
 }
 
+async function perguntarLimpeza(pastaDownloads: string, pastaCenas: string): Promise<void> {
+  if (!fs.existsSync(pastaDownloads)) return;
+  const arquivos = fs.readdirSync(pastaDownloads);
+  if (arquivos.length === 0) return;
+
+  console.log("\n════════════════════════════════");
+  console.log(" 🗑  LIMPEZA DE ARQUIVOS");
+  console.log("════════════════════════════════");
+  console.log(`Clips finais salvos em: ${pastaCenas}`);
+  console.log(`Downloads/sources em:  ${pastaDownloads}`);
+  console.log("");
+  console.log("Deseja apagar os arquivos temporários?");
+  console.log("(As duas pastas serão mantidas até você confirmar)");
+  console.log("");
+  console.log("  [s] Apagar pasta downloads/ agora");
+  console.log("  [n] Manter arquivos para revisão");
+
+  const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
+  const resposta = await new Promise<string>((resolve) => {
+    rl.question("\nOpção: ", (ans) => {
+      rl.close();
+      resolve(ans.trim().toLowerCase());
+    });
+  });
+
+  if (resposta === "s") {
+    for (const arquivo of fs.readdirSync(pastaDownloads)) {
+      fs.rmSync(path.join(pastaDownloads, arquivo), { recursive: true, force: true });
+    }
+    console.log("✓ Pasta downloads/ limpa com sucesso");
+  } else {
+    console.log(`→ Arquivos mantidos em: ${pastaDownloads}`);
+  }
+}
+
 export async function executar(config: ConfigProjeto): Promise<void> {
   const arquivoPlano = path.join(config.pasta, "plano-edicao.json");
 
@@ -195,8 +231,17 @@ export async function executar(config: ConfigProjeto): Promise<void> {
   console.log(`Total de clips: ${plano.segmentos.length}`);
 
   const pastaOutput    = path.join(config.pasta, "output");
-  const pastaCenas     = path.join(pastaOutput, "cenas");
   const pastaDownloads = path.join(pastaOutput, "downloads");
+
+  let pastaCenas: string;
+  if (config.pasta_saida && config.pasta_saida.trim() !== "" && fs.existsSync(config.pasta_saida)) {
+    pastaCenas = config.pasta_saida;
+    console.log(`[saida] Pasta configurada: ${pastaCenas}`);
+  } else {
+    pastaCenas = path.join(pastaOutput, "cenas");
+    console.log(`[saida] Usando pasta padrão: ${pastaCenas}`);
+  }
+
   for (const p of [pastaOutput, pastaCenas, pastaDownloads]) {
     if (!fs.existsSync(p)) fs.mkdirSync(p, { recursive: true });
   }
@@ -233,4 +278,5 @@ export async function executar(config: ConfigProjeto): Promise<void> {
   console.log("╚════════════════════════════════════╝");
 
   gerarRelatorio(config, plano, contadores, inicioMs);
+  await perguntarLimpeza(pastaDownloads, pastaCenas);
 }

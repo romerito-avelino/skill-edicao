@@ -47,8 +47,16 @@ export function kenBurnsParaTom(tomVisual: number, tipoMomento: string): Direcao
   return KB_ALEATORIO[Math.floor(Math.random() * KB_ALEATORIO.length)];
 }
 
-// Mapeamento de categoria editorial (tipoAnimacao 1-4) para listas de composições
-const ANIMACOES_CATEGORIA: Record<number, string[]> = {
+// Banco de variações por categoria editorial
+const VARIACOES = {
+  textos_impacto: ["textos-v1", "textos-v2", "textos-v3", "textos-v4"],
+  mapas_mentais:  ["mapas-v1",  "mapas-v2",  "mapas-v3",  "mapas-v4"],
+  linha_tempo:    ["linha-v1",  "linha-v2",  "linha-v3",  "linha-v4"],
+  citacoes:       ["citacoes-v1", "citacoes-v2", "citacoes-v3", "citacoes-v4"],
+} as const;
+
+// Fallback para composições legadas (sem variação)
+const ANIMACOES_LEGADAS: Record<number, string[]> = {
   1: ["texto-explosao-centro", "titulo-particulas"],
   2: ["nos-conectados"],
   3: ["linha-tempo-animada"],
@@ -56,25 +64,57 @@ const ANIMACOES_CATEGORIA: Record<number, string[]> = {
 };
 
 const DURACAO_POR_TIPO: Record<string, number> = {
+  // Legadas
   "texto-explosao-centro": 7000,
   "titulo-particulas":     9000,
   "nos-conectados":        9000,
   "linha-tempo-animada":   8000,
   "texto-manuscrito":      6000,
   "fade-texto-flutuante":  4500,
+  // Banco de variações — mapas mentais
+  "mapas-v1": 9000, "mapas-v2": 9000, "mapas-v3": 9000, "mapas-v4": 9000,
+  // Banco de variações — textos de impacto
+  "textos-v1": 7000, "textos-v2": 7000, "textos-v3": 7000, "textos-v4": 7000,
+  // Banco de variações — linha do tempo
+  "linha-v1": 8000, "linha-v2": 8000, "linha-v3": 8000, "linha-v4": 8000,
+  // Banco de variações — citações
+  "citacoes-v1": 6000, "citacoes-v2": 7000, "citacoes-v3": 6000, "citacoes-v4": 7000,
 };
+
+// Guarda a última variação usada por categoria para evitar repetição consecutiva
+const ultimaVariacao: Record<string, string> = {};
+
+function sortearVariacao(opcoes: readonly string[], categoriaKey: string): string {
+  const ultima = ultimaVariacao[categoriaKey];
+  const disponiveis = opcoes.length > 1 ? opcoes.filter(v => v !== ultima) : [...opcoes];
+  const escolhida = disponiveis[Math.floor(Math.random() * disponiveis.length)];
+  ultimaVariacao[categoriaKey] = escolhida;
+  return escolhida;
+}
 
 export function resolverAnimacaoEditorial(
   tipoAnimacao: number,
   tipoMomento: string,
   indiceRemotion: number
 ): { tipo: string; duracao: number } {
-  if (tipoAnimacao === 5 || !ANIMACOES_CATEGORIA[tipoAnimacao]) {
+  // Modo misto automático: usa preset baseado no tipo de momento
+  if (tipoAnimacao === 5 || !ANIMACOES_LEGADAS[tipoAnimacao]) {
     const presetKey = presetParaTipoMomento(tipoMomento);
     const preset = PRESETS[presetKey];
     return { tipo: preset.tipo, duracao: preset.duracao };
   }
-  const opcoes = ANIMACOES_CATEGORIA[tipoAnimacao];
-  const tipo = opcoes[indiceRemotion % opcoes.length];
+
+  // Sorteia uma variação do banco correspondente à categoria escolhida
+  let tipo: string;
+  if (tipoAnimacao === 1) {
+    tipo = sortearVariacao(VARIACOES.textos_impacto, "textos_impacto");
+  } else if (tipoAnimacao === 2) {
+    tipo = sortearVariacao(VARIACOES.mapas_mentais, "mapas_mentais");
+  } else if (tipoAnimacao === 3) {
+    tipo = sortearVariacao(VARIACOES.linha_tempo, "linha_tempo");
+  } else {
+    tipo = sortearVariacao(VARIACOES.citacoes, "citacoes");
+  }
+
   return { tipo, duracao: DURACAO_POR_TIPO[tipo] ?? 7000 };
 }

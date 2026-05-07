@@ -31,6 +31,7 @@ export interface ConfigProjeto {
   pacoteDadosArquivo: string;
   thumbArquivo: string;
   canal?: ConfigCanal;
+  pasta_saida?: string;
 }
 
 export interface PlanoSegmento {
@@ -203,6 +204,16 @@ function escolherTipoEspacado(
   return disponiveis.reduce((melhor, f) => deficit(f) > deficit(melhor) ? f : melhor);
 }
 
+function calcularPosicoesRemotion(totalClips: number, cotaRemotion: number): Set<number> {
+  const posicoes = new Set<number>();
+  if (cotaRemotion <= 0) return posicoes;
+  const intervalo = totalClips / cotaRemotion;
+  for (let i = 0; i < cotaRemotion; i++) {
+    posicoes.add(Math.floor((i + 0.5) * intervalo));
+  }
+  return posicoes;
+}
+
 function mapearParaPlano(
   segmentosProcessados: SegmentoProcessado[],
   segmentos: Segmento[],
@@ -214,6 +225,11 @@ function mapearParaPlano(
   const totalClips = segmentosProcessados.reduce((acc, sp) => acc + sp.clips.length, 0);
   const cotas = calcularCotas(totalClips, ferramentas, config.distribuicao);
   const usados: Record<string, number> = { video_stock: 0, remotion_animacao: 0, imagem_ia: 0 };
+
+  // Pré-calcula posições uniformes para Remotion: um a cada ~(total/cota) clips,
+  // começando no meio do primeiro intervalo — evita concentração no início/fim.
+  const posicoesRemotion = calcularPosicoesRemotion(totalClips, cotas["remotion_animacao"] ?? 0);
+  const ferramentasSemRemotion = ferramentas.filter(f => f !== "remotion_animacao") as TipoAsset[];
 
   let numero = 1;
   let posicaoGlobal = 0;
@@ -232,9 +248,18 @@ function mapearParaPlano(
       const clipInicio = sp.inicio_ms + (clip.inicio_relativo_ms || 0);
       const clipFim    = sp.inicio_ms + (clip.fim_relativo_ms || sp.duracao_ms);
 
-      // Bug 3: seleção por clip com espaçamento por déficit
-      const tipoPreferido = escolherTipo(sp.tipo_momento, ferramentas, posicaoGlobal);
-      const tipoFinal = escolherTipoEspacado(tipoPreferido, ferramentas, cotas, usados, posicaoGlobal, totalClips);
+      let tipoFinal: TipoAsset;
+      if (!ferramentas.includes("remotion_animacao")) {
+        const tipoPreferido = escolherTipo(sp.tipo_momento, ferramentas, posicaoGlobal);
+        tipoFinal = escolherTipoEspacado(tipoPreferido, ferramentas, cotas, usados, posicaoGlobal, totalClips);
+      } else if (posicoesRemotion.has(posicaoGlobal)) {
+        tipoFinal = "remotion_animacao";
+      } else if (ferramentasSemRemotion.length > 0) {
+        const tipoPreferido = escolherTipo(sp.tipo_momento, ferramentasSemRemotion, posicaoGlobal);
+        tipoFinal = escolherTipoEspacado(tipoPreferido, ferramentasSemRemotion, cotas, usados, posicaoGlobal, totalClips);
+      } else {
+        tipoFinal = "remotion_animacao";
+      }
 
       let { queryPexels, promptImagem, fraseImpacto } = derivarDados(
         clip, tipoFinal, original?.texto ?? sp.texto

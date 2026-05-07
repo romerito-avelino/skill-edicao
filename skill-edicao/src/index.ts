@@ -97,7 +97,7 @@ function carregarCanal(canalId: string): ConfigCanal {
   return canalPadrao();
 }
 
-function lerProjeto(pastaProjeto: string): { canal_id: string } {
+function lerProjeto(pastaProjeto: string): { canal_id: string; pasta_saida?: string } {
   const arquivo = path.join(pastaProjeto, "projeto.json");
   if (fs.existsSync(arquivo)) {
     return JSON.parse(fs.readFileSync(arquivo, "utf-8"));
@@ -169,6 +169,7 @@ async function main() {
   const config = encontrarArquivos(pastaProjeto);
   const projeto = lerProjeto(pastaProjeto);
   config.canal = carregarCanal(projeto.canal_id);
+  config.pasta_saida = projeto.pasta_saida;
   console.log(`Projeto: ${config.nome}`);
   console.log(`Canal: ${config.canal.nome}`);
   console.log(`SRT: ${path.basename(config.srtArquivo)}`);
