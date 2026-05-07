@@ -26,6 +26,8 @@ export interface InfoCanal {
   estilo_visual: string;
   tom_proibido: string;
   palavras_engajam: string[];
+  persona?: string;
+  publico_alvo?: string;
 }
 
 export interface Clip {
@@ -133,8 +135,11 @@ export async function processarTodosSegmentos(
 
 CANAL: ${infoCanal.nome_canal}
 NICHO: ${infoCanal.nicho}
-GAP DE EDIÇÃO: ${infoCanal.gap_de_edicao}
-ESTILO: ${infoCanal.estilo_visual}
+${infoCanal.persona ? `PERSONA: ${infoCanal.persona}` : ""}
+${infoCanal.gap_de_edicao ? `GAP DE EDIÇÃO: ${infoCanal.gap_de_edicao}` : ""}
+${infoCanal.estilo_visual ? `ESTILO: ${infoCanal.estilo_visual}` : ""}
+${infoCanal.tom_proibido ? `TOM PROIBIDO: ${infoCanal.tom_proibido}` : ""}
+${infoCanal.publico_alvo ? `PÚBLICO-ALVO: ${infoCanal.publico_alvo}` : ""}
 PALETA: primaria=${paleta.cor_primaria} secundaria=${paleta.cor_secundaria} acento=${paleta.cor_acento}
 
 FERRAMENTAS HABILITADAS (use APENAS esses tipos): ${toolsStr}

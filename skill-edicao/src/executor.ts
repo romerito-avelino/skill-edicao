@@ -2,8 +2,9 @@ import * as fs from "fs";
 import * as path from "path";
 import { buscarPexelsVideo, gerarImagemReplicate } from "./asset-fetcher";
 import { gerarComandoVideoStock, executarFFmpeg } from "./ffmpeg-processor";
-import { renderizarFraseImpacto, renderizarKenBurns } from "./remotion-renderer";
-import { ConfigProjeto, PlanoEdicao, PlanoSegmento } from "./planner";
+import { renderizarFraseImpacto, renderizarKenBurns, ContextoRenderizacao } from "./remotion-renderer";
+import { ConfigProjeto, PlanoEdicao, PlanoSegmento, ConfigCanal } from "./planner";
+import { EstadoNarrativo, ContextoClip } from "./narrative-state";
 
 const DIRECAO_KB: Record<string, "zoom_in" | "zoom_out" | "pan_direita" | "pan_esquerda"> = {
   kenburns_zoom_in:       "zoom_in",
@@ -93,7 +94,9 @@ async function executarImagemIA(
 async function executarRemotion(
   clip: PlanoSegmento,
   pastaCenas: string,
-  contadores: Contadores
+  contadores: Contadores,
+  contextoNarrativo?: ContextoClip,
+  canal?: ConfigCanal
 ): Promise<void> {
   if (!clip.fraseImpacto) {
     contadores.falhas.push(`${clip.clipId}: sem fraseImpacto`);
@@ -107,12 +110,27 @@ async function executarRemotion(
     ? (clip.terco as "agressivo" | "duvidoso" | "esperancoso")
     : "agressivo";
 
+  const contextoRender: ContextoRenderizacao | undefined = contextoNarrativo
+    ? {
+        frase: clip.fraseImpacto,
+        tom: estiloValido,
+        pontoAtual: contextoNarrativo.pontoAtual,
+        pontosAnteriores: contextoNarrativo.revelados,
+        noAtual: contextoNarrativo.conceito,
+        nosAnteriores: contextoNarrativo.revelados,
+        temaCentral: contextoNarrativo.temaPrincipal,
+        progresso: contextoNarrativo.progresso,
+      }
+    : undefined;
+
   const res = await renderizarFraseImpacto(
     clip.fraseImpacto,
     saida,
     clip.duracao,
     estiloValido,
-    clip.animacao
+    clip.animacao,
+    contextoRender,
+    canal
   );
 
   if (res.sucesso) {
@@ -186,6 +204,15 @@ export async function executar(config: ConfigProjeto): Promise<void> {
   const contadores: Contadores = { pexels: 0, imagemIA: 0, remotion: 0, falhas: [] };
   const inicioMs = Date.now();
 
+  // Inicializa estado narrativo uma única vez antes do loop
+  const totalClipsRemotion = plano.segmentos.filter(s => s.tipoVisual === "remotion_animacao").length;
+  const estadoNarrativo = new EstadoNarrativo();
+  if (totalClipsRemotion > 0) {
+    console.log("\nAnalisando narrativa para animações cumulativas...");
+    await estadoNarrativo.inicializar(plano.segmentos.map(s => s.texto), config.pasta);
+  }
+  let clipRemotion = 0;
+
   for (let i = 0; i < plano.segmentos.length; i++) {
     const clip = plano.segmentos[i];
     console.log(`\n[${i + 1}/${plano.segmentos.length}] ${clip.clipId} — ${clip.tipoVisual} — ${clip.duracao}ms`);
@@ -195,7 +222,9 @@ export async function executar(config: ConfigProjeto): Promise<void> {
     } else if (clip.tipoVisual === "imagem_ia") {
       await executarImagemIA(clip, pastaDownloads, pastaCenas, contadores);
     } else if (clip.tipoVisual === "remotion_animacao") {
-      await executarRemotion(clip, pastaCenas, contadores);
+      clipRemotion++;
+      const contexto = estadoNarrativo.getContextoParaClip(clipRemotion, totalClipsRemotion);
+      await executarRemotion(clip, pastaCenas, contadores, contexto, config.canal);
     }
   }
 

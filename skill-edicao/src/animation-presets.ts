@@ -46,3 +46,35 @@ export function kenBurnsParaTom(tomVisual: number, tipoMomento: string): Direcao
   if (tomVisual === 3) return "pan_esquerda";
   return KB_ALEATORIO[Math.floor(Math.random() * KB_ALEATORIO.length)];
 }
+
+// Mapeamento de categoria editorial (tipoAnimacao 1-4) para listas de composições
+const ANIMACOES_CATEGORIA: Record<number, string[]> = {
+  1: ["texto-explosao-centro", "titulo-particulas"],
+  2: ["nos-conectados"],
+  3: ["linha-tempo-animada"],
+  4: ["texto-manuscrito", "fade-texto-flutuante"],
+};
+
+const DURACAO_POR_TIPO: Record<string, number> = {
+  "texto-explosao-centro": 7000,
+  "titulo-particulas":     9000,
+  "nos-conectados":        9000,
+  "linha-tempo-animada":   8000,
+  "texto-manuscrito":      6000,
+  "fade-texto-flutuante":  4500,
+};
+
+export function resolverAnimacaoEditorial(
+  tipoAnimacao: number,
+  tipoMomento: string,
+  indiceRemotion: number
+): { tipo: string; duracao: number } {
+  if (tipoAnimacao === 5 || !ANIMACOES_CATEGORIA[tipoAnimacao]) {
+    const presetKey = presetParaTipoMomento(tipoMomento);
+    const preset = PRESETS[presetKey];
+    return { tipo: preset.tipo, duracao: preset.duracao };
+  }
+  const opcoes = ANIMACOES_CATEGORIA[tipoAnimacao];
+  const tipo = opcoes[indiceRemotion % opcoes.length];
+  return { tipo, duracao: DURACAO_POR_TIPO[tipo] ?? 7000 };
+}

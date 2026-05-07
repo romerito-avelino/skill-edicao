@@ -1,0 +1,14 @@
+{
+  "id": "meu-canal",
+  "nome": "Nome do Canal",
+  "tipoPadrao": "historia_pessoal",
+  "paleta": {
+    "primaria": "#000000",
+    "secundaria": "#000000",
+    "destaque": "#FFFFFF",
+    "texto": "#FFFFFF",
+    "fundo": "rgba(0,0,0,0.85)"
+  },
+  "persona": "Descreva o apresentador ou estilo do canal",
+  "estiloNarrativo": "primeira_pessoa"
+}

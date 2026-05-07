@@ -1,12 +1,24 @@
 import * as dotenv from "dotenv";
 import * as path from "path";
 import * as fs from "fs";
+import { ConfigCanal } from "./planner";
 dotenv.config({ path: path.resolve(__dirname, "../.env") });
 
 export interface ResultadoRenderizacao {
   sucesso: boolean;
   arquivo_saida: string;
   erro?: string;
+}
+
+export interface ContextoRenderizacao {
+  frase?: string;
+  tom?: string;
+  pontoAtual?: string;
+  pontosAnteriores?: string[];
+  noAtual?: string;
+  nosAnteriores?: string[];
+  temaCentral?: string;
+  progresso?: number;
 }
 
 let bundleUrl: string | null = null;
@@ -106,7 +118,9 @@ export async function renderizarFraseImpacto(
   arquivo_saida: string,
   duracao_ms: number,
   estilo: "agressivo" | "duvidoso" | "esperancoso" = "agressivo",
-  compositionId: string = "FraseImpacto"
+  compositionId: string = "FraseImpacto",
+  contexto?: ContextoRenderizacao,
+  canal?: ConfigCanal
 ): Promise<ResultadoRenderizacao> {
   try {
     const duracao_final = Math.max(3000, duracao_ms);
@@ -145,11 +159,21 @@ export async function renderizarFraseImpacto(
 
     const props = {
       texto,
-      corTexto: config.corTexto,
-      corFundo: config.corFundo,
+      corTexto: canal?.paleta.texto ?? config.corTexto,
+      corFundo: canal?.paleta.fundo ?? config.corFundo,
+      corDestaque: canal?.paleta.destaque ?? "#F5C842",
       tamanhoFonte: config.tamanhoFonte,
       animacao: config.animacao,
       fundoUrl: "",
+      // Contexto narrativo (campos opcionais usados pelas composições cumulativas)
+      frase: contexto?.frase ?? texto,
+      tom: contexto?.tom ?? estilo,
+      pontoAtual: contexto?.pontoAtual ?? "",
+      pontosAnteriores: contexto?.pontosAnteriores ?? [],
+      noAtual: contexto?.noAtual ?? "",
+      nosAnteriores: contexto?.nosAnteriores ?? [],
+      temaCentral: contexto?.temaCentral ?? "",
+      progresso: contexto?.progresso ?? 0,
     };
 
     // Tenta o compositionId do preset; cai em FraseImpacto se não existir

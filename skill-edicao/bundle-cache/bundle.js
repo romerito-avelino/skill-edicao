@@ -477,33 +477,32 @@ const TituloParticulas = ({ texto, corTexto }) => {
 
 
 
-const TextoExplosaoCentro = ({ texto, corTexto }) => {
+const TextoExplosaoCentro = ({ texto, frase, corTexto }) => {
   const frame = (0,esm.useCurrentFrame)();
   const { durationInFrames } = (0,esm.useVideoConfig)();
-  const escala = (0,esm.interpolate)(frame, [0, 14], [0.35, 1], {
-    extrapolateLeft: "clamp",
-    extrapolateRight: "clamp"
-  });
+  const fraseExibida = (frase || texto || "").trim();
+  const palavras = fraseExibida.split(/\s+/).filter(Boolean);
+  const numPalavras = Math.max(palavras.length, 1);
+  const framesPorPalavra = Math.max(1, Math.floor(durationInFrames / numPalavras));
+  const palavraAtual = Math.min(Math.floor(frame / framesPorPalavra), numPalavras - 1);
   const opacidade = (0,esm.interpolate)(
     frame,
     [0, 8, durationInFrames - 8, durationInFrames],
     [0, 1, 1, 0],
     { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
   );
-  const brilhoInicial = (0,esm.interpolate)(frame, [0, 12, 20], [2.5, 1.4, 1], {
+  const frameNaPalavra = frame - palavraAtual * framesPorPalavra;
+  const escala = (0,esm.interpolate)(frameNaPalavra, [0, 8, framesPorPalavra], [0.4, 1, 1.05], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp"
   });
-  const raioGlow = (0,esm.interpolate)(frame, [0, 14], [120, 60], {
-    extrapolateLeft: "clamp",
-    extrapolateRight: "clamp"
-  });
+  const ehUltima = palavraAtual === numPalavras - 1;
   return /* @__PURE__ */ (0,jsx_runtime.jsxs)(esm.AbsoluteFill, { style: { overflow: "hidden" }, children: [
     /* @__PURE__ */ (0,jsx_runtime.jsx)(
       esm.AbsoluteFill,
       {
         style: {
-          background: "linear-gradient(135deg, #0a0000 0%, #1a0808 40%, #080808 100%)"
+          background: "linear-gradient(160deg, #080808 0%, #151515 50%, #080808 100%)"
         }
       }
     ),
@@ -511,7 +510,7 @@ const TextoExplosaoCentro = ({ texto, corTexto }) => {
       esm.AbsoluteFill,
       {
         style: {
-          background: `radial-gradient(ellipse at center, rgba(100,10,10,0.25) 0%, transparent 55%)`
+          background: "radial-gradient(ellipse at center, rgba(30,20,0,0.3) 0%, transparent 60%)"
         }
       }
     ),
@@ -519,51 +518,37 @@ const TextoExplosaoCentro = ({ texto, corTexto }) => {
       esm.AbsoluteFill,
       {
         style: {
-          background: "radial-gradient(ellipse at center, transparent 45%, rgba(0,0,0,0.95) 100%)"
+          background: "radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.95) 100%)"
         }
       }
     ),
-    /* @__PURE__ */ (0,jsx_runtime.jsxs)(
+    /* @__PURE__ */ (0,jsx_runtime.jsx)(
       esm.AbsoluteFill,
       {
         style: {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          padding: "0 120px",
           opacity: opacidade
         },
-        children: [
-          /* @__PURE__ */ (0,jsx_runtime.jsx)(
-            "div",
-            {
-              style: {
-                position: "absolute",
-                width: raioGlow * 2,
-                height: raioGlow * 2,
-                borderRadius: "50%",
-                background: "radial-gradient(circle, rgba(255,60,60,0.12) 0%, transparent 70%)"
-              }
-            }
-          ),
-          /* @__PURE__ */ (0,jsx_runtime.jsx)(
-            "p",
-            {
-              style: {
-                color: corTexto || "#FFFFFF",
-                fontSize: 84,
-                fontFamily: "Georgia, serif",
-                textAlign: "center",
-                lineHeight: 1.3,
-                margin: 0,
-                transform: `scale(${escala})`,
-                filter: `brightness(${brilhoInicial})`,
-                textShadow: "0 4px 30px rgba(0,0,0,1), 0 2px 8px rgba(0,0,0,1), 0 0 60px rgba(255,255,255,0.08)"
-              },
-              children: texto
-            }
-          )
-        ]
+        children: /* @__PURE__ */ (0,jsx_runtime.jsx)(
+          "p",
+          {
+            style: {
+              color: ehUltima ? "#F5C842" : corTexto || "#FFFFFF",
+              fontSize: ehUltima ? 140 : 120,
+              fontFamily: "Georgia, serif",
+              textAlign: "center",
+              lineHeight: 1.1,
+              margin: 0,
+              padding: "0 80px",
+              transform: `scale(${escala})`,
+              fontWeight: ehUltima ? "bold" : "normal",
+              textShadow: ehUltima ? "0 0 60px rgba(245,200,66,0.4), 0 4px 30px rgba(0,0,0,1)" : "0 4px 30px rgba(0,0,0,1)"
+            },
+            children: palavras[palavraAtual] || ""
+          }
+        )
       }
     )
   ] });
@@ -573,26 +558,31 @@ const TextoExplosaoCentro = ({ texto, corTexto }) => {
 
 
 
-const TextoManuscrito = ({ texto }) => {
+const TextoManuscrito = ({ texto, frase }) => {
   const frame = (0,esm.useCurrentFrame)();
   const { durationInFrames } = (0,esm.useVideoConfig)();
+  const fraseExibida = (frase || texto || "").trim();
   const opacidade = (0,esm.interpolate)(
     frame,
     [0, 12, durationInFrames - 12, durationInFrames],
     [0, 1, 1, 0],
     { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
   );
+  const aspasOpacidade = (0,esm.interpolate)(frame, [0, 18], [0, 1], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp"
+  });
+  const aspasEscala = (0,esm.interpolate)(frame, [0, 18], [0.4, 1], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp"
+  });
   const charsVisiveis = Math.floor(
-    (0,esm.interpolate)(frame, [5, durationInFrames * 0.68], [0, texto.length], {
+    (0,esm.interpolate)(frame, [20, durationInFrames * 0.75], [0, fraseExibida.length], {
       extrapolateLeft: "clamp",
       extrapolateRight: "clamp"
     })
   );
   const cursor = frame % 14 < 7 ? "|" : "";
-  const linhaLargura = (0,esm.interpolate)(frame, [10, 40], [0, 200], {
-    extrapolateLeft: "clamp",
-    extrapolateRight: "clamp"
-  });
   return /* @__PURE__ */ (0,jsx_runtime.jsxs)(esm.AbsoluteFill, { style: { overflow: "hidden" }, children: [
     /* @__PURE__ */ (0,jsx_runtime.jsx)(
       esm.AbsoluteFill,
@@ -626,7 +616,47 @@ const TextoManuscrito = ({ texto }) => {
         }
       }
     ),
-    /* @__PURE__ */ (0,jsx_runtime.jsxs)(
+    /* @__PURE__ */ (0,jsx_runtime.jsx)(
+      "div",
+      {
+        style: {
+          position: "absolute",
+          top: "10%",
+          left: "8%",
+          fontSize: 220,
+          fontFamily: "Georgia, serif",
+          color: "#D4A853",
+          opacity: aspasOpacidade * 0.5,
+          transform: `scale(${aspasEscala})`,
+          lineHeight: 1,
+          transformOrigin: "top left",
+          textShadow: "0 4px 20px rgba(212,168,83,0.3)",
+          userSelect: "none"
+        },
+        children: "\u201C"
+      }
+    ),
+    /* @__PURE__ */ (0,jsx_runtime.jsx)(
+      "div",
+      {
+        style: {
+          position: "absolute",
+          bottom: "10%",
+          right: "8%",
+          fontSize: 220,
+          fontFamily: "Georgia, serif",
+          color: "#D4A853",
+          opacity: aspasOpacidade * 0.5,
+          lineHeight: 1,
+          transformOrigin: "bottom right",
+          transform: `scale(${aspasEscala})`,
+          textShadow: "0 4px 20px rgba(212,168,83,0.3)",
+          userSelect: "none"
+        },
+        children: "\u201D"
+      }
+    ),
+    /* @__PURE__ */ (0,jsx_runtime.jsx)(
       esm.AbsoluteFill,
       {
         style: {
@@ -634,42 +664,28 @@ const TextoManuscrito = ({ texto }) => {
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          padding: "0 140px",
+          padding: "0 200px",
           opacity: opacidade
         },
-        children: [
-          /* @__PURE__ */ (0,jsx_runtime.jsxs)(
-            "p",
-            {
-              style: {
-                color: "#F5E6C8",
-                fontSize: 72,
-                fontFamily: "Georgia, 'Times New Roman', serif",
-                textAlign: "center",
-                lineHeight: 1.45,
-                margin: 0,
-                textShadow: "0 2px 12px rgba(0,0,0,0.85), 0 1px 3px rgba(0,0,0,0.9)",
-                letterSpacing: "0.01em"
-              },
-              children: [
-                texto.substring(0, charsVisiveis),
-                /* @__PURE__ */ (0,jsx_runtime.jsx)("span", { style: { opacity: 0.7, color: "#D4A853" }, children: cursor })
-              ]
-            }
-          ),
-          /* @__PURE__ */ (0,jsx_runtime.jsx)(
-            "div",
-            {
-              style: {
-                marginTop: 28,
-                height: 1,
-                width: linhaLargura,
-                background: "linear-gradient(90deg, transparent, #D4A853, transparent)",
-                opacity: 0.6
-              }
-            }
-          )
-        ]
+        children: /* @__PURE__ */ (0,jsx_runtime.jsxs)(
+          "p",
+          {
+            style: {
+              color: "#F5E6C8",
+              fontSize: 68,
+              fontFamily: "Georgia, 'Times New Roman', serif",
+              textAlign: "center",
+              lineHeight: 1.55,
+              margin: 0,
+              textShadow: "0 2px 12px rgba(0,0,0,0.85), 0 1px 3px rgba(0,0,0,0.9)",
+              letterSpacing: "0.02em"
+            },
+            children: [
+              fraseExibida.substring(0, charsVisiveis),
+              /* @__PURE__ */ (0,jsx_runtime.jsx)("span", { style: { opacity: 0.7, color: "#D4A853" }, children: cursor })
+            ]
+          }
+        )
       }
     )
   ] });
@@ -744,7 +760,22 @@ const FadeTextoFlutuante = ({ texto, corTexto }) => {
 
 
 
-const NOS = [
+const POSICOES_NOS = [
+  { x: 25, y: 22 },
+  { x: 75, y: 22 },
+  { x: 15, y: 50 },
+  { x: 85, y: 50 },
+  { x: 25, y: 78 },
+  { x: 75, y: 78 },
+  { x: 50, y: 12 },
+  { x: 50, y: 88 },
+  { x: 35, y: 36 },
+  { x: 65, y: 36 },
+  { x: 35, y: 64 },
+  { x: 65, y: 64 }
+];
+const CENTRO = { x: 50, y: 50 };
+const NOS_FALLBACK = [
   { x: 12, y: 18 },
   { x: 32, y: 12 },
   { x: 58, y: 15 },
@@ -758,7 +789,7 @@ const NOS = [
   { x: 50, y: 28 },
   { x: 46, y: 56 }
 ];
-const CONEXOES = [
+const CONEXOES_FALLBACK = [
   [0, 1],
   [1, 2],
   [2, 3],
@@ -777,7 +808,13 @@ const CONEXOES = [
   [3, 5],
   [6, 9]
 ];
-const NosConectados = ({ texto, corTexto }) => {
+const NosConectados = ({
+  texto,
+  corTexto,
+  noAtual = "",
+  nosAnteriores = [],
+  temaCentral = ""
+}) => {
   const frame = (0,esm.useCurrentFrame)();
   const { durationInFrames } = (0,esm.useVideoConfig)();
   const W = 1920;
@@ -788,6 +825,130 @@ const NosConectados = ({ texto, corTexto }) => {
     [0, 1, 1, 0],
     { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
   );
+  if (noAtual) {
+    const cx0 = CENTRO.x / 100 * W;
+    const cy0 = CENTRO.y / 100 * H;
+    const ixNovo = nosAnteriores.length % POSICOES_NOS.length;
+    const posNovo = POSICOES_NOS[ixNovo];
+    const destX = posNovo.x / 100 * W;
+    const destY = posNovo.y / 100 * H;
+    const dx = destX - cx0;
+    const dy = destY - cy0;
+    const comp = Math.sqrt(dx * dx + dy * dy);
+    const origemX = destX + dx / comp * Math.max(W, H) * 0.55;
+    const origemY = destY + dy / comp * Math.max(W, H) * 0.55;
+    const vooProgress = (0,esm.interpolate)(frame, [5, 25], [0, 1], {
+      extrapolateLeft: "clamp",
+      extrapolateRight: "clamp"
+    });
+    const curX = origemX + (destX - origemX) * vooProgress;
+    const curY = origemY + (destY - origemY) * vooProgress;
+    const linhaProgress = (0,esm.interpolate)(frame, [20, 42], [0, 1], {
+      extrapolateLeft: "clamp",
+      extrapolateRight: "clamp"
+    });
+    const noOpacity = (0,esm.interpolate)(frame, [18, 34], [0, 1], {
+      extrapolateLeft: "clamp",
+      extrapolateRight: "clamp"
+    });
+    return /* @__PURE__ */ (0,jsx_runtime.jsxs)(esm.AbsoluteFill, { style: { overflow: "hidden" }, children: [
+      /* @__PURE__ */ (0,jsx_runtime.jsx)(
+        esm.AbsoluteFill,
+        {
+          style: {
+            background: "linear-gradient(135deg, #050510 0%, #0c0c1e 55%, #050508 100%)"
+          }
+        }
+      ),
+      /* @__PURE__ */ (0,jsx_runtime.jsx)(
+        esm.AbsoluteFill,
+        {
+          style: {
+            background: "radial-gradient(ellipse at center, transparent 45%, rgba(0,0,0,0.9) 100%)"
+          }
+        }
+      ),
+      /* @__PURE__ */ (0,jsx_runtime.jsx)(esm.AbsoluteFill, { style: { opacity: opacidade }, children: /* @__PURE__ */ (0,jsx_runtime.jsxs)("svg", { width: W, height: H, style: { position: "absolute" }, children: [
+        nosAnteriores.map((no, i) => {
+          const pos = POSICOES_NOS[i % POSICOES_NOS.length];
+          const cx = pos.x / 100 * W;
+          const cy = pos.y / 100 * H;
+          const label = no.length > 12 ? no.substring(0, 12) + "\u2026" : no;
+          return /* @__PURE__ */ (0,jsx_runtime.jsxs)("g", { children: [
+            /* @__PURE__ */ (0,jsx_runtime.jsx)(
+              "line",
+              {
+                x1: cx0,
+                y1: cy0,
+                x2: cx,
+                y2: cy,
+                stroke: "#F5C842",
+                strokeWidth: 1,
+                opacity: 0.22
+              }
+            ),
+            /* @__PURE__ */ (0,jsx_runtime.jsx)("circle", { cx, cy, r: 5, fill: "#F5C842", opacity: 0.38 }),
+            /* @__PURE__ */ (0,jsx_runtime.jsx)(
+              "text",
+              {
+                x: cx,
+                y: cy - 14,
+                textAnchor: "middle",
+                fill: "#F5C842",
+                fontSize: 18,
+                opacity: 0.38,
+                fontFamily: "Georgia, serif",
+                children: label
+              }
+            )
+          ] }, `prev-${i}`);
+        }),
+        /* @__PURE__ */ (0,jsx_runtime.jsx)(
+          "line",
+          {
+            x1: cx0,
+            y1: cy0,
+            x2: cx0 + (destX - cx0) * linhaProgress,
+            y2: cy0 + (destY - cy0) * linhaProgress,
+            stroke: "#F5C842",
+            strokeWidth: 1.5,
+            opacity: 0.55 * linhaProgress
+          }
+        ),
+        /* @__PURE__ */ (0,jsx_runtime.jsx)("circle", { cx: curX, cy: curY, r: 14, fill: "rgba(245,200,66,0.18)", opacity: noOpacity }),
+        /* @__PURE__ */ (0,jsx_runtime.jsx)("circle", { cx: curX, cy: curY, r: 8, fill: "#F5C842", opacity: noOpacity }),
+        /* @__PURE__ */ (0,jsx_runtime.jsx)(
+          "text",
+          {
+            x: destX,
+            y: destY - 24,
+            textAnchor: "middle",
+            fill: "#F5C842",
+            fontSize: 24,
+            opacity: linhaProgress,
+            fontFamily: "Georgia, serif",
+            fontWeight: "bold",
+            children: noAtual.length > 16 ? noAtual.substring(0, 16) + "\u2026" : noAtual
+          }
+        ),
+        /* @__PURE__ */ (0,jsx_runtime.jsx)("circle", { cx: cx0, cy: cy0, r: 26, fill: "rgba(245,200,66,0.18)" }),
+        /* @__PURE__ */ (0,jsx_runtime.jsx)("circle", { cx: cx0, cy: cy0, r: 16, fill: "#F5C842" }),
+        temaCentral ? /* @__PURE__ */ (0,jsx_runtime.jsx)(
+          "text",
+          {
+            x: cx0,
+            y: cy0 + 44,
+            textAnchor: "middle",
+            fill: "#F5C842",
+            fontSize: 22,
+            fontFamily: "Georgia, serif",
+            opacity: 0.85,
+            children: temaCentral.length > 22 ? temaCentral.substring(0, 22) + "\u2026" : temaCentral
+          }
+        ) : null
+      ] }) })
+    ] });
+  }
   return /* @__PURE__ */ (0,jsx_runtime.jsxs)(esm.AbsoluteFill, { style: { overflow: "hidden" }, children: [
     /* @__PURE__ */ (0,jsx_runtime.jsx)(
       esm.AbsoluteFill,
@@ -807,23 +968,23 @@ const NosConectados = ({ texto, corTexto }) => {
     ),
     /* @__PURE__ */ (0,jsx_runtime.jsxs)(esm.AbsoluteFill, { style: { opacity: opacidade }, children: [
       /* @__PURE__ */ (0,jsx_runtime.jsxs)("svg", { width: W, height: H, style: { position: "absolute" }, children: [
-        CONEXOES.map(([a, b], i) => {
+        CONEXOES_FALLBACK.map(([a, b], i) => {
           const atraso = i * 4;
-          const progresso = (0,esm.interpolate)(frame, [atraso, atraso + 22], [0, 1], {
+          const prog = (0,esm.interpolate)(frame, [atraso, atraso + 22], [0, 1], {
             extrapolateLeft: "clamp",
             extrapolateRight: "clamp"
           });
-          const x1 = NOS[a].x / 100 * W;
-          const y1 = NOS[a].y / 100 * H;
-          const x2 = NOS[b].x / 100 * W;
-          const y2 = NOS[b].y / 100 * H;
+          const x1 = NOS_FALLBACK[a].x / 100 * W;
+          const y1 = NOS_FALLBACK[a].y / 100 * H;
+          const x2 = NOS_FALLBACK[b].x / 100 * W;
+          const y2 = NOS_FALLBACK[b].y / 100 * H;
           return /* @__PURE__ */ (0,jsx_runtime.jsx)(
             "line",
             {
               x1,
               y1,
-              x2: x1 + (x2 - x1) * progresso,
-              y2: y1 + (y2 - y1) * progresso,
+              x2: x1 + (x2 - x1) * prog,
+              y2: y1 + (y2 - y1) * prog,
               stroke: "#F5C842",
               strokeWidth: 1.2,
               opacity: 0.32
@@ -831,7 +992,7 @@ const NosConectados = ({ texto, corTexto }) => {
             i
           );
         }),
-        NOS.map((no, i) => {
+        NOS_FALLBACK.map((no, i) => {
           const pulso = (0,esm.interpolate)(
             (frame + i * 8) % 50,
             [0, 25, 50],
@@ -884,23 +1045,179 @@ const NosConectados = ({ texto, corTexto }) => {
 
 
 
-const TOTAL_PONTOS = 5;
-const LinhaTempoAnimada = ({ texto, corTexto }) => {
+const TOTAL_FALLBACK = 5;
+const LinhaTempoAnimada = ({
+  texto,
+  corTexto,
+  pontoAtual = "",
+  pontosAnteriores = [],
+  progresso = 0
+}) => {
   const frame = (0,esm.useCurrentFrame)();
   const { durationInFrames } = (0,esm.useVideoConfig)();
   const W = 1920;
   const H = 1080;
-  const startX = 260;
-  const endX = W - 260;
-  const lineY = H * 0.65;
-  const segmento = (endX - startX) / (TOTAL_PONTOS - 1);
+  const startX = 200;
+  const endX = W - 200;
+  const lineY = H * 0.6;
   const opacidade = (0,esm.interpolate)(
     frame,
     [0, 10, durationInFrames - 10, durationInFrames],
     [0, 1, 1, 0],
     { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
   );
-  const linhaProgresso = (0,esm.interpolate)(frame, [5, 42], [0, endX - startX], {
+  if (pontoAtual) {
+    const todosOsPontos = [...pontosAnteriores, pontoAtual];
+    const totalPontos = Math.max(todosOsPontos.length, 2);
+    const segmento = (endX - startX) / (totalPontos - 1);
+    const linhaProgresso = (0,esm.interpolate)(frame, [5, 35], [0, endX - startX], {
+      extrapolateLeft: "clamp",
+      extrapolateRight: "clamp"
+    });
+    const raioEntrada = (0,esm.interpolate)(frame, [15, 28], [0, 14], {
+      extrapolateLeft: "clamp",
+      extrapolateRight: "clamp"
+    });
+    const raioPulso = (0,esm.interpolate)(frame, [28, 36, 44], [14, 22, 14], {
+      extrapolateLeft: "clamp",
+      extrapolateRight: "clamp"
+    });
+    const raioAtual = frame < 28 ? raioEntrada : raioPulso;
+    const textoAtualOp = (0,esm.interpolate)(frame, [28, 44], [0, 1], {
+      extrapolateLeft: "clamp",
+      extrapolateRight: "clamp"
+    });
+    return /* @__PURE__ */ (0,jsx_runtime.jsxs)(esm.AbsoluteFill, { style: { overflow: "hidden" }, children: [
+      /* @__PURE__ */ (0,jsx_runtime.jsx)(
+        esm.AbsoluteFill,
+        {
+          style: {
+            background: "linear-gradient(160deg, #060612 0%, #0e0e22 60%, #060608 100%)"
+          }
+        }
+      ),
+      /* @__PURE__ */ (0,jsx_runtime.jsx)(
+        esm.AbsoluteFill,
+        {
+          style: {
+            background: "radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.9) 100%)"
+          }
+        }
+      ),
+      /* @__PURE__ */ (0,jsx_runtime.jsxs)(esm.AbsoluteFill, { style: { opacity: opacidade }, children: [
+        /* @__PURE__ */ (0,jsx_runtime.jsxs)("svg", { width: W, height: H, style: { position: "absolute" }, children: [
+          /* @__PURE__ */ (0,jsx_runtime.jsx)(
+            "line",
+            {
+              x1: startX,
+              y1: lineY,
+              x2: startX + linhaProgresso,
+              y2: lineY,
+              stroke: "#F5C842",
+              strokeWidth: 3,
+              opacity: 0.6
+            }
+          ),
+          pontosAnteriores.map((ponto, i) => {
+            const cx = startX + i * segmento;
+            const label = ponto.length > 14 ? ponto.substring(0, 14) + "\u2026" : ponto;
+            return /* @__PURE__ */ (0,jsx_runtime.jsxs)("g", { children: [
+              /* @__PURE__ */ (0,jsx_runtime.jsx)("circle", { cx, cy: lineY, r: 6, fill: "#F5C842", opacity: 0.4 }),
+              /* @__PURE__ */ (0,jsx_runtime.jsx)(
+                "line",
+                {
+                  x1: cx,
+                  y1: lineY - 6,
+                  x2: cx,
+                  y2: lineY - 40,
+                  stroke: "#F5C842",
+                  strokeWidth: 1,
+                  opacity: 0.25
+                }
+              ),
+              /* @__PURE__ */ (0,jsx_runtime.jsx)(
+                "text",
+                {
+                  x: cx,
+                  y: lineY - 52,
+                  textAnchor: "middle",
+                  fill: "#F5C842",
+                  fontSize: 20,
+                  opacity: 0.4,
+                  fontFamily: "Georgia, serif",
+                  children: label
+                }
+              )
+            ] }, `prev-${i}`);
+          }),
+          (() => {
+            const ix = pontosAnteriores.length;
+            const cx = startX + ix * segmento;
+            const label = pontoAtual.length > 18 ? pontoAtual.substring(0, 18) + "\u2026" : pontoAtual;
+            return /* @__PURE__ */ (0,jsx_runtime.jsxs)("g", { children: [
+              /* @__PURE__ */ (0,jsx_runtime.jsx)("circle", { cx, cy: lineY, r: raioAtual + 12, fill: "rgba(245,200,66,0.15)" }),
+              /* @__PURE__ */ (0,jsx_runtime.jsx)("circle", { cx, cy: lineY, r: raioAtual, fill: "#F5C842" }),
+              /* @__PURE__ */ (0,jsx_runtime.jsx)(
+                "line",
+                {
+                  x1: cx,
+                  y1: lineY - raioAtual,
+                  x2: cx,
+                  y2: lineY - 55,
+                  stroke: "#F5C842",
+                  strokeWidth: 1.5,
+                  opacity: 0.55 * textoAtualOp
+                }
+              ),
+              /* @__PURE__ */ (0,jsx_runtime.jsx)(
+                "text",
+                {
+                  x: cx,
+                  y: lineY - 68,
+                  textAnchor: "middle",
+                  fill: "#F5C842",
+                  fontSize: 26,
+                  opacity: textoAtualOp,
+                  fontFamily: "Georgia, serif",
+                  fontWeight: "bold",
+                  children: label
+                }
+              )
+            ] });
+          })()
+        ] }),
+        /* @__PURE__ */ (0,jsx_runtime.jsx)(
+          "div",
+          {
+            style: {
+              position: "absolute",
+              bottom: 55,
+              left: "50%",
+              transform: "translateX(-50%)",
+              width: 320,
+              height: 3,
+              backgroundColor: "rgba(245,200,66,0.18)",
+              borderRadius: 2
+            },
+            children: /* @__PURE__ */ (0,jsx_runtime.jsx)(
+              "div",
+              {
+                style: {
+                  width: `${Math.round(progresso * 100)}%`,
+                  height: "100%",
+                  backgroundColor: "#F5C842",
+                  borderRadius: 2,
+                  opacity: 0.7
+                }
+              }
+            )
+          }
+        )
+      ] })
+    ] });
+  }
+  const segmentoFb = (endX - startX) / (TOTAL_FALLBACK - 1);
+  const linhaProgressoFb = (0,esm.interpolate)(frame, [5, 42], [0, endX - startX], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp"
   });
@@ -930,7 +1247,6 @@ const LinhaTempoAnimada = ({ texto, corTexto }) => {
             flexDirection: "column",
             alignItems: "center",
             justifyContent: "flex-start",
-            paddingTop: 160,
             padding: "160px 140px 0"
           },
           children: /* @__PURE__ */ (0,jsx_runtime.jsx)(
@@ -956,15 +1272,15 @@ const LinhaTempoAnimada = ({ texto, corTexto }) => {
           {
             x1: startX,
             y1: lineY,
-            x2: startX + linhaProgresso,
+            x2: startX + linhaProgressoFb,
             y2: lineY,
             stroke: "#F5C842",
             strokeWidth: 2,
             opacity: 0.55
           }
         ),
-        Array.from({ length: TOTAL_PONTOS }).map((_, i) => {
-          const cx = startX + i * segmento;
+        Array.from({ length: TOTAL_FALLBACK }).map((_, i) => {
+          const cx = startX + i * segmentoFb;
           const atraso = 10 + i * 9;
           const aparece = (0,esm.interpolate)(frame, [atraso, atraso + 12], [0, 1], {
             extrapolateLeft: "clamp",
@@ -1041,11 +1357,11 @@ const RemotionRoot = () => {
         width: 1920,
         height: 1080,
         defaultProps: {
-          texto: "Dinheiro c\xEA pode recuperar. Tempo\u2026 n\xE3o.",
+          texto: "[Texto da anima\xE7\xE3o]",
           corTexto: "#FFFFFF",
-          corFundo: "rgba(0,0,0,0.85)",
-          tamanhoFonte: 72,
-          animacao: "palavra_por_palavra",
+          corFundo: "rgba(0,0,0,0.9)",
+          tamanhoFonte: 64,
+          animacao: "fade_bloco",
           fundoUrl: ""
         }
       }
@@ -1060,11 +1376,11 @@ const RemotionRoot = () => {
         width: 1920,
         height: 1080,
         defaultProps: {
-          texto: "N\xF3s j\xE1 estamos de meio dia pra tarde.",
-          subtexto: "Aroldo do Pix",
+          texto: "[Texto da anima\xE7\xE3o]",
+          subtexto: "[Nome do Canal]",
           estilo: "madeira",
-          corTexto: "#F5E6D3",
-          corDestaque: "#D4A853"
+          corTexto: "#FFFFFF",
+          corDestaque: "#F5C842"
         }
       }
     ),
@@ -1078,11 +1394,11 @@ const RemotionRoot = () => {
         width: 1920,
         height: 1080,
         defaultProps: {
-          texto: "Dinheiro c\xEA pode recuperar. Tempo\u2026 n\xE3o.",
+          texto: "[Texto da anima\xE7\xE3o]",
           corTexto: "#FFFFFF",
           corFundo: "rgba(0,0,0,0.9)",
-          tamanhoFonte: 80,
-          animacao: "palavra_por_palavra",
+          tamanhoFonte: 64,
+          animacao: "fade_bloco",
           fundoUrl: ""
         }
       }
@@ -1097,12 +1413,15 @@ const RemotionRoot = () => {
         width: 1920,
         height: 1080,
         defaultProps: {
-          texto: "Dinheiro c\xEA pode recuperar. Tempo\u2026 n\xE3o.",
+          texto: "[Texto da anima\xE7\xE3o]",
           corTexto: "#FFFFFF",
-          corFundo: "rgba(0,0,0,0.92)",
-          tamanhoFonte: 84,
+          corFundo: "rgba(0,0,0,0.9)",
+          tamanhoFonte: 64,
           animacao: "fade_bloco",
-          fundoUrl: ""
+          fundoUrl: "",
+          frase: "[Texto da anima\xE7\xE3o]",
+          tom: "neutro",
+          progresso: 0
         }
       }
     ),
@@ -1116,12 +1435,15 @@ const RemotionRoot = () => {
         width: 1920,
         height: 1080,
         defaultProps: {
-          texto: "Dinheiro c\xEA pode recuperar. Tempo\u2026 n\xE3o.",
-          corTexto: "#F5E6C8",
-          corFundo: "rgba(61,28,10,0.9)",
-          tamanhoFonte: 72,
-          animacao: "maquina_escrever",
-          fundoUrl: ""
+          texto: "[Texto da anima\xE7\xE3o]",
+          corTexto: "#FFFFFF",
+          corFundo: "rgba(0,0,0,0.9)",
+          tamanhoFonte: 64,
+          animacao: "fade_bloco",
+          fundoUrl: "",
+          frase: "[Texto da anima\xE7\xE3o]",
+          tom: "neutro",
+          progresso: 0
         }
       }
     ),
@@ -1135,10 +1457,10 @@ const RemotionRoot = () => {
         width: 1920,
         height: 1080,
         defaultProps: {
-          texto: "Dinheiro c\xEA pode recuperar. Tempo\u2026 n\xE3o.",
+          texto: "[Texto da anima\xE7\xE3o]",
           corTexto: "#FFFFFF",
-          corFundo: "rgba(0,0,0,0.8)",
-          tamanhoFonte: 68,
+          corFundo: "rgba(0,0,0,0.9)",
+          tamanhoFonte: 64,
           animacao: "fade_bloco",
           fundoUrl: ""
         }
@@ -1154,12 +1476,16 @@ const RemotionRoot = () => {
         width: 1920,
         height: 1080,
         defaultProps: {
-          texto: "Dinheiro c\xEA pode recuperar. Tempo\u2026 n\xE3o.",
+          texto: "[Texto da anima\xE7\xE3o]",
           corTexto: "#FFFFFF",
           corFundo: "rgba(0,0,0,0.9)",
           tamanhoFonte: 64,
           animacao: "fade_bloco",
-          fundoUrl: ""
+          fundoUrl: "",
+          noAtual: "[Conceito]",
+          nosAnteriores: [],
+          temaCentral: "[Tema principal do v\xEDdeo]",
+          progresso: 0
         }
       }
     ),
@@ -1173,12 +1499,15 @@ const RemotionRoot = () => {
         width: 1920,
         height: 1080,
         defaultProps: {
-          texto: "Dinheiro c\xEA pode recuperar. Tempo\u2026 n\xE3o.",
+          texto: "[Texto da anima\xE7\xE3o]",
           corTexto: "#FFFFFF",
           corFundo: "rgba(0,0,0,0.9)",
-          tamanhoFonte: 68,
+          tamanhoFonte: 64,
           animacao: "fade_bloco",
-          fundoUrl: ""
+          fundoUrl: "",
+          pontoAtual: "[Ponto da timeline]",
+          pontosAnteriores: [],
+          progresso: 0
         }
       }
     )

@@ -1,0 +1,14 @@
+{
+  "id": "aroldo-do-pix",
+  "nome": "Aroldo do Pix",
+  "tipoPadrao": "historia_pessoal",
+  "paleta": {
+    "primaria": "#D4651A",
+    "secundaria": "#8B4513",
+    "destaque": "#F5C842",
+    "texto": "#FFFFFF",
+    "fundo": "rgba(0,0,0,0.85)"
+  },
+  "persona": "Homem brasileiro, 65 anos, contador de histórias de vida",
+  "estiloNarrativo": "primeira_pessoa"
+}

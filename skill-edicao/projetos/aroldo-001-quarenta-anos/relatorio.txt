@@ -1,13 +1,13 @@
 ════════════════════════════════
  SKILL-EDIÇÃO | Relatório Final
  Projeto: aroldo-001-quarenta-anos
- Data: 03/05/2026 12:08
+ Data: 07/05/2026 06:51
 ════════════════════════════════
 Clips gerados: 28
 ├─ Pexels:    12 clips
 ├─ Imagem IA: 8 clips
 └─ Remotion:  8 clips
 
-Tempo total: 8 minutos
+Tempo total: 7 minutos
 Falhas: 0
 ════════════════════════════════

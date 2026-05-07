@@ -2,7 +2,7 @@ import * as fs from "fs";
 import * as path from "path";
 import * as dotenv from "dotenv";
 import { InfoCanal, PaletaThumbnail } from "./visual-selector";
-import { ConfigProjeto, planejar } from "./planner";
+import { ConfigProjeto, ConfigCanal, planejar } from "./planner";
 import { executar } from "./executor";
 import { controleEditorial, resumirConfigEditorial } from "./editorial";
 
@@ -27,24 +27,104 @@ function encontrarArquivos(pastaProjeto: string): ConfigProjeto {
   };
 }
 
-function extrairInfoCanal(_nomeProjeto: string): InfoCanal {
+const FONTE_VERDADE = path.join(
+  __dirname, "..", "..", "..",
+  "agente-ideias", "src", "data", "nichos"
+);
+
+function normalizarCanal(dados: any): ConfigCanal {
   return {
-    nome_canal: "Aroldo do Pix",
-    nicho: "Erros financeiros comuns após os 40",
-    avatar: "Seu Aroldo",
-    gap_de_edicao: "Trocar animações genéricas por imagens evocativas (fotos antigas, cenários de interior, mãos trabalhadas), ritmo pausado, texto na tela reforçando frases-chave, música nostálgica sutil",
-    estilo_visual: "Tons terrosos, quentes, alaranjados, sépia. Fazenda, campo, pôr do sol, mãos calejadas, cadeira de madeira, café, gado",
-    tom_proibido: "formal acadêmico, técnico excessivo, motivacional exagerado, linguagem corporativa",
-    palavras_engajam: ["Hoje me arrependo", "Eu podia ter feito", "De hoje em diante"],
+    id: dados.canal?.toLowerCase().replace(/\s+/g, "-") || "canal",
+    nome: dados.canal || "Canal",
+    tipoPadrao: dados.formatoDeVideo?.estiloDeNarracao || "historia_pessoal",
+    paleta: dados.paleta || {
+      primaria: "#1A1A2E",
+      secundaria: "#16213E",
+      destaque: "#F5C842",
+      texto: "#FFFFFF",
+      fundo: "rgba(0,0,0,0.85)",
+    },
+    persona: [
+      dados.avatar?.nome,
+      dados.avatar?.idade ? `${dados.avatar.idade} anos` : "",
+      dados.avatar?.personalidade,
+    ].filter(Boolean).join(", "),
+    estiloNarrativo: dados.formatoDeVideo?.estiloDeNarracao || "primeira_pessoa",
+    tomProibido: dados.tom?.proibido || [],
+    gatilhos: dados.gatilhosQueConvertem || [],
+    publicoAlvo: dados.publicoAlvo?.perfil || "",
+    nicho: dados.nicho || "",
   };
 }
 
-function extrairPaleta(_thumbArquivo: string): PaletaThumbnail {
+function canalPadrao(): ConfigCanal {
   return {
-    cor_primaria: "#D4651A",
-    cor_secundaria: "#8B4513",
-    cor_acento: "#F5C842",
-    mood: "quente, reflexivo, nostálgico",
+    id: "canal",
+    nome: "Canal",
+    tipoPadrao: "historia_pessoal",
+    paleta: {
+      primaria: "#1A1A2E",
+      secundaria: "#16213E",
+      destaque: "#F5C842",
+      texto: "#FFFFFF",
+      fundo: "rgba(0,0,0,0.85)",
+    },
+    persona: "Contador de histórias",
+    estiloNarrativo: "primeira_pessoa",
+    tomProibido: [],
+    gatilhos: [],
+    publicoAlvo: "",
+    nicho: "",
+  };
+}
+
+function carregarCanal(canalId: string): ConfigCanal {
+  const caminhoFonte = path.join(FONTE_VERDADE, `${canalId}.json`);
+  const caminhoLocal = path.join(__dirname, "..", "canais", `${canalId}.json`);
+
+  if (fs.existsSync(caminhoFonte)) {
+    const dados = JSON.parse(fs.readFileSync(caminhoFonte, "utf-8"));
+    console.log(`[canal] ✓ Fonte de verdade: ${canalId}`);
+    return normalizarCanal(dados);
+  }
+
+  if (fs.existsSync(caminhoLocal)) {
+    console.log(`[canal] ⚠ Fallback local: ${canalId}`);
+    return JSON.parse(fs.readFileSync(caminhoLocal, "utf-8"));
+  }
+
+  console.warn(`[canal] ✗ Não encontrado. Usando padrão neutro.`);
+  return canalPadrao();
+}
+
+function lerProjeto(pastaProjeto: string): { canal_id: string } {
+  const arquivo = path.join(pastaProjeto, "projeto.json");
+  if (fs.existsSync(arquivo)) {
+    return JSON.parse(fs.readFileSync(arquivo, "utf-8"));
+  }
+  return { canal_id: "canal" };
+}
+
+function extrairInfoCanal(canal: ConfigCanal): InfoCanal {
+  return {
+    nome_canal: canal.nome,
+    nicho: canal.nicho || canal.tipoPadrao,
+    avatar: canal.persona || canal.nome,
+    gap_de_edicao: "",
+    estilo_visual: "",
+    tom_proibido: (canal.tomProibido || []).join(", "),
+    palavras_engajam: canal.gatilhos || [],
+    persona: canal.persona,
+    publico_alvo: canal.publicoAlvo,
+  };
+}
+
+function extrairPaleta(canal: ConfigCanal): PaletaThumbnail {
+  return {
+    cor_primaria: canal.paleta.primaria,
+    cor_secundaria: canal.paleta.secundaria,
+    cor_acento: canal.paleta.destaque,
+    mood: "",
   };
 }
 
@@ -87,7 +167,10 @@ async function main() {
   }
 
   const config = encontrarArquivos(pastaProjeto);
+  const projeto = lerProjeto(pastaProjeto);
+  config.canal = carregarCanal(projeto.canal_id);
   console.log(`Projeto: ${config.nome}`);
+  console.log(`Canal: ${config.canal.nome}`);
   console.log(`SRT: ${path.basename(config.srtArquivo)}`);
   console.log(`PDF: ${path.basename(config.pacoteDadosArquivo)}`);
 
@@ -95,9 +178,8 @@ async function main() {
     const configEditorial = await controleEditorial();
     console.log(`\n→ ${resumirConfigEditorial(configEditorial)}\n`);
 
-    const infoCanal = extrairInfoCanal(config.nome);
-    const paleta    = extrairPaleta(config.thumbArquivo);
-    console.log(`Canal: ${infoCanal.nome_canal}`);
+    const infoCanal = extrairInfoCanal(config.canal);
+    const paleta    = extrairPaleta(config.canal);
     console.log(`Paleta: ${paleta.cor_primaria} / ${paleta.cor_secundaria} / ${paleta.cor_acento}`);
 
     await planejar(config, infoCanal, paleta, configEditorial);

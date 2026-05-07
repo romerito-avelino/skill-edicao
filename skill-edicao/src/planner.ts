@@ -3,7 +3,26 @@ import * as path from "path";
 import { parsearSRT, resumirSRT, Segmento } from "./srt-parser";
 import { processarTodosSegmentos, InfoCanal, PaletaThumbnail, SegmentoProcessado, TipoAsset } from "./visual-selector";
 import { ConfigEditorial } from "./editorial";
-import { presetParaTipoMomento, kenBurnsParaTom, PRESETS } from "./animation-presets";
+import { kenBurnsParaTom, resolverAnimacaoEditorial } from "./animation-presets";
+
+export interface ConfigCanal {
+  id: string;
+  nome: string;
+  tipoPadrao: string;
+  paleta: {
+    primaria: string;
+    secundaria: string;
+    destaque: string;
+    texto: string;
+    fundo: string;
+  };
+  persona: string;
+  estiloNarrativo: string;
+  tomProibido?: string[];
+  gatilhos?: string[];
+  publicoAlvo?: string;
+  nicho?: string;
+}
 
 export interface ConfigProjeto {
   nome: string;
@@ -11,6 +30,7 @@ export interface ConfigProjeto {
   srtArquivo: string;
   pacoteDadosArquivo: string;
   thumbArquivo: string;
+  canal?: ConfigCanal;
 }
 
 export interface PlanoSegmento {
@@ -197,6 +217,7 @@ function mapearParaPlano(
 
   let numero = 1;
   let posicaoGlobal = 0;
+  let indiceRemotion = 0;
 
   for (const sp of segmentosProcessados) {
     const original = segmentos.find(s => s.id === sp.id);
@@ -254,10 +275,10 @@ function mapearParaPlano(
       let duracao = clip.duracao_ms;
 
       if (tipoFinal === "remotion_animacao") {
-        const presetKey = presetParaTipoMomento(sp.tipo_momento);
-        const preset = PRESETS[presetKey];
-        animacao = preset.tipo;
-        duracao = preset.duracao;
+        const { tipo, duracao: d } = resolverAnimacaoEditorial(config.tipoAnimacao, sp.tipo_momento, indiceRemotion);
+        animacao = tipo;
+        duracao = d;
+        indiceRemotion++;
       } else if (tipoFinal === "imagem_ia") {
         animacao = `kenburns_${kenBurnsParaTom(config.tomVisual, sp.tipo_momento)}`;
         duracao = Math.min(Math.max(clip.duracao_ms, 4000), 5000);
