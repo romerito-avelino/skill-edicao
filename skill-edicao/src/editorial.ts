@@ -15,6 +15,8 @@ export interface ConfigEditorial {
   tipoAnimacao: number;
   tomVisual: number;
   distribuicao: Distribuicao;
+  templateAnimacao: string;
+  modoRapido: boolean;
 }
 
 function perguntar(rl: readline.Interface, pergunta: string): Promise<string> {
@@ -56,7 +58,7 @@ async function perguntarDistribuicao(
   }
 }
 
-export async function controleEditorial(): Promise<ConfigEditorial> {
+export async function controleEditorial(modoRapido = false): Promise<ConfigEditorial> {
   const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
 
   console.log("\n═══════════════════════════════════════");
@@ -86,6 +88,8 @@ export async function controleEditorial(): Promise<ConfigEditorial> {
       tipoAnimacao: 5,
       tomVisual: 1,
       distribuicao: { video_stock: 34, remotion_animacao: 33, imagem_ia: 33 },
+      templateAnimacao: "",
+      modoRapido,
     };
   }
 
@@ -131,6 +135,7 @@ export async function controleEditorial(): Promise<ConfigEditorial> {
     console.log("  [3] Linha do tempo");
     console.log("  [4] Citações estilizadas");
     console.log("  [5] Misto automático");
+    console.log("  [6] Animações 3D (Three.js)");
     tipoAnimacao = parseInt(await perguntar(rl, "Escolha: ")) || 5;
     const nomesAnimacao: Record<number, string> = {
       1: "Textos de impacto",
@@ -138,8 +143,25 @@ export async function controleEditorial(): Promise<ConfigEditorial> {
       3: "Linha do tempo",
       4: "Citações estilizadas",
       5: "Misto automático",
+      6: "Animações 3D (Three.js)",
     };
     console.log(`→ Animação: ${nomesAnimacao[tipoAnimacao] ?? "Misto automático"}`);
+  }
+
+  let templateAnimacao = "";
+
+  if (usarRemotion && !modoRapido) {
+    console.log("\n── TEMPLATE DE ANIMAÇÃO ─────────────────────");
+    console.log("Descreva o estilo visual das animações:");
+    console.log("(O agente criará variações contextuais baseadas nessa descrição)\n");
+    console.log("Exemplos:");
+    console.log('  • "Texto em neon sobre fundo escuro com partículas"');
+    console.log('  • "Bonecos numa fazenda com balões de fala e céu azul"');
+    console.log('  • "Estilo jornal antigo com manchetes e fotos sépia"');
+    console.log('  • "Elementos geométricos minimalistas em movimento"');
+    templateAnimacao = await new Promise<string>(resolve => {
+      rl.question("\nSeu template: ", answer => resolve(answer.trim()));
+    });
   }
 
   console.log("\n── TOM VISUAL ─────────────────────");
@@ -160,6 +182,8 @@ export async function controleEditorial(): Promise<ConfigEditorial> {
     tipoAnimacao,
     tomVisual,
     distribuicao,
+    templateAnimacao,
+    modoRapido,
   };
 }
 
@@ -170,5 +194,6 @@ export function resumirConfigEditorial(c: ConfigEditorial): string {
     c.usarRemotion   && `remotion_animacao(${c.distribuicao.remotion_animacao}%)`,
   ].filter(Boolean).join(", ");
   const tons = ["", "Dramático", "Inspiracional", "Reflexivo", "Neutro"];
-  return `Ferramentas: ${tools} | Tom: ${tons[c.tomVisual] || "?"}`;
+  const modo = c.modoRapido ? " | ⚡ Modo rápido (presets)" : c.templateAnimacao ? ` | Template: "${c.templateAnimacao.substring(0, 40)}"` : "";
+  return `Ferramentas: ${tools} | Tom: ${tons[c.tomVisual] || "?"}${modo}`;
 }

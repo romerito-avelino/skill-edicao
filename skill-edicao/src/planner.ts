@@ -4,6 +4,7 @@ import { parsearSRT, resumirSRT, Segmento } from "./srt-parser";
 import { processarTodosSegmentos, InfoCanal, PaletaThumbnail, SegmentoProcessado, TipoAsset } from "./visual-selector";
 import { ConfigEditorial } from "./editorial";
 import { kenBurnsParaTom, resolverAnimacaoEditorial } from "./animation-presets";
+import { enriquecerContexto, SegmentoEnriquecido, CanalContexto } from "./context-enricher";
 
 export interface ConfigCanal {
   id: string;
@@ -50,6 +51,7 @@ export interface PlanoSegmento {
   fraseImpacto: string | null;
   duracao: number;
   observacoes: string;
+  sensivel?: boolean;
 }
 
 export interface PlanoEdicao {
@@ -217,7 +219,8 @@ function calcularPosicoesRemotion(totalClips: number, cotaRemotion: number): Set
 function mapearParaPlano(
   segmentosProcessados: SegmentoProcessado[],
   segmentos: Segmento[],
-  config: ConfigEditorial
+  config: ConfigEditorial,
+  enriquecidos?: Map<string, SegmentoEnriquecido>
 ): PlanoSegmento[] {
   const plano: PlanoSegmento[] = [];
   const ferramentas = ferramentasAtivas(config);
@@ -311,6 +314,12 @@ function mapearParaPlano(
         duracao = Math.min(Math.max(clip.duracao_ms, 4000), 5000);
       }
 
+      const enriched = enriquecidos?.get(sp.id);
+      if (enriched && tipoFinal === "remotion_animacao" && enriched.fraseAnimacao) {
+        fraseImpacto = enriched.fraseAnimacao;
+      }
+      const ehSensivel = enriched?.sensivel || (clip.sensivel === true) || undefined;
+
       plano.push({
         numero,
         segmentoId: sp.id,
@@ -327,6 +336,7 @@ function mapearParaPlano(
         fraseImpacto,
         duracao,
         observacoes: "",
+        sensivel: ehSensivel,
       });
 
       usados[tipoFinal]++;
@@ -342,7 +352,8 @@ export async function planejar(
   config: ConfigProjeto,
   infoCanal: InfoCanal,
   paleta: PaletaThumbnail,
-  configEditorial: ConfigEditorial
+  configEditorial: ConfigEditorial,
+  reenriquecer = false
 ): Promise<void> {
   console.log("\n═══ FASE A: PLANEJAMENTO ═══");
 
@@ -350,14 +361,26 @@ export async function planejar(
   const segmentos = parsearSRT(config.srtArquivo);
   resumirSRT(segmentos);
 
+  const canalContexto: CanalContexto = {
+    nome:        config.canal?.nome        ?? "Canal",
+    persona:     config.canal?.persona     ?? "",
+    nicho:       config.canal?.nicho,
+    publicoAlvo: config.canal?.publicoAlvo,
+    tomProibido: config.canal?.tomProibido,
+  };
+
+  console.log("\nEnriquecendo contexto narrativo... (1 chamada de IA para todos os segmentos)");
+  const enriquecidos = await enriquecerContexto(segmentos, canalContexto, configEditorial, config.pasta, reenriquecer);
+  console.log("  ✓ Contexto enriquecido para todos os segmentos");
+
   console.log("\nAnalisando segmentos com IA visual-selector...");
-  const segmentosProcessados = await processarTodosSegmentos(segmentos, infoCanal, paleta, configEditorial);
+  const segmentosProcessados = await processarTodosSegmentos(segmentos, infoCanal, paleta, configEditorial, enriquecidos);
 
   const plano: PlanoEdicao = {
     projeto: config.nome,
     geradoEm: new Date().toISOString(),
     configEditorial,
-    segmentos: mapearParaPlano(segmentosProcessados, segmentos, configEditorial),
+    segmentos: mapearParaPlano(segmentosProcessados, segmentos, configEditorial, enriquecidos),
   };
 
   const arquivo = path.join(config.pasta, "plano-edicao.json");

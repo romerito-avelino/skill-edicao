@@ -53,6 +53,11 @@ const VARIACOES = {
   mapas_mentais:  ["mapas-v1",  "mapas-v2",  "mapas-v3",  "mapas-v4"],
   linha_tempo:    ["linha-v1",  "linha-v2",  "linha-v3",  "linha-v4"],
   citacoes:       ["citacoes-v1", "citacoes-v2", "citacoes-v3", "citacoes-v4"],
+  animacoes_3d:   [
+    "3d-globo-brasil", "3d-mapa-brasil", "3d-regiao-zoom",
+    "3d-texto", "3d-grafico", "3d-esfera",
+    "3d-titulo-epico", "3d-particulas-chuva", "3d-logo-reveal",
+  ],
 } as const;
 
 // Fallback para composições legadas (sem variação)
@@ -79,6 +84,10 @@ const DURACAO_POR_TIPO: Record<string, number> = {
   "linha-v1": 8000, "linha-v2": 8000, "linha-v3": 8000, "linha-v4": 8000,
   // Banco de variações — citações
   "citacoes-v1": 6000, "citacoes-v2": 7000, "citacoes-v3": 6000, "citacoes-v4": 7000,
+  // Banco de variações — 3D (Three.js)
+  "3d-globo-brasil": 9000, "3d-mapa-brasil": 9000, "3d-regiao-zoom": 9000,
+  "3d-texto": 7000, "3d-grafico": 8000, "3d-esfera": 9000,
+  "3d-titulo-epico": 9000, "3d-particulas-chuva": 9000, "3d-logo-reveal": 9000,
 };
 
 // Guarda a última variação usada por categoria para evitar repetição consecutiva
@@ -92,13 +101,31 @@ function sortearVariacao(opcoes: readonly string[], categoriaKey: string): strin
   return escolhida;
 }
 
+const MAPA_3D_MOMENTO: Record<string, readonly string[]> = {
+  abertura_historia:       ["3d-titulo-epico", "3d-logo-reveal"],
+  abertura_esperanca:      ["3d-titulo-epico", "3d-logo-reveal"],
+  desfecho:                ["3d-particulas-chuva", "3d-titulo-epico"],
+  climax_emocional:        ["3d-titulo-epico", "3d-particulas-chuva"],
+  "clímax_emocional":      ["3d-titulo-epico", "3d-particulas-chuva"],
+  conceito_explicacao:     ["3d-esfera", "3d-grafico", "3d-texto"],
+  sequencia_temporal:      ["3d-grafico", "3d-texto"],
+  reflexao_arrependimento: ["3d-esfera", "3d-texto"],
+  reflexao_melancolia:     ["3d-esfera", "3d-particulas-chuva"],
+};
+
+function escolher3DParaMomento(tipoMomento: string): string {
+  const opcoes = MAPA_3D_MOMENTO[tipoMomento] ?? VARIACOES.animacoes_3d;
+  return sortearVariacao(opcoes, `3d_${tipoMomento}`);
+}
+
 export function resolverAnimacaoEditorial(
   tipoAnimacao: number,
   tipoMomento: string,
   indiceRemotion: number
 ): { tipo: string; duracao: number } {
   // Modo misto automático: usa preset baseado no tipo de momento
-  if (tipoAnimacao === 5 || !ANIMACOES_LEGADAS[tipoAnimacao]) {
+  // tipoAnimacao === 6 (3D) é excluído do early return e tratado abaixo
+  if (tipoAnimacao !== 6 && (tipoAnimacao === 5 || !ANIMACOES_LEGADAS[tipoAnimacao])) {
     const presetKey = presetParaTipoMomento(tipoMomento);
     const preset = PRESETS[presetKey];
     return { tipo: preset.tipo, duracao: preset.duracao };
@@ -112,6 +139,9 @@ export function resolverAnimacaoEditorial(
     tipo = sortearVariacao(VARIACOES.mapas_mentais, "mapas_mentais");
   } else if (tipoAnimacao === 3) {
     tipo = sortearVariacao(VARIACOES.linha_tempo, "linha_tempo");
+  } else if (tipoAnimacao === 6) {
+    tipo = escolher3DParaMomento(tipoMomento);
+    console.log(`→ Composição 3D sorteada: ${tipo}`);
   } else {
     tipo = sortearVariacao(VARIACOES.citacoes, "citacoes");
   }

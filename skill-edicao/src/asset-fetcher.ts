@@ -159,10 +159,115 @@ export async function buscarPexelsVideo(
   };
 }
 
+async function chamarReplicateApi(prompt: string, REPLICATE_KEY: string): Promise<string> {
+  const bodyObj = {
+    input: {
+      prompt,
+      width: 1920,
+      height: 1080,
+      num_outputs: 1,
+      output_format: "jpg",
+      output_quality: 85,
+    },
+  };
+
+  const body = JSON.stringify(bodyObj);
+
+  const resposta = await new Promise<any>((resolve, reject) => {
+    const req = https.request(
+      {
+        hostname: "api.replicate.com",
+        path: "/v1/models/google/imagen-3-fast/predictions",
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${REPLICATE_KEY}`,
+          "Content-Type": "application/json",
+          "Prefer": "wait=60",
+          "Content-Length": Buffer.byteLength(body),
+        },
+      },
+      (res) => {
+        let data = "";
+        res.on("data", (chunk) => (data += chunk));
+        res.on("end", () => {
+          try { resolve(JSON.parse(data)); }
+          catch (e) { reject(e); }
+        });
+      }
+    );
+    req.on("error", reject);
+    req.setTimeout(90000, () => {
+      req.destroy();
+      reject(new Error("Request timeout"));
+    });
+    req.write(body);
+    req.end();
+  });
+
+  if (resposta.error) {
+    throw new Error(resposta.error);
+  }
+
+  let url_imagem = "";
+
+  if (resposta.status === "succeeded" && resposta.output) {
+    url_imagem = Array.isArray(resposta.output)
+      ? resposta.output[0]
+      : resposta.output;
+  } else {
+    const prediction_id = resposta.id;
+    let tentativas = 0;
+
+    while (tentativas < 80) {
+      await new Promise((r) => setTimeout(r, 3000));
+      process.stdout.write(".");
+
+      const status = await new Promise<any>((resolve, reject) => {
+        https.get(
+          `https://api.replicate.com/v1/predictions/${prediction_id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${REPLICATE_KEY}`,
+            },
+          },
+          (res) => {
+            let data = "";
+            res.on("data", (chunk) => (data += chunk));
+            res.on("end", () => {
+              try { resolve(JSON.parse(data)); }
+              catch (e) { reject(e); }
+            });
+          }
+        ).on("error", reject);
+      });
+
+      if (status.status === "succeeded") {
+        url_imagem = Array.isArray(status.output)
+          ? status.output[0]
+          : status.output;
+        break;
+      } else if (status.status === "failed") {
+        throw new Error(`Replicate falhou: ${status.error}`);
+      }
+
+      tentativas++;
+    }
+  }
+
+  if (!url_imagem) {
+    throw new Error("Timeout — imagem não gerada em 4 minutos");
+  }
+
+  return url_imagem;
+}
+
 export async function gerarImagemReplicate(
   prompt: string,
   clip_id: string,
-  pastaDestino: string
+  pastaDestino: string,
+  estiloVisual = "cinematic",
+  tipoCena = "dramatic",
+  sensivel = false
 ): Promise<ResultadoAsset> {
   const REPLICATE_KEY = process.env.REPLICATE_API_KEY || "";
 
@@ -177,104 +282,38 @@ export async function gerarImagemReplicate(
   }
 
   try {
-    console.log(`    Gerando imagem IA: "${prompt.substring(0, 60)}..."`);
+    let url_imagem: string;
 
-    const bodyObj = {
-      input: {
-        prompt,
-        width: 1920,
-        height: 1080,
-        num_outputs: 1,
-        output_format: "jpg",
-        output_quality: 85,
-      },
-    };
-
-    const body = JSON.stringify(bodyObj);
-
-    const resposta = await new Promise<any>((resolve, reject) => {
-      const req = https.request(
-        {
-          hostname: "api.replicate.com",
-          path: "/v1/models/google/imagen-3-fast/predictions",
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${REPLICATE_KEY}`,
-            "Content-Type": "application/json",
-            "Prefer": "wait=60",
-            "Content-Length": Buffer.byteLength(body),
-          },
-        },
-        (res) => {
-          let data = "";
-          res.on("data", (chunk) => (data += chunk));
-          res.on("end", () => {
-            try { resolve(JSON.parse(data)); }
-            catch (e) { reject(e); }
-          });
-        }
-      );
-      req.on("error", reject);
-      req.setTimeout(90000, () => {
-        req.destroy();
-        reject(new Error("Request timeout"));
-      });
-      req.write(body);
-      req.end();
-    });
-
-    if (resposta.error) {
-      throw new Error(resposta.error);
-    }
-
-    let url_imagem = "";
-
-    if (resposta.status === "succeeded" && resposta.output) {
-      url_imagem = Array.isArray(resposta.output)
-        ? resposta.output[0]
-        : resposta.output;
+    if (sensivel) {
+      console.log(`    ⚠ Clip marcado como sensível — usando prompt alternativo preventivo`);
+      const promptSeguro =
+        `${estiloVisual} photography, ${tipoCena} atmosphere, ` +
+        `Brazilian rural setting, natural lighting, cinematic composition, ` +
+        `no people, landscape, 8k quality, safe for work`;
+      url_imagem = await chamarReplicateApi(promptSeguro, REPLICATE_KEY);
     } else {
-      const prediction_id = resposta.id;
-      let tentativas = 0;
+      console.log(`    Gerando imagem IA: "${prompt.substring(0, 60)}..."`);
+      try {
+        url_imagem = await chamarReplicateApi(prompt, REPLICATE_KEY);
+      } catch (erroInicial: any) {
+        const ehSensivel =
+          erroInicial.message.includes("E005") ||
+          erroInicial.message.toLowerCase().includes("flagged as sensitive");
+        const ehTimeout = erroInicial.message.includes("Timeout");
 
-      while (tentativas < 80) {
-        await new Promise((r) => setTimeout(r, 3000));
-        process.stdout.write(".");
+        if (!ehSensivel && !ehTimeout) throw erroInicial;
 
-        const status = await new Promise<any>((resolve, reject) => {
-          https.get(
-            `https://api.replicate.com/v1/predictions/${prediction_id}`,
-            {
-              headers: {
-                Authorization: `Bearer ${REPLICATE_KEY}`,
-              },
-            },
-            (res) => {
-              let data = "";
-              res.on("data", (chunk) => (data += chunk));
-              res.on("end", () => {
-                try { resolve(JSON.parse(data)); }
-                catch (e) { reject(e); }
-              });
-            }
-          ).on("error", reject);
-        });
-
-        if (status.status === "succeeded") {
-          url_imagem = Array.isArray(status.output)
-            ? status.output[0]
-            : status.output;
-          break;
-        } else if (status.status === "failed") {
-          throw new Error(`Replicate falhou: ${status.error}`);
+        if (ehSensivel) {
+          console.log(`\n    ⚠ Prompt sensível (E005), tentando prompt alternativo...`);
+        } else {
+          console.log(`\n    ⚠ Timeout atingido, tentando prompt alternativo...`);
         }
-
-        tentativas++;
+        const promptAlternativo =
+          `${estiloVisual} photography, ${tipoCena} atmosphere, ` +
+          `Brazilian rural setting, natural lighting, cinematic composition, ` +
+          `no people, landscape, 8k quality, safe for work`;
+        url_imagem = await chamarReplicateApi(promptAlternativo, REPLICATE_KEY);
       }
-    }
-
-    if (!url_imagem) {
-      throw new Error("Timeout — imagem não gerada em 4 minutos");
     }
 
     const destino = path.join(pastaDestino, `${clip_id}_source.jpg`);

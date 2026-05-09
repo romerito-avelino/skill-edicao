@@ -5,6 +5,7 @@ dotenv.config({ path: path.resolve(__dirname, "../.env") });
 import Anthropic from "@anthropic-ai/sdk";
 import { Segmento } from "./srt-parser";
 import { ConfigEditorial } from "./editorial";
+import { SegmentoEnriquecido } from "./context-enricher";
 
 const client = new Anthropic();
 
@@ -43,6 +44,7 @@ export interface Clip {
   arquivo_final: string;
   fallback_tipo?: TipoAsset;
   fallback_prompt?: string;
+  sensivel?: boolean;
 }
 
 export interface SegmentoProcessado {
@@ -67,6 +69,17 @@ function descricaoEstiloImagem(estilo: number): string {
     3: "cinematográfico, grão de filme, paleta rica",
     4: "ilustração ou desenho, linhas definidas",
     5: "escolher o estilo mais adequado para a cena",
+  };
+  return estilos[estilo] || estilos[5];
+}
+
+function estiloImagemEN(estilo: number): string {
+  const estilos: Record<number, string> = {
+    1: "photorealistic, DSLR photography, natural lighting",
+    2: "oil painting style, artistic, textured brushstrokes",
+    3: "cinematic, film grain, anamorphic lens, color graded",
+    4: "illustration style, detailed drawing, artistic",
+    5: "choose the most appropriate style for the scene",
   };
   return estilos[estilo] || estilos[5];
 }
@@ -98,12 +111,92 @@ function ferramentasHabilitadas(config: ConfigEditorial): TipoAsset[] {
   return tools.length > 0 ? tools : ["video_stock", "imagem_ia", "remotion_animacao"];
 }
 
+const EMOCAO_PARA_MOMENTO: Record<string, string> = {
+  "frustração":  "climax_emocional",
+  "esperança":   "abertura_esperanca",
+  "tristeza":    "reflexao_melancolia",
+  "alegria":     "abertura_esperanca",
+  "reflexão":    "reflexao_arrependimento",
+  "urgência":    "climax_emocional",
+  "neutro":      "transicao_historia",
+};
+
+const INTENSIDADE_NUM: Record<string, number> = { baixa: 3, media: 6, alta: 9 };
+
+function construirDeEnriquecidos(
+  segmentos: Segmento[],
+  enriquecidos: Map<string, SegmentoEnriquecido>,
+  config: ConfigEditorial
+): SegmentoProcessado[] {
+  const ferramentas = ferramentasHabilitadas(config);
+  const total = segmentos.length;
+  const terceiro = Math.floor(total / 3);
+
+  return segmentos.map((s, idx) => {
+    const e = enriquecidos.get(s.id);
+    const terco: Terco =
+      idx < terceiro ? "agressivo" : idx < terceiro * 2 ? "duvidoso" : "esperançoso";
+    const ritmo = terco === "agressivo" ? 4000 : terco === "duvidoso" ? 5000 : 6000;
+    const totalClips = Math.max(1, Math.round(s.duracao_ms / ritmo));
+    const duracaoClip = Math.floor(s.duracao_ms / totalClips);
+    const tipoMomento = e ? (EMOCAO_PARA_MOMENTO[e.emocao] || "transicao_historia") : "transicao_historia";
+
+    const clips = Array.from({ length: totalClips }, (_, i) => {
+      const tipo: TipoAsset = ferramentas[i % ferramentas.length];
+      const clipId = `${s.id}-${String(i + 1).padStart(2, "0")}`;
+      const clip: Clip = {
+        clip_id: clipId,
+        inicio_relativo_ms: i * duracaoClip,
+        fim_relativo_ms: (i + 1) * duracaoClip,
+        duracao_ms: duracaoClip,
+        tipo,
+        arquivo_final: `cenas/${clipId}.mp4`,
+      };
+      if (e) {
+        if (tipo === "video_stock") {
+          clip.queries = [e.queryPexels];
+          clip.fallback_tipo = "imagem_ia";
+          clip.fallback_prompt = e.promptImagem;
+        } else if (tipo === "imagem_ia") {
+          clip.prompt = e.promptImagem;
+        } else {
+          clip.texto_animado = e.fraseAnimacao;
+          clip.animacao_remotion = "palavra_por_palavra";
+        }
+        if (e.sensivel) clip.sensivel = true;
+      }
+      return clip;
+    });
+
+    return {
+      id: s.id,
+      bloco: `BLOCO ${Math.floor(idx / 5) + 1}`,
+      inicio_ms: s.inicio_ms,
+      fim_ms: s.fim_ms,
+      duracao_ms: s.duracao_ms,
+      texto: s.texto,
+      terco,
+      intensidade: e ? (INTENSIDADE_NUM[e.intensidade] || 6) : 6,
+      tipo_momento: tipoMomento,
+      ritmo_corte_ms: ritmo,
+      total_clips: totalClips,
+      clips,
+    };
+  });
+}
+
 export async function processarTodosSegmentos(
   segmentos: Segmento[],
   infoCanal: InfoCanal,
   paleta: PaletaThumbnail,
-  configEditorial: ConfigEditorial
+  configEditorial: ConfigEditorial,
+  enriquecidos?: Map<string, SegmentoEnriquecido>
 ): Promise<SegmentoProcessado[]> {
+  // Bypass da IA quando todos os segmentos já foram enriquecidos
+  if (enriquecidos && enriquecidos.size > 0 && segmentos.every(s => enriquecidos.has(s.id))) {
+    console.log(`Todos os segmentos enriquecidos — bypassing IA visual-selector (${segmentos.length} segmentos)`);
+    return construirDeEnriquecidos(segmentos, enriquecidos, configEditorial);
+  }
 
   const tools = ferramentasHabilitadas(configEditorial);
   const toolsStr = tools.join(", ");
@@ -158,21 +251,39 @@ REGRAS:
 - NUNCA mais de 2 clips do mesmo tipo seguidos
 - Queries Pexels SEMPRE em inglês, específicas e cinematográficas
 - Prompts imagem_ia: SEMPRE em inglês, cinematográficos e detalhados
+REGRAS ABSOLUTAS PARA O CAMPO promptImagem:
 
-REGRAS DE PROMPT PARA IMAGEM IA:
-Todo prompt de imagem_ia DEVE seguir esta estrutura:
-[DESCRIÇÃO DA CENA em detalhes] + [ILUMINAÇÃO] + [ESTILO FOTOGRÁFICO] + [PALETA DE CORES]
+1. SEMPRE em inglês — nunca use português
+2. NUNCA copie texto do segmento — traduza o CONCEITO visual
+3. Use o banco de dados do canal para enriquecer:
+   - Persona: ${infoCanal.persona || "não definida"}
+   - Nicho: ${infoCanal.nicho}
+   - Público-alvo: ${infoCanal.publico_alvo || "não definido"}
+   - Tom proibido: ${infoCanal.tom_proibido}
 
-Exemplos de prompts CORRETOS para o canal Aroldo do Pix:
-- "Elderly Brazilian man in his 60s sitting alone on wooden porch at sunset, looking at rural landscape, warm golden backlight, cinematic photography, shallow depth of field, 35mm film grain, color palette ${paleta.cor_primaria} ${paleta.cor_secundaria}"
-- "Close-up of weathered calloused hands holding unpaid bills on worn wooden table, single window casting warm shadow, nostalgic mood, cinematic close-up, natural lighting, ${paleta.cor_primaria} warm tones"
+4. Estrutura obrigatória do prompt (ordem exata):
+   [SUJEITO] + [AÇÃO/ESTADO] + [AMBIENTE] + [LUZ] + [ESTILO] + [QUALIDADE]
 
-EVITAR nos prompts de imagem_ia:
-- Rostos próximos (geram distorções)
-- Membros em primeiro plano
-- Texto na imagem
-- Cenários urbanos modernos
-- Pessoas jovens
+   Exemplo CORRETO:
+   "Elderly Brazilian man, 60s, sitting alone on wooden porch at dusk,
+    worried expression, warm golden backlight, cinematic photography,
+    shallow depth of field, 8k quality"
+
+   Exemplo ERRADO:
+   "cinematic scene, desabar Acordar doente, natural light, high quality"
+
+5. Especificidade conforme config:
+   - Genérica: foco em ambiente, símbolo ou objeto representativo
+   - Específica: inclua características da persona do canal
+   - Misto: alterne entre os dois
+
+6. Estilo escolhido: ${estiloImagemEN(configEditorial.estiloImagem)}
+
+7. PROIBIDO no prompt:
+   - ${infoCanal.tom_proibido}
+   - Violência, sangue, conteúdo adulto
+   - Texto ou letras na imagem
+   - Logotipos ou marcas
 
 REGRAS DE PROMPT PARA remotion_animacao:
 O campo texto_animado DEVE conter uma frase curta e impactante do segmento.

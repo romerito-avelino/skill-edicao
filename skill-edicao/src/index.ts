@@ -129,15 +129,16 @@ function extrairPaleta(canal: ConfigCanal): PaletaThumbnail {
 }
 
 function mostrarAjuda(pastasProjetos: string): void {
-  console.log("Uso: npx tsx src/index.ts <nome-do-projeto> --planejar | --executar");
+  console.log("Uso:");
+  console.log("  npx tsx src/index.ts [projeto] --planejar                   (planejamento normal)");
+  console.log("  npx tsx src/index.ts [projeto] --executar                   (execução com API — gera TSX via Claude)");
+  console.log("  npx tsx src/index.ts [projeto] --executar --rapido          (execução com presets existentes)");
+  console.log("  npx tsx src/index.ts [projeto] --planejar --reenriquecer    (força novo contexto)");
+  console.log("  npx tsx src/index.ts [projeto] --planejar --rapido          (planejar sem pergunta de template)");
   console.log("");
-  console.log("Fases:");
-  console.log("  --planejar   Controle editorial interativo + análise IA → plano-edicao.json");
-  console.log("  --executar   Lê o plano-edicao.json e produz os clips + relatorio.txt");
-  console.log("");
-  console.log("Exemplo:");
-  console.log("  npx tsx src/index.ts aroldo-001-quarenta-anos --planejar");
-  console.log("  npx tsx src/index.ts aroldo-001-quarenta-anos --executar");
+  console.log("Modos de execução Remotion:");
+  console.log("  padrão (API)  — Claude gera código TSX customizado para cada clip em batch paralelo");
+  console.log("  --rapido      — usa presets prontos (mais rápido, sem chamadas à API de geração)");
   console.log("");
   console.log("Projetos disponíveis:");
   if (fs.existsSync(pastasProjetos)) {
@@ -150,10 +151,16 @@ async function main() {
   console.log("║       SKILL-EDIÇÃO — INICIANDO      ║");
   console.log("╚════════════════════════════════════╝\n");
 
-  const args          = process.argv.slice(2);
-  const argProjeto    = args[0];
-  const flag          = args[1];
+  const args           = process.argv.slice(2);
+  const argProjeto     = args[0];
+  const flag           = args[1];
+  const reenriquecer   = args.includes("--reenriquecer");
+  const modoRapido     = args.includes("--rapido");
   const pastasProjetos = path.join(__dirname, "../projetos");
+
+  if (modoRapido) {
+    console.log("⚡ MODO RÁPIDO — usando presets existentes");
+  }
 
   if (!argProjeto || (flag !== "--planejar" && flag !== "--executar")) {
     mostrarAjuda(pastasProjetos);
@@ -176,16 +183,16 @@ async function main() {
   console.log(`PDF: ${path.basename(config.pacoteDadosArquivo)}`);
 
   if (flag === "--planejar") {
-    const configEditorial = await controleEditorial();
+    const configEditorial = await controleEditorial(modoRapido);
     console.log(`\n→ ${resumirConfigEditorial(configEditorial)}\n`);
 
     const infoCanal = extrairInfoCanal(config.canal);
     const paleta    = extrairPaleta(config.canal);
     console.log(`Paleta: ${paleta.cor_primaria} / ${paleta.cor_secundaria} / ${paleta.cor_acento}`);
 
-    await planejar(config, infoCanal, paleta, configEditorial);
+    await planejar(config, infoCanal, paleta, configEditorial, reenriquecer);
   } else {
-    await executar(config);
+    await executar(config, modoRapido);
   }
 }
 
