@@ -1,0 +1,3 @@
+Rodar Projeto: 
+    npx tsx src/index.ts aroldo-001-quarenta-anos --planejar 
+    npx tsx src/index.ts aroldo-001-quarenta-anos --executar

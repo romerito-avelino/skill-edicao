@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.39.0",
+    "@hyperframes/core": "^0.6.112",
     "@remotion/bundler": "^4.0.451",
     "@remotion/renderer": "^4.0.451",
     "dotenv": "^17.4.2"

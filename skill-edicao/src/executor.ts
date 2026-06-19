@@ -3,9 +3,8 @@ import * as path from "path";
 import * as readline from "readline";
 import { buscarPexelsVideo, gerarImagemReplicate } from "./asset-fetcher";
 import { gerarComandoVideoStock, executarFFmpeg } from "./ffmpeg-processor";
-import { renderizarFraseImpacto, renderizarKenBurns, ContextoRenderizacao } from "./remotion-renderer";
-import { ConfigProjeto, PlanoEdicao, PlanoSegmento, ConfigCanal } from "./planner";
-import { EstadoNarrativo, ContextoClip } from "./narrative-state";
+import { renderizarKenBurns } from "./remotion-renderer";
+import { ConfigProjeto, PlanoEdicao, PlanoSegmento } from "./planner";
 import { gerarBatchAnimacoes } from "./batch-animator";
 import { compilarERenderizar } from "./tsx-compiler";
 
@@ -97,61 +96,12 @@ async function executarImagemIA(
   }
 }
 
-async function executarRemotionRapido(
-  clip: PlanoSegmento,
-  pastaCenas: string,
-  contadores: Contadores,
-  contextoNarrativo?: ContextoClip,
-  canal?: ConfigCanal
-): Promise<void> {
-  if (!clip.fraseImpacto) {
-    contadores.falhas.push(`${clip.clipId}: sem fraseImpacto`);
-    return;
-  }
-
-  const saida = path.join(pastaCenas, `${clip.clipId}.mp4`);
-  const estiloValido = (["agressivo", "duvidoso", "esperancoso"] as const).includes(
-    clip.terco as any
-  )
-    ? (clip.terco as "agressivo" | "duvidoso" | "esperancoso")
-    : "agressivo";
-
-  const contextoRender: ContextoRenderizacao | undefined = contextoNarrativo
-    ? {
-        frase: clip.fraseImpacto,
-        tom: estiloValido,
-        pontoAtual: contextoNarrativo.pontoAtual,
-        pontosAnteriores: contextoNarrativo.revelados,
-        noAtual: contextoNarrativo.conceito,
-        nosAnteriores: contextoNarrativo.revelados,
-        temaCentral: contextoNarrativo.temaPrincipal,
-        progresso: contextoNarrativo.progresso,
-      }
-    : undefined;
-
-  const res = await renderizarFraseImpacto(
-    clip.fraseImpacto,
-    saida,
-    clip.duracao,
-    estiloValido,
-    clip.animacao,
-    contextoRender,
-    canal
-  );
-
-  if (res.sucesso) {
-    contadores.remotion++;
-  } else {
-    contadores.falhas.push(`${clip.clipId}: Remotion falhou`);
-  }
-}
 
 function gerarRelatorio(
   config: ConfigProjeto,
   plano: PlanoEdicao,
   contadores: Contadores,
   inicioMs: number,
-  modoRapido: boolean
 ): void {
   const fimMs = Date.now();
   const minutos = Math.round((fimMs - inicioMs) / 60000);
@@ -160,13 +110,11 @@ function gerarRelatorio(
   const data = agora.toLocaleDateString("pt-BR");
   const hora = agora.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
 
-  const linhasRemotion = modoRapido
-    ? [`└─ Remotion:  ${contadores.remotion} clips`]
-    : [
-        `└─ Remotion:  ${contadores.remotion} clips`,
-        `   ├─ Via API:      ${contadores.remotionViaAPI} clips ✓`,
-        `   └─ Tela preta:   ${contadores.remotionTelaPreta} clips${contadores.remotionTelaPreta > 0 ? "  ⚠ (substituir na edição)" : ""}`,
-      ];
+  const linhasRemotion = [
+    `└─ Remotion:  ${contadores.remotion} clips`,
+    `   ├─ Via API:      ${contadores.remotionViaAPI} clips ✓`,
+    `   └─ Tela preta:   ${contadores.remotionTelaPreta} clips${contadores.remotionTelaPreta > 0 ? "  ⚠ (substituir na edição)" : ""}`,
+  ];
 
   const linhasFallback = contadores.clipsFallback.length > 0
     ? [
@@ -237,7 +185,7 @@ async function perguntarLimpeza(pastaDownloads: string, pastaCenas: string): Pro
   }
 }
 
-export async function executar(config: ConfigProjeto, modoRapidoOverride = false): Promise<void> {
+export async function executar(config: ConfigProjeto): Promise<void> {
   const arquivoPlano = path.join(config.pasta, "plano-edicao.json");
 
   if (!fs.existsSync(arquivoPlano)) {
@@ -247,13 +195,6 @@ export async function executar(config: ConfigProjeto, modoRapidoOverride = false
   }
 
   const plano: PlanoEdicao = JSON.parse(fs.readFileSync(arquivoPlano, "utf-8"));
-
-  // --rapido no CLI sobrepõe o valor salvo no plano
-  const modoRapido = modoRapidoOverride || (plano.configEditorial?.modoRapido ?? false);
-
-  if (modoRapido) {
-    console.log("\n⚡ MODO RÁPIDO — usando presets existentes");
-  }
 
   console.log("\n═══ FASE B: EXECUÇÃO ═══");
   console.log(`Projeto: ${plano.projeto}`);
@@ -287,24 +228,18 @@ export async function executar(config: ConfigProjeto, modoRapidoOverride = false
   };
   const inicioMs = Date.now();
 
-  // Estado narrativo (para modo rápido e para contexto de clip)
   const totalClipsRemotion = plano.segmentos.filter(s => s.tipoVisual === "remotion_animacao").length;
-  const estadoNarrativo = new EstadoNarrativo();
-  if (totalClipsRemotion > 0) {
-    console.log("\nAnalisando narrativa para animações...");
-    await estadoNarrativo.inicializar(plano.segmentos.map(s => s.texto), config.pasta);
-  }
-  let clipRemotion = 0;
 
-  // Fase 1 (somente modo API): gera todos os TSX em batch paralelo
+  // Fase 1: gera todos os TSX em batch paralelo (HyperFrames + Remotion)
   let batchResultados = new Map<string, string | null>();
-  if (!modoRapido && plano.configEditorial.usarRemotion && totalClipsRemotion > 0 && config.canal) {
+  if (plano.configEditorial.usarRemotion && totalClipsRemotion > 0 && config.canal) {
     const clipsRemotion = plano.segmentos.filter(s => s.tipoVisual === "remotion_animacao");
     batchResultados = await gerarBatchAnimacoes(
       clipsRemotion,
       plano.configEditorial,
       config.canal,
-      config.pasta
+      config.pasta,
+      pastaCenas
     );
   }
 
@@ -320,37 +255,38 @@ export async function executar(config: ConfigProjeto, modoRapidoOverride = false
       await executarImagemIA(clip, pastaDownloads, pastaCenas, contadores);
 
     } else if (clip.tipoVisual === "remotion_animacao") {
-      clipRemotion++;
-      const contexto = estadoNarrativo.getContextoParaClip(clipRemotion, totalClipsRemotion);
+      const saida = path.join(pastaCenas, `${clip.clipId}.mp4`);
 
-      if (modoRapido) {
-        // Modo rápido: presets existentes (comportamento original)
-        await executarRemotionRapido(clip, pastaCenas, contadores, contexto, config.canal);
+      // HyperFrames: renderizado na fase batch, só conta se o arquivo existe
+      if (clip.motor === "hyperframes" && fs.existsSync(saida)) {
+        contadores.remotion++;
+        contadores.remotionViaAPI++;
+        continue;
+      }
 
+      // Remotion (ou fallback de HyperFrames que falhou no batch)
+      const codigoGerado = batchResultados.get(clip.clipId) ?? null;
+      const motivo = clip.motor === "hyperframes"
+        ? "HyperFrames falhou"
+        : (codigoGerado === null ? "falhou após retry" : "falhou na compilação");
+
+      const resultado = await compilarERenderizar({
+        clipId: clip.clipId,
+        codigoTSX: codigoGerado,
+        duracao: clip.duracao,
+        outputPath: saida,
+        paleta: config.canal!.paleta,
+      });
+
+      if (resultado === "ok") {
+        contadores.remotion++;
+        contadores.remotionViaAPI++;
+      } else if (resultado === "fallback") {
+        contadores.remotion++;
+        contadores.remotionTelaPreta++;
+        contadores.clipsFallback.push(`${clip.clipId}.mp4 (tela preta — ${motivo})`);
       } else {
-        // Modo API: usa código gerado no batch
-        const codigoGerado = batchResultados.get(clip.clipId) ?? null;
-        const saida = path.join(pastaCenas, `${clip.clipId}.mp4`);
-
-        const resultado = await compilarERenderizar({
-          clipId: clip.clipId,
-          codigoTSX: codigoGerado,
-          duracao: clip.duracao,
-          outputPath: saida,
-          paleta: config.canal!.paleta,
-        });
-
-        if (resultado === "ok") {
-          contadores.remotion++;
-          contadores.remotionViaAPI++;
-        } else if (resultado === "fallback") {
-          contadores.remotion++;
-          contadores.remotionTelaPreta++;
-          const motivo = codigoGerado === null ? "falhou após retry" : "falhou na compilação";
-          contadores.clipsFallback.push(`${clip.clipId}.mp4 (tela preta — ${motivo})`);
-        } else {
-          contadores.falhas.push(`${clip.clipId}: compilação e fallback falharam`);
-        }
+        contadores.falhas.push(`${clip.clipId}: compilação e fallback falharam`);
       }
     }
   }
@@ -359,6 +295,6 @@ export async function executar(config: ConfigProjeto, modoRapidoOverride = false
   console.log("║         EXECUÇÃO CONCLUÍDA          ║");
   console.log("╚════════════════════════════════════╝");
 
-  gerarRelatorio(config, plano, contadores, inicioMs, modoRapido);
+  gerarRelatorio(config, plano, contadores, inicioMs);
   await perguntarLimpeza(pastaDownloads, pastaCenas);
 }

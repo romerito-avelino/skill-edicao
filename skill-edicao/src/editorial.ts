@@ -12,11 +12,10 @@ export interface ConfigEditorial {
   usarImagemIA: boolean;
   estiloImagem: number;
   especificidadeImagem: number;
-  tipoAnimacao: number;
   tomVisual: number;
   distribuicao: Distribuicao;
   templateAnimacao: string;
-  modoRapido: boolean;
+  modoGeracao: "automatico" | "semi_manual";
 }
 
 function perguntar(rl: readline.Interface, pergunta: string): Promise<string> {
@@ -58,7 +57,7 @@ async function perguntarDistribuicao(
   }
 }
 
-export async function controleEditorial(modoRapido = false): Promise<ConfigEditorial> {
+export async function controleEditorial(): Promise<ConfigEditorial> {
   const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
 
   console.log("\n═══════════════════════════════════════");
@@ -85,11 +84,10 @@ export async function controleEditorial(modoRapido = false): Promise<ConfigEdito
       usarImagemIA: true,
       estiloImagem: 5,
       especificidadeImagem: 3,
-      tipoAnimacao: 5,
       tomVisual: 1,
       distribuicao: { video_stock: 34, remotion_animacao: 33, imagem_ia: 33 },
       templateAnimacao: "",
-      modoRapido,
+      modoGeracao: "automatico",
     };
   }
 
@@ -125,32 +123,9 @@ export async function controleEditorial(modoRapido = false): Promise<ConfigEdito
     especificidadeImagem = parseInt(await perguntar(rl, "Escolha: ")) || 3;
   }
 
-  let tipoAnimacao = 5;
-
-  if (usarRemotion) {
-    console.log("\n── ANIMAÇÕES ──────────────────────");
-    console.log("Tipos de animação:");
-    console.log("  [1] Textos de impacto");
-    console.log("  [2] Mapas mentais (nós conectados)");
-    console.log("  [3] Linha do tempo");
-    console.log("  [4] Citações estilizadas");
-    console.log("  [5] Misto automático");
-    console.log("  [6] Animações 3D (Three.js)");
-    tipoAnimacao = parseInt(await perguntar(rl, "Escolha: ")) || 5;
-    const nomesAnimacao: Record<number, string> = {
-      1: "Textos de impacto",
-      2: "Mapa mental (nós conectados)",
-      3: "Linha do tempo",
-      4: "Citações estilizadas",
-      5: "Misto automático",
-      6: "Animações 3D (Three.js)",
-    };
-    console.log(`→ Animação: ${nomesAnimacao[tipoAnimacao] ?? "Misto automático"}`);
-  }
-
   let templateAnimacao = "";
 
-  if (usarRemotion && !modoRapido) {
+  if (usarRemotion) {
     console.log("\n── TEMPLATE DE ANIMAÇÃO ─────────────────────");
     console.log("Descreva o estilo visual das animações:");
     console.log("(O agente criará variações contextuais baseadas nessa descrição)\n");
@@ -171,7 +146,14 @@ export async function controleEditorial(modoRapido = false): Promise<ConfigEdito
   console.log("  [4] Neutro / documental");
   const tomVisual = parseInt(await perguntar(rl, "Escolha: ")) || 1;
 
+  console.log("\n── MODO DE GERAÇÃO ──────────────────────");
+  console.log("  [1] Automático — agente decide tudo e renderiza direto");
+  console.log("  [2] Semi-manual — você revisa cada cena antes de renderizar");
+  const modoGeracao = (await perguntar(rl, "Escolha: ")) === "2" ? "semi_manual" : "automatico";
+
   rl.close();
+
+  const modoGeracaoFinal: "automatico" | "semi_manual" = modoGeracao;
 
   return {
     usarVideoStock,
@@ -179,11 +161,10 @@ export async function controleEditorial(modoRapido = false): Promise<ConfigEdito
     usarImagemIA,
     estiloImagem,
     especificidadeImagem,
-    tipoAnimacao,
     tomVisual,
     distribuicao,
     templateAnimacao,
-    modoRapido,
+    modoGeracao: modoGeracaoFinal,
   };
 }
 
@@ -194,6 +175,7 @@ export function resumirConfigEditorial(c: ConfigEditorial): string {
     c.usarRemotion   && `remotion_animacao(${c.distribuicao.remotion_animacao}%)`,
   ].filter(Boolean).join(", ");
   const tons = ["", "Dramático", "Inspiracional", "Reflexivo", "Neutro"];
-  const modo = c.modoRapido ? " | ⚡ Modo rápido (presets)" : c.templateAnimacao ? ` | Template: "${c.templateAnimacao.substring(0, 40)}"` : "";
-  return `Ferramentas: ${tools} | Tom: ${tons[c.tomVisual] || "?"}${modo}`;
+  const modo = c.templateAnimacao ? ` | Template: "${c.templateAnimacao.substring(0, 40)}"` : "";
+  const geracao = c.modoGeracao === "semi_manual" ? " | Semi-manual" : "";
+  return `Ferramentas: ${tools} | Tom: ${tons[c.tomVisual] || "?"}${modo}${geracao}`;
 }

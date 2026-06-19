@@ -204,3 +204,100 @@ export async function renderizarFraseImpacto(
     return { sucesso: false, arquivo_saida: "", erro: erro.message };
   }
 }
+
+export interface PropsTemplate {
+  texto: string;
+  frase?: string;
+  corTexto: string;
+  corFundo: string;
+  corDestaque: string;
+  corPrimaria?: string;
+  tamanhoFonte: number;
+  animacao: string;
+  fundoUrl: string;
+  tom?: string;
+  progresso?: number;
+  noAtual?: string;
+  nosAnteriores?: string[];
+  temaCentral?: string;
+  pontoAtual?: string;
+  pontosAnteriores?: string[];
+  dados?: number[];
+  labels?: string[];
+  estado?: string;
+  regiao?: string;
+}
+
+export async function renderizarTemplateExistente(params: {
+  compositionId: string;
+  outputPath: string;
+  durationInFrames: number;
+  props: PropsTemplate;
+}): Promise<"ok" | "erro"> {
+  try {
+    const { renderMedia, selectComposition } = await import("@remotion/renderer");
+    const bundle = await obterBundle();
+    const fps = 30;
+
+    const pastaSaida = path.dirname(params.outputPath);
+    if (!fs.existsSync(pastaSaida)) {
+      fs.mkdirSync(pastaSaida, { recursive: true });
+    }
+
+    const composition = await selectComposition({
+      serveUrl: bundle,
+      id: params.compositionId,
+      inputProps: params.props,
+    });
+
+    await renderMedia({
+      composition: {
+        ...composition,
+        durationInFrames: params.durationInFrames,
+        fps,
+        width: 1920,
+        height: 1080,
+      },
+      serveUrl: bundle,
+      codec: "h264",
+      outputLocation: params.outputPath,
+      inputProps: params.props,
+      logLevel: "error",
+    });
+
+    console.log(`    ✓ Template (${params.compositionId}): ${path.basename(params.outputPath)}`);
+    return "ok";
+
+  } catch (erro: any) {
+    console.error(`    ✗ Template (${params.compositionId}) falhou: ${erro.message?.substring(0, 120)}`);
+    return "erro";
+  }
+}
+
+export function montarPropsTemplate(params: {
+  texto: string;
+  paleta: { primaria: string; secundaria: string; destaque: string; texto: string; fundo: string; };
+  tom: string;
+  tamanhoFonte?: number;
+  dadosExtras?: Record<string, any>;
+}): PropsTemplate {
+  return {
+    texto: params.texto,
+    frase: params.texto,
+    corTexto: params.paleta.texto,
+    corFundo: params.paleta.fundo,
+    corDestaque: params.paleta.destaque,
+    corPrimaria: params.paleta.primaria,
+    tamanhoFonte: params.tamanhoFonte ?? 64,
+    animacao: "fade_bloco",
+    fundoUrl: "",
+    tom: params.tom,
+    progresso: 0,
+    noAtual: "",
+    nosAnteriores: [],
+    temaCentral: "",
+    pontoAtual: "",
+    pontosAnteriores: [],
+    ...params.dadosExtras,
+  };
+}

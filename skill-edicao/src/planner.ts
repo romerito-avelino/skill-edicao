@@ -50,6 +50,9 @@ export interface PlanoSegmento {
   tipoFrase: string;
   fraseImpacto: string | null;
   duracao: number;
+  estiloFundo?: string;
+  descricaoVisual?: string;
+  motor?: "remotion" | "hyperframes";
   observacoes: string;
   sensivel?: boolean;
 }
@@ -67,6 +70,36 @@ function msParaSRT(ms: number): string {
   const s = Math.floor((ms % 60000) / 1000);
   const rest = ms % 1000;
   return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")},${String(rest).padStart(3, "0")}`;
+}
+
+function gerarDescricaoVisual(
+  estiloFundo: string,
+  tom: "agressivo" | "duvidoso" | "esperancoso",
+  tipoFrase: string
+): string {
+  const fundo = estiloFundo.replace(/^plano de fundo\s+/i, "").toLowerCase();
+
+  const tomDesc: Record<string, string> = {
+    agressivo:   "texto explosivo, clima tenso e urgente",
+    duvidoso:    "texto questionador, atmosfera de dúvida",
+    esperancoso: "texto suave, atmosfera esperançosa",
+  };
+
+  const fraseDesc: Record<string, string> = {
+    reflexao:  "mood introspectivo",
+    climax:    "pico emocional",
+    abertura:  "abertura impactante",
+    transicao: "transição fluida",
+    conceito:  "explicação visual",
+    sequencia: "linha do tempo",
+    dado:      "dado estatístico",
+    dialogo:   "diálogo dramático",
+    acao:      "ação dramática",
+    desfecho:  "desfecho narrativo",
+  };
+
+  const prefixo = tipoFrase.split("_")[0];
+  return `Fundo ${fundo}, ${tomDesc[tom] ?? "tom neutro"}, ${fraseDesc[prefixo] ?? "animação contextual"}`;
 }
 
 function normalizarTerco(terco: string): "agressivo" | "duvidoso" | "esperancoso" {
@@ -303,7 +336,7 @@ function mapearParaPlano(
       let duracao = clip.duracao_ms;
 
       if (tipoFinal === "remotion_animacao") {
-        const { tipo, duracao: d } = resolverAnimacaoEditorial(config.tipoAnimacao, sp.tipo_momento, indiceRemotion);
+        const { tipo, duracao: d } = resolverAnimacaoEditorial(5, sp.tipo_momento, indiceRemotion);
         animacao = tipo;
         duracao = d;
         indiceRemotion++;
@@ -320,6 +353,17 @@ function mapearParaPlano(
       }
       const ehSensivel = enriched?.sensivel || (clip.sensivel === true) || undefined;
 
+      const estiloFundo = tipoFinal === "remotion_animacao"
+        ? config.templateAnimacao || undefined
+        : undefined;
+      const descricaoVisual = estiloFundo
+        ? gerarDescricaoVisual(estiloFundo, terco, sp.tipo_momento)
+        : undefined;
+      const motor: "remotion" | "hyperframes" | undefined =
+        tipoFinal === "remotion_animacao"
+          ? (animacao.startsWith("3d-") ? "remotion" : "hyperframes")
+          : undefined;
+
       plano.push({
         numero,
         segmentoId: sp.id,
@@ -335,6 +379,9 @@ function mapearParaPlano(
         tipoFrase: sp.tipo_momento,
         fraseImpacto,
         duracao,
+        estiloFundo,
+        descricaoVisual,
+        motor,
         observacoes: "",
         sensivel: ehSensivel,
       });

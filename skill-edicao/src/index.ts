@@ -132,13 +132,7 @@ function mostrarAjuda(pastasProjetos: string): void {
   console.log("Uso:");
   console.log("  npx tsx src/index.ts [projeto] --planejar                   (planejamento normal)");
   console.log("  npx tsx src/index.ts [projeto] --executar                   (execução com API — gera TSX via Claude)");
-  console.log("  npx tsx src/index.ts [projeto] --executar --rapido          (execução com presets existentes)");
   console.log("  npx tsx src/index.ts [projeto] --planejar --reenriquecer    (força novo contexto)");
-  console.log("  npx tsx src/index.ts [projeto] --planejar --rapido          (planejar sem pergunta de template)");
-  console.log("");
-  console.log("Modos de execução Remotion:");
-  console.log("  padrão (API)  — Claude gera código TSX customizado para cada clip em batch paralelo");
-  console.log("  --rapido      — usa presets prontos (mais rápido, sem chamadas à API de geração)");
   console.log("");
   console.log("Projetos disponíveis:");
   if (fs.existsSync(pastasProjetos)) {
@@ -155,12 +149,7 @@ async function main() {
   const argProjeto     = args[0];
   const flag           = args[1];
   const reenriquecer   = args.includes("--reenriquecer");
-  const modoRapido     = args.includes("--rapido");
   const pastasProjetos = path.join(__dirname, "../projetos");
-
-  if (modoRapido) {
-    console.log("⚡ MODO RÁPIDO — usando presets existentes");
-  }
 
   if (!argProjeto || (flag !== "--planejar" && flag !== "--executar")) {
     mostrarAjuda(pastasProjetos);
@@ -183,7 +172,7 @@ async function main() {
   console.log(`PDF: ${path.basename(config.pacoteDadosArquivo)}`);
 
   if (flag === "--planejar") {
-    const configEditorial = await controleEditorial(modoRapido);
+    const configEditorial = await controleEditorial();
     console.log(`\n→ ${resumirConfigEditorial(configEditorial)}\n`);
 
     const infoCanal = extrairInfoCanal(config.canal);
@@ -192,7 +181,7 @@ async function main() {
 
     await planejar(config, infoCanal, paleta, configEditorial, reenriquecer);
   } else {
-    await executar(config, modoRapido);
+    await executar(config);
   }
 }
 

@@ -27,3 +27,9 @@ skill-edicao/ffmpeg.zip
 Thumbs.db
 desktop.ini
 *.log
+
+# HyperFrames — não versionar (projeto local pesado)
+HyperFrames/
+
+# Remotion — não versionar (projeto local pesado)
+Remotion/
