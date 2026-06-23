@@ -60,6 +60,7 @@ function contarVariaveis(html: string): number {
 }
 
 async function variabilizarComClaude(nome: string, htmlOriginal: string): Promise<string> {
+  const originalTemTimeline = htmlOriginal.includes("window.__timelines");
   const client = new Anthropic();
 
   const prompt = `Você é especialista em HyperFrames. Analise este template HTML e adicione declarações de variáveis (data-composition-variables) no elemento <html> raiz, SEM alterar a estrutura, animação ou lógica GSAP existente.
@@ -105,7 +106,14 @@ Retorne APENAS o HTML completo modificado, sem markdown, sem explicações.`;
   else if (resultado.startsWith("```")) resultado = resultado.slice(3);
   if (resultado.endsWith("```")) resultado = resultado.slice(0, -3);
 
-  return resultado.trim();
+  resultado = resultado.trim();
+
+  if (originalTemTimeline && !resultado.includes("window.__timelines")) {
+    console.warn(`\n⚠ POSSÍVEL TRUNCAMENTO em ${nome} — resposta pode estar incompleta`);
+    console.warn(`  (original tinha window.__timelines mas a resposta não tem)\n`);
+  }
+
+  return resultado;
 }
 
 function sleep(ms: number): Promise<void> {

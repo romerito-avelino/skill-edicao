@@ -2,9 +2,10 @@ import * as fs from "fs";
 import * as path from "path";
 import * as dotenv from "dotenv";
 import { InfoCanal, PaletaThumbnail } from "./visual-selector";
-import { ConfigProjeto, ConfigCanal, planejar } from "./planner";
+import { ConfigProjeto, ConfigCanal, PlanoEdicao, planejar } from "./planner";
 import { executar } from "./executor";
 import { controleEditorial, resumirConfigEditorial } from "./editorial";
+import { rodarRevisaoCLI } from "./revisao-cli";
 
 dotenv.config({ path: path.resolve(__dirname, "../.env") });
 
@@ -131,6 +132,7 @@ function extrairPaleta(canal: ConfigCanal): PaletaThumbnail {
 function mostrarAjuda(pastasProjetos: string): void {
   console.log("Uso:");
   console.log("  npx tsx src/index.ts [projeto] --planejar                   (planejamento normal)");
+  console.log("  npx tsx src/index.ts [projeto] --revisar                    (revisão semi-manual das cenas HyperFrames)");
   console.log("  npx tsx src/index.ts [projeto] --executar                   (execução com API — gera TSX via Claude)");
   console.log("  npx tsx src/index.ts [projeto] --planejar --reenriquecer    (força novo contexto)");
   console.log("");
@@ -138,6 +140,62 @@ function mostrarAjuda(pastasProjetos: string): void {
   if (fs.existsSync(pastasProjetos)) {
     fs.readdirSync(pastasProjetos).forEach(p => console.log(`  - ${p}`));
   }
+}
+
+async function revisar(config: ConfigProjeto): Promise<void> {
+  const arquivoPlano = path.join(config.pasta, "plano-edicao.json");
+  if (!fs.existsSync(arquivoPlano)) {
+    console.error("Plano não encontrado. Gere com --planejar primeiro.");
+    process.exit(1);
+  }
+
+  const plano: PlanoEdicao = JSON.parse(fs.readFileSync(arquivoPlano, "utf-8"));
+
+  if (plano.configEditorial.modoGeracao !== "semi_manual") {
+    console.log("Modo automático ativo — --revisar não é necessário.");
+    console.log("Para habilitar revisão manual, planeje novamente escolhendo modo Semi-manual.");
+    process.exit(0);
+  }
+
+  // Carrega contexto enriquecido para obter atmosfera e dadosVisuais
+  const arquivoEnriquecido = path.join(config.pasta, "contexto-enriquecido.json");
+  let enriquecidos: any[] = [];
+  if (fs.existsSync(arquivoEnriquecido)) {
+    try { enriquecidos = JSON.parse(fs.readFileSync(arquivoEnriquecido, "utf-8")); } catch { /* ok */ }
+  }
+
+  const segmentosHF = plano.segmentos.filter(
+    s => s.tipoVisual === "remotion_animacao" && s.motor === "hyperframes"
+  );
+
+  if (segmentosHF.length === 0) {
+    console.log("Nenhum segmento HyperFrames encontrado no plano.");
+    process.exit(0);
+  }
+
+  console.log(`\n${segmentosHF.length} cena(s) HyperFrames para revisar.`);
+
+  // Mescla com dados enriquecidos (atmosfera, dadosVisuais)
+  const segmentosParaRevisar = segmentosHF.map(seg => {
+    const idx = parseInt(seg.segmentoId, 10) - 1;
+    const enriched: any = idx >= 0 ? (enriquecidos[idx] ?? {}) : {};
+    return { ...seg, atmosfera: enriched.atmosfera ?? "dramatico", dadosVisuais: enriched.dadosVisuais ?? {} };
+  });
+
+  const paleta = config.canal!.paleta;
+  const resultados = await rodarRevisaoCLI(segmentosParaRevisar, paleta);
+
+  // Salva os resultados no plano
+  for (const [clipId, proposta] of resultados) {
+    const seg = plano.segmentos.find(s => s.clipId === clipId);
+    if (!seg) continue;
+    seg.templateAprovado  = proposta.templateAtual;
+    seg.variaveisAprovadas = proposta.variaveis;
+    seg.statusRevisao     = proposta.statusRevisao;
+  }
+
+  fs.writeFileSync(arquivoPlano, JSON.stringify(plano, null, 2), "utf-8");
+  console.log("\nRevisão salva. Rode --executar para renderizar.");
 }
 
 async function main() {
@@ -151,7 +209,7 @@ async function main() {
   const reenriquecer   = args.includes("--reenriquecer");
   const pastasProjetos = path.join(__dirname, "../projetos");
 
-  if (!argProjeto || (flag !== "--planejar" && flag !== "--executar")) {
+  if (!argProjeto || (flag !== "--planejar" && flag !== "--revisar" && flag !== "--executar")) {
     mostrarAjuda(pastasProjetos);
     process.exit(0);
   }
@@ -180,6 +238,8 @@ async function main() {
     console.log(`Paleta: ${paleta.cor_primaria} / ${paleta.cor_secundaria} / ${paleta.cor_acento}`);
 
     await planejar(config, infoCanal, paleta, configEditorial, reenriquecer);
+  } else if (flag === "--revisar") {
+    await revisar(config);
   } else {
     await executar(config);
   }

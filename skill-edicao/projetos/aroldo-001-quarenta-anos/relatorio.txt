@@ -1,20 +1,18 @@
 ════════════════════════════════
  SKILL-EDIÇÃO | Relatório Final
  Projeto: aroldo-001-quarenta-anos
- Data: 17/06/2026 17:05
+ Data: 21/06/2026 09:44
 ════════════════════════════════
 Clips gerados: 18
 ├─ Pexels:    7 clips
 ├─ Imagem IA: 4 clips
 └─ Remotion:  7 clips
-   ├─ Via API:      4 clips ✓
-   └─ Tela preta:   3 clips  ⚠ (substituir na edição)
+   ├─ Via API:      6 clips ✓
+   └─ Tela preta:   1 clips  ⚠ (substituir na edição)
 
 Clips para substituição manual:
-  → 002-02.mp4 (tela preta — falhou na compilação)
-  → 008-01.mp4 (tela preta — falhou na compilação)
-  → 013-01.mp4 (tela preta — falhou na compilação)
+  → 011-01.mp4 (tela preta — falhou na compilação)
 
-Tempo total: 6 minutos
+Tempo total: 7 minutos
 Falhas: 0
 ════════════════════════════════

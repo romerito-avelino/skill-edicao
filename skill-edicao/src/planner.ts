@@ -55,6 +55,10 @@ export interface PlanoSegmento {
   motor?: "remotion" | "hyperframes";
   observacoes: string;
   sensivel?: boolean;
+  // Campos preenchidos pelo --revisar (modo semi_manual)
+  templateAprovado?: string;
+  variaveisAprovadas?: Record<string, unknown>;
+  statusRevisao?: "pendente" | "aprovado" | "pulado";
 }
 
 export interface PlanoEdicao {

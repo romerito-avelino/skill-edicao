@@ -102,6 +102,8 @@ export async function gerarBatchAnimacoes(
       paleta: canal.paleta,
       duracao: clip.duracao,
       outputPath,
+      templateAprovado: clip.templateAprovado,
+      variaveisAprovadas: clip.variaveisAprovadas,
     }).then(resultado => {
       if (resultado === "ok") {
         process.stdout.write(`  ✓ ${clip.clipId} (HyperFrames)\n`);

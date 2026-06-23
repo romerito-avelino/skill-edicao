@@ -49,13 +49,22 @@ function extrairDuracao(html: string): number | null {
   return isFinite(val) ? val : null;
 }
 
+function decodificarEntidadesHtml(texto: string): string {
+  return texto
+    .replace(/&apos;/g, "'")
+    .replace(/&quot;/g, '"')
+    .replace(/&amp;/g, "&")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">");
+}
+
 // Suporta dois formatos de data-composition-variables:
 //   Array (formato novo):  [{"id":"x","type":"string","label":"X","default":"y"}]
 //   Objeto (formato legado): {"x":{"type":"string","default":"y"}}
 function parseVariaveis(raw: string): VariavelTemplate[] {
   let parsed: unknown;
   try {
-    parsed = JSON.parse(raw);
+    parsed = JSON.parse(decodificarEntidadesHtml(raw));
   } catch {
     return [];
   }
