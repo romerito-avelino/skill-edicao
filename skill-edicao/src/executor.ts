@@ -1,12 +1,13 @@
 import * as fs from "fs";
 import * as path from "path";
 import * as readline from "readline";
-import { buscarPexelsVideo, gerarImagemReplicate } from "./asset-fetcher";
+import { buscarPexelsVideo, gerarImagemOpenAI } from "./asset-fetcher";
 import { gerarComandoVideoStock, executarFFmpeg } from "./ffmpeg-processor";
 import { renderizarKenBurns } from "./remotion-renderer";
 import { ConfigProjeto, PlanoEdicao, PlanoSegmento } from "./planner";
 import { gerarBatchAnimacoes } from "./batch-animator";
 import { compilarERenderizar } from "./tsx-compiler";
+import { instrucaoEstiloImagem } from "./context-enricher";
 
 const DIRECAO_KB: Record<string, "zoom_in" | "zoom_out" | "pan_direita" | "pan_esquerda"> = {
   kenburns_zoom_in:       "zoom_in",
@@ -29,7 +30,8 @@ async function executarVideoStock(
   clip: PlanoSegmento,
   pastaDownloads: string,
   pastaCenas: string,
-  contadores: Contadores
+  contadores: Contadores,
+  estiloVisualImagem: string
 ): Promise<void> {
   if (!clip.queryPexels) {
     contadores.falhas.push(`${clip.clipId}: sem queryPexels`);
@@ -60,7 +62,7 @@ async function executarVideoStock(
   console.log(`    ✗ Pexels: ${resultado.erro}`);
   if (clip.promptImagem) {
     console.log(`    → Fallback: imagem IA`);
-    await executarImagemIA(clip, pastaDownloads, pastaCenas, contadores, true);
+    await executarImagemIA(clip, pastaDownloads, pastaCenas, contadores, true, estiloVisualImagem);
   } else {
     contadores.falhas.push(`${clip.clipId}: Pexels falhou e sem fallback`);
   }
@@ -71,14 +73,15 @@ async function executarImagemIA(
   pastaDownloads: string,
   pastaCenas: string,
   contadores: Contadores,
-  ehFallback = false
+  ehFallback = false,
+  estiloVisualImagem = "cinematic"
 ): Promise<void> {
   if (!clip.promptImagem) {
     contadores.falhas.push(`${clip.clipId}: sem promptImagem`);
     return;
   }
 
-  const resultado = await gerarImagemReplicate(clip.promptImagem, clip.clipId, pastaDownloads, "cinematic", clip.terco, clip.sensivel ?? false);
+  const resultado = await gerarImagemOpenAI(clip.promptImagem, clip.clipId, pastaDownloads);
   if (!resultado.sucesso) {
     console.log(`    ✗ Replicate: ${resultado.erro}`);
     contadores.falhas.push(`${clip.clipId}: Replicate ${resultado.erro}`);
@@ -111,7 +114,7 @@ function gerarRelatorio(
   const hora = agora.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
 
   const linhasRemotion = [
-    `└─ Remotion:  ${contadores.remotion} clips`,
+    `└─ Animações:  ${contadores.remotion} clips`,
     `   ├─ Via API:      ${contadores.remotionViaAPI} clips ✓`,
     `   └─ Tela preta:   ${contadores.remotionTelaPreta} clips${contadores.remotionTelaPreta > 0 ? "  ⚠ (substituir na edição)" : ""}`,
   ];
@@ -227,6 +230,7 @@ export async function executar(config: ConfigProjeto): Promise<void> {
     clipsFallback: [],
   };
   const inicioMs = Date.now();
+  const estiloVisualImagem = instrucaoEstiloImagem(plano.configEditorial.estiloImagem);
 
   const totalClipsRemotion = plano.segmentos.filter(s => s.tipoVisual === "remotion_animacao").length;
 
@@ -249,10 +253,10 @@ export async function executar(config: ConfigProjeto): Promise<void> {
     console.log(`\n[${i + 1}/${plano.segmentos.length}] ${clip.clipId} — ${clip.tipoVisual} — ${clip.duracao}ms`);
 
     if (clip.tipoVisual === "video_stock") {
-      await executarVideoStock(clip, pastaDownloads, pastaCenas, contadores);
+      await executarVideoStock(clip, pastaDownloads, pastaCenas, contadores, estiloVisualImagem);
 
     } else if (clip.tipoVisual === "imagem_ia") {
-      await executarImagemIA(clip, pastaDownloads, pastaCenas, contadores);
+      await executarImagemIA(clip, pastaDownloads, pastaCenas, contadores, false, estiloVisualImagem);
 
     } else if (clip.tipoVisual === "remotion_animacao") {
       const saida = path.join(pastaCenas, `${clip.clipId}.mp4`);

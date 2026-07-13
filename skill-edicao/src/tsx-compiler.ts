@@ -222,7 +222,7 @@ export async function compilarERenderizar(params: ParamsCompilar): Promise<Resul
     try {
       await tentarCompilar(sanitizarCodigoTSX(codigoTSX));
       limpar();
-      console.log(`  ✓ Remotion (template-customizado/${clipId}): ${path.basename(outputPath)}`);
+      console.log(`  ✓ Animações (template-customizado/${clipId}): ${path.basename(outputPath)}`);
       return "ok";
     } catch (erro: any) {
       console.log(`  ✗ Tentativa 1 falhou: ${String(erro?.message ?? "").substring(0, 120)}`);
@@ -238,7 +238,7 @@ export async function compilarERenderizar(params: ParamsCompilar): Promise<Resul
   try {
     await tentarCompilar(gerarTSXMinimo(params));
     limpar();
-    console.log(`  ✓ Remotion (tsx-minimo/${clipId}): ${path.basename(outputPath)}`);
+    console.log(`  ✓ Animações (tsx-minimo/${clipId}): ${path.basename(outputPath)}`);
     return "fallback";
   } catch (erro: any) {
     console.log(`  ✗ Tentativa 2 falhou: ${String(erro?.message ?? "").substring(0, 120)}`);

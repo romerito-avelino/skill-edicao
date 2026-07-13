@@ -1,0 +1,249 @@
+[
+  {
+    "segmentoId": "001",
+    "tipoMomento": "abertura_historia",
+    "atmosfera": "tenso",
+    "fraseImpacto": "Você fez a pergunta certa a tempo?",
+    "descricaoVisual": "Plano fechado em um relógio de parede antigo, ponteiros se movendo lentamente sob luz âmbar quente. Tipografia pesada e centrada aparece em corte seco, com grão de filme analógico sobreposto à cena.",
+    "elementosVisuais": [
+      "relógio de parede com ponteiros em movimento",
+      "luz âmbar difusa e envelhecida",
+      "grão de filme analógico",
+      "tipografia bold centralizada em corte seco",
+      "fundo neutro desfocado"
+    ],
+    "dadosVisuais": {
+      "detalhe": "Abertura que instala tensão narrativa com pergunta implícita sobre o futuro financeiro do trabalhador brasileiro antes dos quarenta anos"
+    },
+    "templatePrimario": "caption-kinetic-slam",
+    "templateSecundario": null,
+    "motorRender": "hyperframes",
+    "queryPexels": "clock time passing aging worker",
+    "promptImagem": "Minimalist stick-figure illustration, simple black line figure standing alone in front of a large wall clock, figure looking up at the clock with a contemplative posture, plain white background, expressive gesture of uncertainty, simple drawing style, no facial detail, NON-photorealistic, storytelling scene, no text",
+    "fraseAnimacao": "Você fez a pergunta certa a tempo?",
+    "sensivel": false,
+    "motivoSensivel": null,
+    "emocao": "urgência",
+    "intensidade": "media",
+    "referenciaVisual": null
+  },
+  {
+    "segmentoId": "002",
+    "tipoMomento": "dado_estatistico",
+    "atmosfera": "pesado",
+    "fraseImpacto": "72 milhões de brasileiros no vermelho em 2023",
+    "descricaoVisual": "Visualização de dado em tela escura com número crescendo em contagem animada, iluminação fria e azulada que transmite peso. Tipografia monoespaçada em destaque, com fundo de mapa estilizado do Brasil desfocado ao fundo.",
+    "elementosVisuais": [
+      "contador numérico animado em destaque",
+      "fundo escuro com tonalidade azul fria",
+      "mapa estilizado do Brasil desfocado",
+      "tipografia monoespaçada grande",
+      "linha horizontal separadora minimalista"
+    ],
+    "dadosVisuais": {
+      "valor": 72000000,
+      "unidade": "pessoas",
+      "contexto": "Número de inadimplentes no Brasil em 2023, o maior da história",
+      "comparacao": null
+    },
+    "templatePrimario": "data-chart",
+    "templateSecundario": "apple-money-count",
+    "motorRender": "hyperframes",
+    "queryPexels": "debt financial crisis Brazil crowd",
+    "promptImagem": "Minimalist stick-figure illustration, large crowd of simple black line figures filling the frame, each figure carrying a weight or heavy object on their back, plain white background, oppressive atmosphere, simple drawing style, no facial detail, NON-photorealistic, storytelling scene, no text",
+    "fraseAnimacao": "72 milhões de brasileiros no vermelho em 2023",
+    "sensivel": false,
+    "motivoSensivel": null,
+    "emocao": "urgência",
+    "intensidade": "alta",
+    "referenciaVisual": null
+  },
+  {
+    "segmentoId": "003",
+    "tipoMomento": "introducao_personagem",
+    "atmosfera": "melancolico",
+    "fraseImpacto": "Seu Antônio nunca ouviu falar nisso",
+    "descricaoVisual": "Enquadramento intimista em tons sépia e terrosos, evocando o interior do Nordeste brasileiro. Luz natural lateral suave banha a cena, tipografia serifada discreta introduz o personagem com dignidade, sem julgamento.",
+    "elementosVisuais": [
+      "tons sépia e terrosos de interior nordestino",
+      "luz natural lateral suave",
+      "tipografia serifada discreta",
+      "textura de parede de adobe ou barro",
+      "silhueta sentada em posição calma"
+    ],
+    "dadosVisuais": {
+      "nome": "Antônio",
+      "idade": 63,
+      "profissao": "aposentado",
+      "papel_narrativo": "personagem central que representa o trabalhador comum sem acesso à educação financeira"
+    },
+    "templatePrimario": "caption-editorial-emphasis",
+    "templateSecundario": null,
+    "motorRender": "hyperframes",
+    "queryPexels": "elderly Brazilian man rural simple life",
+    "promptImagem": "Minimalist stick-figure illustration, simple black line figure of an elderly man sitting on a wooden chair outside a small rural house, plain dusty background suggesting northeastern Brazil countryside, calm and melancholic atmosphere, warm dim lighting, simple drawing style, no facial detail, NON-photorealistic, storytelling scene, no text",
+    "fraseAnimacao": "Seu Antônio nunca ouviu falar nisso",
+    "sensivel": false,
+    "motivoSensivel": null,
+    "emocao": "tristeza",
+    "intensidade": "media",
+    "referenciaVisual": null
+  },
+  {
+    "segmentoId": "004",
+    "tipoMomento": "localizacao_geografica",
+    "atmosfera": "pesado",
+    "fraseImpacto": "Saiu do Piauí e encontrou mais dívidas",
+    "descricaoVisual": "Movimento de câmera que simula deslocamento de cidade pequena para metrópole, com corte entre paisagem seca e skyline urbano cinzento. Iluminação que vai do quente seco ao frio asfaltado, transmitindo a desilusão da migração.",
+    "elementosVisuais": [
+      "paisagem seca do sertão piauiense",
+      "skyline urbano de São Paulo em tom cinzento",
+      "animação de trajeto em mapa estilizado",
+      "contraste de luz quente para fria",
+      "textura de asfalto molhado urbano"
+    ],
+    "dadosVisuais": {
+      "tipo": "deslocamento",
+      "origem": {
+        "cidade": "Teresina",
+        "pais": "Brasil"
+      },
+      "destino": {
+        "cidade": "São Paulo",
+        "pais": "Brasil"
+      },
+      "data": null,
+      "personagem": "Antônio",
+      "detalhe_narrativo": "Seu Antônio migrou de Teresina para São Paulo em busca de vida melhor e encontrou mais dívidas"
+    },
+    "templatePrimario": "north-korea-locked-down",
+    "templateSecundario": null,
+    "motorRender": "hyperframes",
+    "queryPexels": "migration city São Paulo urban struggle",
+    "promptImagem": "Minimalist stick-figure illustration, simple black line figure walking along a long road that transitions from a dry rural landscape on the left to a dense gray urban skyline on the right, heavy and disillusioned atmosphere, cold flat lighting on the city side, warm dry lighting on the rural side, simple drawing style, no facial detail, NON-photorealistic, storytelling scene, no text",
+    "fraseAnimacao": "Saiu do Piauí e encontrou mais dívidas",
+    "sensivel": false,
+    "motivoSensivel": null,
+    "emocao": "tristeza",
+    "intensidade": "alta",
+    "referenciaVisual": null
+  },
+  {
+    "segmentoId": "005",
+    "tipoMomento": "conceito_explicacao",
+    "atmosfera": "reflexivo",
+    "fraseImpacto": "Tempo e decisão: é só isso que separa",
+    "descricaoVisual": "Dois caminhos visuais divergem a partir de um ponto central, um levando a uma representação de conforto e o outro a aperto. Iluminação clara e direta, sem sombras dramáticas, tipografia limpa sans-serif que organiza o raciocínio com clareza didática.",
+    "elementosVisuais": [
+      "diagrama de dois caminhos divergindo",
+      "iluminação clara e direta sem sombras",
+      "tipografia sans-serif limpa",
+      "ícone de relógio e ícone de seta de decisão",
+      "contraste visual entre os dois destinos"
+    ],
+    "dadosVisuais": {
+      "conceito_central": "A diferença entre aposentadoria confortável e sufoco está em duas variáveis: tempo de antecedência e qualidade da decisão financeira",
+      "relacoes": [
+        "tempo disponível → poder de construção financeira",
+        "decisão informada → acúmulo consistente",
+        "ausência de decisão → dependência exclusiva do governo",
+        "postergação → redução drástica das opções"
+      ]
+    },
+    "templatePrimario": "flowchart",
+    "templateSecundario": "caption-parallax-layers",
+    "motorRender": "hyperframes",
+    "queryPexels": "two paths decision fork road choice",
+    "promptImagem": "Minimalist stick-figure illustration, simple black line drawing of a fork in a road, one path leading to a small peaceful house with a tree, the other path leading to a pile of bills and debt symbols, a single stick figure standing at the fork looking at both options, plain white background, reflective calm atmosphere, neutral flat lighting, simple drawing style, no facial detail, NON-photorealistic, storytelling scene, no text",
+    "fraseAnimacao": "Tempo e decisão: é só isso que separa",
+    "sensivel": false,
+    "motivoSensivel": null,
+    "emocao": "reflexão",
+    "intensidade": "media",
+    "referenciaVisual": null
+  },
+  {
+    "segmentoId": "006",
+    "tipoMomento": "confronto",
+    "atmosfera": "tenso",
+    "fraseImpacto": "O governo vai mesmo me sustentar?",
+    "descricaoVisual": "Tipografia kinetic em corte brusco, letra por letra, sobre fundo escuro com textura de papel envelhecido. A pergunta ocupa o frame inteiro como um golpe visual, iluminação dramática de baixo para cima reforçando o peso do questionamento.",
+    "elementosVisuais": [
+      "tipografia kinetic em entrada brusca",
+      "fundo escuro com textura de papel envelhecido",
+      "iluminação dramática de baixo para cima",
+      "ponto de interrogação em destaque isolado",
+      "grão de filme sobreposto"
+    ],
+    "dadosVisuais": {
+      "detalhe": "Pergunta direta e incômoda que confronta o espectador com sua dependência implícita do sistema previdenciário público brasileiro"
+    },
+    "templatePrimario": "caption-kinetic-slam",
+    "templateSecundario": null,
+    "motorRender": "hyperframes",
+    "queryPexels": "government building pension retirement doubt",
+    "promptImagem": "Minimalist stick-figure illustration, simple black line figure standing alone in front of a large imposing government building with closed doors, figure with arms slightly open in a questioning gesture, heavy and uncertain atmosphere, dramatic low lighting casting long shadow, plain simplified background, simple drawing style, no facial detail, NON-photorealistic, storytelling scene, no text",
+    "fraseAnimacao": "O governo vai mesmo me sustentar?",
+    "sensivel": false,
+    "motivoSensivel": null,
+    "emocao": "urgência",
+    "intensidade": "alta",
+    "referenciaVisual": null
+  },
+  {
+    "segmentoId": "007",
+    "tipoMomento": "climax_emocional",
+    "atmosfera": "melancolico",
+    "fraseImpacto": "A resposta chegou tarde demais pra ele",
+    "descricaoVisual": "Corte para plano lento e silencioso, luz quente declinante como fim de tarde, evocando o peso de uma vida de trabalho sem o retorno esperado. Tipografia aparece com movimento lento e pesado, como se cada palavra custasse algo.",
+    "elementosVisuais": [
+      "luz quente declinante de fim de tarde",
+      "movimento de câmera lento e pesado",
+      "tipografia com entrada gradual e suave",
+      "silhueta solitária em contraluz",
+      "textura de parede desgastada ao fundo"
+    ],
+    "dadosVisuais": {
+      "detalhe": "Clímax emocional da história de Seu Antônio: a descoberta tardia de que o sistema previdenciário público não seria suficiente para sustentá-lo"
+    },
+    "templatePrimario": "caption-kinetic-slam",
+    "templateSecundario": null,
+    "motorRender": "hyperframes",
+    "queryPexels": "elderly man alone sunset regret solitude",
+    "promptImagem": "Minimalist stick-figure illustration, simple black line figure of an elderly man sitting alone on a bench at sunset, head slightly bowed in a posture of quiet resignation, long shadow stretching across the ground, warm dim backlight silhouette effect, plain background with a simple horizon line, melancholic atmosphere, simple drawing style, no facial detail, NON-photorealistic, storytelling scene, no text",
+    "fraseAnimacao": "A resposta chegou tarde demais pra ele",
+    "sensivel": false,
+    "motivoSensivel": null,
+    "emocao": "tristeza",
+    "intensidade": "alta",
+    "referenciaVisual": null
+  },
+  {
+    "segmentoId": "008",
+    "tipoMomento": "abertura_esperanca",
+    "atmosfera": "esperancoso",
+    "fraseImpacto": "Pra você ainda dá tempo de mudar",
+    "descricaoVisual": "Virada visual para luz natural crescente, tons mais claros e quentes que abrem o frame progressivamente. Tipografia limpa e firme surge com movimento ascendente suave, transmitindo convite e possibilidade sem exagero otimista.",
+    "elementosVisuais": [
+      "luz natural crescente e tons claros",
+      "movimento ascendente suave de tipografia",
+      "fundo que vai do escuro ao claro gradualmente",
+      "ícone simples de caminho aberto à frente",
+      "textura suave e acolhedora no fundo"
+    ],
+    "dadosVisuais": {
+      "detalhe": "Virada esperançosa que convida o espectador a agir antes que seja tarde, contrastando diretamente com o destino de Seu Antônio"
+    },
+    "templatePrimario": "caption-neon-accent",
+    "templateSecundario": "caption-editorial-emphasis",
+    "motorRender": "hyperframes",
+    "queryPexels": "open road hope future bright morning",
+    "promptImagem": "Minimalist stick-figure illustration, simple black line figure standing at the beginning of a wide open road extending into the distance toward a bright horizon, posture upright and forward-facing with one arm slightly raised suggesting readiness, warm growing light from the horizon, plain white background with a simple ground line, hopeful and calm atmosphere, simple drawing style, no facial detail, NON-photorealistic, storytelling scene, no text",
+    "fraseAnimacao": "Pra você ainda dá tempo de mudar",
+    "sensivel": false,
+    "motivoSensivel": null,
+    "emocao": "esperança",
+    "intensidade": "media",
+    "referenciaVisual": null
+  }
+]

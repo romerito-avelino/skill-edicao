@@ -1,0 +1,15 @@
+════════════════════════════════
+ SKILL-EDIÇÃO | Relatório Final
+ Projeto: documental-teste-001
+ Data: 08/07/2026 20:25
+════════════════════════════════
+Clips gerados: 11
+├─ Pexels:    5 clips
+├─ Imagem IA: 4 clips
+└─ Remotion:  2 clips
+   ├─ Via API:      2 clips ✓
+   └─ Tela preta:   0 clips
+
+Tempo total: 5 minutos
+Falhas: 0
+════════════════════════════════

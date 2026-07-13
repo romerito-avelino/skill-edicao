@@ -196,11 +196,11 @@ export async function renderizarFraseImpacto(
       logLevel: "error",
     });
 
-    console.log(`    ✓ Remotion (${idFinal}/${estilo}): ${path.basename(arquivo_saida)}`);
+    console.log(`    ✓ Animações (${idFinal}/${estilo}): ${path.basename(arquivo_saida)}`);
     return { sucesso: true, arquivo_saida };
 
   } catch (erro: any) {
-    console.log(`    ✗ Remotion falhou: ${erro.message?.substring(0, 80)}`);
+    console.log(`    ✗ Animações falhou: ${erro.message?.substring(0, 80)}`);
     return { sucesso: false, arquivo_saida: "", erro: erro.message };
   }
 }
@@ -226,6 +226,7 @@ export interface PropsTemplate {
   labels?: string[];
   estado?: string;
   regiao?: string;
+  [key: string]: unknown;
 }
 
 export async function renderizarTemplateExistente(params: {

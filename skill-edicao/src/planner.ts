@@ -253,6 +253,14 @@ function calcularPosicoesRemotion(totalClips: number, cotaRemotion: number): Set
   return posicoes;
 }
 
+const MOMENTOS_FORCAM_HYPERFRAMES = new Set([
+  "dado_estatistico",
+  "introducao_personagem",
+  "localizacao_geografica",
+  "conceito_explicacao",
+  "sequencia_temporal",
+]);
+
 function mapearParaPlano(
   segmentosProcessados: SegmentoProcessado[],
   segmentos: Segmento[],
@@ -283,13 +291,27 @@ function mapearParaPlano(
     let herdadoQueryPexels: string | null = null;
     let herdadoPromptImagem: string | null = null;
     let herdadoFraseImpacto: string | null = null;
+    // Caminho A: conta imagens IA já usadas neste segmento, para converter
+    // a 2ª+ em vídeo stock e evitar imagens quase idênticas.
+    let imagensIAnoSegmento = 0;
 
     for (const clip of sp.clips) {
       const clipInicio = sp.inicio_ms + (clip.inicio_relativo_ms || 0);
       const clipFim    = sp.inicio_ms + (clip.fim_relativo_ms || sp.duracao_ms);
 
+      const enriched = enriquecidos?.get(sp.id);
+      const tipoMomentoEfetivo = enriched?.tipoMomento ?? sp.tipo_momento;
+
+      const forcarHyperframes =
+        !!enriched?.tipoMomento &&
+        MOMENTOS_FORCAM_HYPERFRAMES.has(enriched.tipoMomento) &&
+        ferramentas.includes("remotion_animacao") &&
+        (usados["remotion_animacao"] || 0) < (cotas["remotion_animacao"] || 0);
+
       let tipoFinal: TipoAsset;
-      if (!ferramentas.includes("remotion_animacao")) {
+      if (forcarHyperframes) {
+        tipoFinal = "remotion_animacao";
+      } else if (!ferramentas.includes("remotion_animacao")) {
         const tipoPreferido = escolherTipo(sp.tipo_momento, ferramentas, posicaoGlobal);
         tipoFinal = escolherTipoEspacado(tipoPreferido, ferramentas, cotas, usados, posicaoGlobal, totalClips);
       } else if (posicoesRemotion.has(posicaoGlobal)) {
@@ -299,6 +321,17 @@ function mapearParaPlano(
         tipoFinal = escolherTipoEspacado(tipoPreferido, ferramentasSemRemotion, cotas, usados, posicaoGlobal, totalClips);
       } else {
         tipoFinal = "remotion_animacao";
+      }
+
+      // Caminho A: se este segmento já gerou uma imagem IA, converte esta
+      // para vídeo stock (evita duas imagens irmãs no mesmo segmento).
+      // Só converte se o vídeo stock estiver habilitado no projeto.
+      if (tipoFinal === "imagem_ia") {
+        if (imagensIAnoSegmento >= 1 && ferramentas.includes("video_stock")) {
+          tipoFinal = "video_stock";
+        } else {
+          imagensIAnoSegmento++;
+        }
       }
 
       let { queryPexels, promptImagem, fraseImpacto } = derivarDados(
@@ -315,14 +348,21 @@ function mapearParaPlano(
       if (promptImagem) herdadoPromptImagem = promptImagem;
       if (fraseImpacto) herdadoFraseImpacto = fraseImpacto;
 
-      // Fallback último recurso: gera query/prompt baseado no texto do segmento
+      // Fallback: se um clip stock não tem query, usa PRIMEIRO a queryPexels
+      // boa do enricher (inglês, cinematográfica); só como último recurso
+      // fatia o texto do segmento.
       if (tipoFinal === "video_stock" && !queryPexels) {
-        queryPexels = (original?.texto ?? sp.texto)
-          .replace(/[^\w\s]/g, " ")
-          .trim()
-          .split(/\s+/)
-          .slice(0, 5)
-          .join(" ");
+        const queryEnricher = enriched?.queryPexels?.trim();
+        if (queryEnricher) {
+          queryPexels = queryEnricher;
+        } else {
+          queryPexels = (original?.texto ?? sp.texto)
+            .replace(/[^\w\s]/g, " ")
+            .trim()
+            .split(/\s+/)
+            .slice(0, 5)
+            .join(" ");
+        }
         herdadoQueryPexels = queryPexels;
       }
       if (tipoFinal === "imagem_ia" && !promptImagem) {
@@ -340,7 +380,7 @@ function mapearParaPlano(
       let duracao = clip.duracao_ms;
 
       if (tipoFinal === "remotion_animacao") {
-        const { tipo, duracao: d } = resolverAnimacaoEditorial(5, sp.tipo_momento, indiceRemotion);
+        const { tipo, duracao: d } = resolverAnimacaoEditorial(5, tipoMomentoEfetivo, indiceRemotion);
         animacao = tipo;
         duracao = d;
         indiceRemotion++;
@@ -351,7 +391,6 @@ function mapearParaPlano(
         duracao = Math.min(Math.max(clip.duracao_ms, 4000), 5000);
       }
 
-      const enriched = enriquecidos?.get(sp.id);
       if (enriched && tipoFinal === "remotion_animacao" && enriched.fraseAnimacao) {
         fraseImpacto = enriched.fraseAnimacao;
       }
@@ -363,10 +402,13 @@ function mapearParaPlano(
       const descricaoVisual = estiloFundo
         ? gerarDescricaoVisual(estiloFundo, terco, sp.tipo_momento)
         : undefined;
+      // Animações são sempre HyperFrames. O motor Remotion fica reservado
+      // apenas para o Ken Burns das imagens IA (fora deste caminho).
+      // Isso fecha a porta que levava animações 3D ao Remotion (tela preta).
       const motor: "remotion" | "hyperframes" | undefined =
-        tipoFinal === "remotion_animacao"
-          ? (animacao.startsWith("3d-") ? "remotion" : "hyperframes")
-          : undefined;
+        tipoFinal === "remotion_animacao" ? "hyperframes" : undefined;
+
+      void animacao; // 'animacao' segue usado acima; evita alerta de var não lida
 
       plano.push({
         numero,
@@ -380,7 +422,7 @@ function mapearParaPlano(
         queryPexels,
         promptImagem,
         animacao,
-        tipoFrase: sp.tipo_momento,
+        tipoFrase: tipoMomentoEfetivo,
         fraseImpacto,
         duracao,
         estiloFundo,

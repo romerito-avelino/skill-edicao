@@ -4,6 +4,7 @@ import * as path from "path";
 dotenv.config({ path: path.resolve(__dirname, "../.env") });
 import * as https from "https";
 import * as http from "http";
+import Anthropic from "@anthropic-ai/sdk";
 
 export interface ResultadoAsset {
   clip_id: string;
@@ -159,30 +160,32 @@ export async function buscarPexelsVideo(
   };
 }
 
-async function chamarReplicateApi(prompt: string, REPLICATE_KEY: string): Promise<string> {
+// ── Motor de imagem: OpenAI GPT Image ──────────────────────────
+// Chamada base64 direta. GPT Image sempre retorna b64_json (sem URL).
+async function chamarOpenAIImage(
+  prompt: string,
+  OPENAI_KEY: string
+): Promise<string> {
   const bodyObj = {
-    input: {
-      prompt,
-      width: 1920,
-      height: 1080,
-      num_outputs: 1,
-      output_format: "jpg",
-      output_quality: 85,
-    },
+    model: "gpt-image-1-mini",
+    prompt,
+    n: 1,
+    size: "1536x1024",
+    quality: "medium",
+    moderation: "low",
+    output_format: "jpeg",
   };
-
   const body = JSON.stringify(bodyObj);
 
   const resposta = await new Promise<any>((resolve, reject) => {
     const req = https.request(
       {
-        hostname: "api.replicate.com",
-        path: "/v1/models/google/imagen-3-fast/predictions",
+        hostname: "api.openai.com",
+        path: "/v1/images/generations",
         method: "POST",
         headers: {
-          Authorization: `Bearer ${REPLICATE_KEY}`,
+          Authorization: `Bearer ${OPENAI_KEY}`,
           "Content-Type": "application/json",
-          "Prefer": "wait=60",
           "Content-Length": Buffer.byteLength(body),
         },
       },
@@ -196,136 +199,98 @@ async function chamarReplicateApi(prompt: string, REPLICATE_KEY: string): Promis
       }
     );
     req.on("error", reject);
-    req.setTimeout(90000, () => {
+    req.setTimeout(120000, () => {
       req.destroy();
-      reject(new Error("Request timeout"));
+      reject(new Error("Timeout"));
     });
     req.write(body);
     req.end();
   });
 
   if (resposta.error) {
-    throw new Error(resposta.error);
-  }
-
-  let url_imagem = "";
-
-  if (resposta.status === "succeeded" && resposta.output) {
-    url_imagem = Array.isArray(resposta.output)
-      ? resposta.output[0]
-      : resposta.output;
-  } else {
-    const prediction_id = resposta.id;
-    let tentativas = 0;
-
-    while (tentativas < 80) {
-      await new Promise((r) => setTimeout(r, 3000));
-      process.stdout.write(".");
-
-      const status = await new Promise<any>((resolve, reject) => {
-        https.get(
-          `https://api.replicate.com/v1/predictions/${prediction_id}`,
-          {
-            headers: {
-              Authorization: `Bearer ${REPLICATE_KEY}`,
-            },
-          },
-          (res) => {
-            let data = "";
-            res.on("data", (chunk) => (data += chunk));
-            res.on("end", () => {
-              try { resolve(JSON.parse(data)); }
-              catch (e) { reject(e); }
-            });
-          }
-        ).on("error", reject);
-      });
-
-      if (status.status === "succeeded") {
-        url_imagem = Array.isArray(status.output)
-          ? status.output[0]
-          : status.output;
-        break;
-      } else if (status.status === "failed") {
-        throw new Error(`Replicate falhou: ${status.error}`);
-      }
-
-      tentativas++;
+    const msg = resposta.error.message || JSON.stringify(resposta.error);
+    const err = new Error(msg);
+    // Marca recusas por política de conteúdo para o tratamento reativo
+    if (
+      /moderation|safety|content policy|content_policy|rejected|not allowed/i.test(msg)
+    ) {
+      (err as any).ehRecusa = true;
     }
+    throw err;
   }
 
-  if (!url_imagem) {
-    throw new Error("Timeout — imagem não gerada em 4 minutos");
-  }
-
-  return url_imagem;
+  const b64 = resposta?.data?.[0]?.b64_json;
+  if (!b64) throw new Error("Resposta sem imagem (b64_json ausente)");
+  return b64;
 }
 
-export async function gerarImagemReplicate(
+// Reescreve um prompt recusado, mantendo a intenção visual mas suavizando.
+async function reescreverPromptSeguro(promptOriginal: string): Promise<string> {
+  const client = new Anthropic();
+  const instrucao =
+    `The following image-generation prompt was rejected by a content filter. ` +
+    `Rewrite it so it passes moderation while keeping the SAME visual intent, ` +
+    `scene and mood. Remove anything violent, graphic, sexual or otherwise ` +
+    `sensitive; replace it with a suggestive but safe visual equivalent. ` +
+    `Keep the same art style. Reply with ONLY the rewritten prompt in English, ` +
+    `no explanation.\n\nPrompt: ${promptOriginal}`;
+
+  const resposta = await client.messages.create({
+    model: "claude-sonnet-4-6",
+    max_tokens: 500,
+    messages: [{ role: "user", content: instrucao }],
+  });
+  const conteudo = resposta.content[0];
+  if (conteudo.type !== "text") throw new Error("Reescrita inesperada");
+  return conteudo.text.trim();
+}
+
+// Gera imagem via OpenAI. Mesma assinatura do antigo gerarImagemReplicate.
+// Em caso de recusa por política, reescreve o prompt e tenta 1x mais.
+export async function gerarImagemOpenAI(
   prompt: string,
   clip_id: string,
-  pastaDestino: string,
-  estiloVisual = "cinematic",
-  tipoCena = "dramatic",
-  sensivel = false
+  pastaDestino: string
 ): Promise<ResultadoAsset> {
-  const REPLICATE_KEY = process.env.REPLICATE_API_KEY || "";
-
-  if (!REPLICATE_KEY) {
+  const OPENAI_KEY = process.env.OPENAI_API_KEY || "";
+  if (!OPENAI_KEY) {
     return {
       clip_id,
       tipo: "imagem_ia",
       arquivo_baixado: "",
       sucesso: false,
-      erro: "REPLICATE_API_KEY não configurada",
+      erro: "OPENAI_API_KEY não configurada",
     };
   }
 
+  const salvarB64 = (b64: string): string => {
+    const destino = path.join(pastaDestino, `${clip_id}_source.jpg`);
+    const pasta = path.dirname(destino);
+    if (!fs.existsSync(pasta)) fs.mkdirSync(pasta, { recursive: true });
+    fs.writeFileSync(destino, Buffer.from(b64, "base64"));
+    return destino;
+  };
+
   try {
-    let url_imagem: string;
-
-    if (sensivel) {
-      console.log(`    ⚠ Clip marcado como sensível — usando prompt alternativo preventivo`);
-      const promptSeguro =
-        `${estiloVisual} photography, ${tipoCena} atmosphere, ` +
-        `Brazilian rural setting, natural lighting, cinematic composition, ` +
-        `no people, landscape, 8k quality, safe for work`;
-      url_imagem = await chamarReplicateApi(promptSeguro, REPLICATE_KEY);
-    } else {
-      console.log(`    Gerando imagem IA: "${prompt.substring(0, 60)}..."`);
-      try {
-        url_imagem = await chamarReplicateApi(prompt, REPLICATE_KEY);
-      } catch (erroInicial: any) {
-        const ehSensivel =
-          erroInicial.message.includes("E005") ||
-          erroInicial.message.toLowerCase().includes("flagged as sensitive");
-        const ehTimeout = erroInicial.message.includes("Timeout");
-
-        if (!ehSensivel && !ehTimeout) throw erroInicial;
-
-        if (ehSensivel) {
-          console.log(`\n    ⚠ Prompt sensível (E005), tentando prompt alternativo...`);
-        } else {
-          console.log(`\n    ⚠ Timeout atingido, tentando prompt alternativo...`);
-        }
-        const promptAlternativo =
-          `${estiloVisual} photography, ${tipoCena} atmosphere, ` +
-          `Brazilian rural setting, natural lighting, cinematic composition, ` +
-          `no people, landscape, 8k quality, safe for work`;
-        url_imagem = await chamarReplicateApi(promptAlternativo, REPLICATE_KEY);
-      }
+    console.log(`    Gerando imagem IA (OpenAI): "${prompt.substring(0, 60)}..."`);
+    let b64: string;
+    try {
+      b64 = await chamarOpenAIImage(prompt, OPENAI_KEY);
+    } catch (erroInicial: any) {
+      if (!erroInicial.ehRecusa) throw erroInicial;
+      console.log(`\n    ⚠ Prompt recusado — reescrevendo de forma mais segura...`);
+      const promptReescrito = await reescreverPromptSeguro(prompt);
+      console.log(`    → Novo prompt: "${promptReescrito.substring(0, 60)}..."`);
+      b64 = await chamarOpenAIImage(promptReescrito, OPENAI_KEY);
     }
 
-    const destino = path.join(pastaDestino, `${clip_id}_source.jpg`);
-    await baixarArquivo(url_imagem, destino);
+    const destino = salvarB64(b64);
     console.log(`\n    ✓ Imagem salva: ${clip_id}_source.jpg`);
-
     return {
       clip_id,
       tipo: "imagem_ia",
       arquivo_baixado: destino,
       sucesso: true,
-      fonte_url: url_imagem,
     };
   } catch (erro: any) {
     return {
@@ -357,11 +322,11 @@ export function criarPastasOutput(raiz: string): void {
 if (require.main === module) {
   console.log("=== ASSET FETCHER ===");
   console.log("Pexels Key:", process.env.PEXELS_API_KEY ? "configurada" : "ausente");
-  console.log("Replicate Key:", process.env.REPLICATE_API_KEY ? "configurada" : "ausente");
+  console.log("OpenAI Key:", process.env.OPENAI_API_KEY ? "configurada" : "ausente");
 
   criarPastasOutput(".");
   console.log("\nEstrutura de pastas criada com sucesso!");
   console.log("\nPara configurar as APIs, crie um arquivo .env na pasta skill-edicao com:");
   console.log("PEXELS_API_KEY=sua_chave_aqui");
-  console.log("REPLICATE_API_KEY=sua_chave_aqui");
+  console.log("OPENAI_API_KEY=sua_chave_aqui");
 }

@@ -11,7 +11,6 @@ export interface ConfigEditorial {
   usarRemotion: boolean;
   usarImagemIA: boolean;
   estiloImagem: number;
-  especificidadeImagem: number;
   tomVisual: number;
   distribuicao: Distribuicao;
   templateAnimacao: string;
@@ -26,7 +25,7 @@ function perguntar(rl: readline.Interface, pergunta: string): Promise<string> {
 
 const NOMES_FERRAMENTA: Record<string, string> = {
   video_stock:       "Vídeos stock (Pexels)",
-  remotion_animacao: "Animações (Remotion)",
+  remotion_animacao: "Animações",
   imagem_ia:         "Imagens IA",
 };
 
@@ -66,7 +65,7 @@ export async function controleEditorial(): Promise<ConfigEditorial> {
 
   console.log("── FERRAMENTAS ──────────────────────");
   const usarVideoStock = (await perguntar(rl, "Usar vídeos stock (Pexels)? [s/n] ")) === "s";
-  const usarRemotion   = (await perguntar(rl, "Usar animações gráficas (Remotion)? [s/n] ")) === "s";
+  const usarRemotion   = (await perguntar(rl, "Usar animações gráficas? [s/n] ")) === "s";
   const usarImagemIA   = (await perguntar(rl, "Usar geração de imagens IA? [s/n] ")) === "s";
 
   const ferramentasAtivas = [
@@ -82,8 +81,7 @@ export async function controleEditorial(): Promise<ConfigEditorial> {
       usarVideoStock: true,
       usarRemotion: true,
       usarImagemIA: true,
-      estiloImagem: 5,
-      especificidadeImagem: 3,
+      estiloImagem: 1,
       tomVisual: 1,
       distribuicao: { video_stock: 34, remotion_animacao: 33, imagem_ia: 33 },
       templateAnimacao: "",
@@ -103,24 +101,17 @@ export async function controleEditorial(): Promise<ConfigEditorial> {
     distribuicao = await perguntarDistribuicao(rl, ferramentasAtivas);
   }
 
-  let estiloImagem = 5;
-  let especificidadeImagem = 3;
+  let estiloImagem = 1;
 
   if (usarImagemIA) {
     console.log("\n── ESTILO DE IMAGENS ──────────────");
     console.log("Estilo visual das imagens:");
-    console.log("  [1] Fotorrealista");
-    console.log("  [2] Pintura artística");
-    console.log("  [3] Cinematográfico");
-    console.log("  [4] Desenho/ilustração");
-    console.log("  [5] Aleatório por segmento");
-    estiloImagem = parseInt(await perguntar(rl, "Escolha: ")) || 5;
-
-    console.log("\nEspecificidade:");
-    console.log("  [1] Genéricas (paisagens, símbolos)");
-    console.log("  [2] Específicas (personagem, cena)");
-    console.log("  [3] Misto");
-    especificidadeImagem = parseInt(await perguntar(rl, "Escolha: ")) || 3;
+    console.log("  [1] Ilustração editorial / conceitual");
+    console.log("  [2] Aquarela");
+    console.log("  [3] Traço / line art");
+    console.log("  [4] Personagens palito");
+    console.log("  [5] Storyboard / quadrinhos");
+    estiloImagem = parseInt(await perguntar(rl, "Escolha: ")) || 1;
   }
 
   let templateAnimacao = "";
@@ -160,7 +151,6 @@ export async function controleEditorial(): Promise<ConfigEditorial> {
     usarRemotion,
     usarImagemIA,
     estiloImagem,
-    especificidadeImagem,
     tomVisual,
     distribuicao,
     templateAnimacao,
@@ -172,7 +162,7 @@ export function resumirConfigEditorial(c: ConfigEditorial): string {
   const tools = [
     c.usarVideoStock && `video_stock(${c.distribuicao.video_stock}%)`,
     c.usarImagemIA   && `imagem_ia(${c.distribuicao.imagem_ia}%)`,
-    c.usarRemotion   && `remotion_animacao(${c.distribuicao.remotion_animacao}%)`,
+    c.usarRemotion   && `animações(${c.distribuicao.remotion_animacao}%)`,
   ].filter(Boolean).join(", ");
   const tons = ["", "Dramático", "Inspiracional", "Reflexivo", "Neutro"];
   const modo = c.templateAnimacao ? ` | Template: "${c.templateAnimacao.substring(0, 40)}"` : "";

@@ -42,22 +42,22 @@ export interface SegmentoEnriquecido {
 const client = new Anthropic();
 
 const MAPA_TEMPLATES = `
-  abertura_historia       → vfx-liquid-background, morph-text
-  climax_emocional        → vfx-shatter, caption-kinetic-slam
+  abertura_historia       → caption-kinetic-slam
+  climax_emocional        → caption-kinetic-slam
   reflexao_melancolia     → caption-texture, caption-editorial-emphasis
   reflexao_arrependimento → caption-editorial-emphasis, caption-texture
-  transicao_historia      → cinematic-zoom, transitions-3d
+  transicao_historia      → caption-editorial-emphasis
   dado_estatistico        → data-chart, apple-money-count
-  localizacao_geografica  → world-map, north-korea-locked-down
+  localizacao_geografica  → north-korea-locked-down
   abertura_esperanca      → caption-neon-accent, caption-editorial-emphasis
   dialogo_personagem      → yt-lower-third, caption-blend-difference
   conceito_explicacao     → flowchart, caption-parallax-layers
-  virada_narrativa        → vfx-magnetic, caption-kinetic-slam
+  virada_narrativa        → caption-kinetic-slam
   pausa_reflexiva         → caption-parallax-layers, caption-texture
-  confronto               → vfx-shatter, caption-kinetic-slam
-  descoberta              → vfx-magnetic, morph-text
-  introducao_personagem   → yt-lower-third, caption-editorial-emphasis
-  sequencia_temporal      → transitions-3d, flowchart
+  confronto               → caption-kinetic-slam
+  descoberta              → caption-kinetic-slam
+  introducao_personagem   → caption-editorial-emphasis
+  sequencia_temporal      → flowchart
 `.trim();
 
 function construirMapa(
@@ -98,6 +98,18 @@ function validar(lista: SegmentoEnriquecido[]): SegmentoEnriquecido[] {
 
     return { ...e, tipoMomento: tipo, fraseAnimacao };
   });
+}
+
+// Mapeia o estilo escolhido no menu (1-5) para instrução em inglês.
+export function instrucaoEstiloImagem(estilo: number): string {
+  const estilos: Record<number, string> = {
+    1: "flat editorial illustration, conceptual, minimal bold shapes, limited color palette, metaphorical, magazine op-ed style, NON-photorealistic, clearly an illustration not a photo",
+    2: "watercolor illustration, soft color washes, visible paper texture, gentle bleeds, hand-painted, emotive, NON-photorealistic",
+    3: "clean line art, hand-drawn ink illustration, minimal linework, monochrome or limited palette, sketch style, NON-photorealistic",
+    4: "minimalist stick-figure illustration, simple black line figures on a plain background, expressive poses and gestures, storytelling scene, no facial detail, NON-photorealistic, clearly a simple drawing",
+    5: "comic storyboard illustration, bold ink outlines, flat cel-shaded colors, dynamic paneled composition, graphic-novel style, NON-photorealistic",
+  };
+  return estilos[estilo] ?? estilos[1];
 }
 
 export async function enriquecerContexto(
@@ -157,7 +169,7 @@ ${MAPA_TEMPLATES}
 
   // ASSETS VISUAIS (para busca de vídeo stock e geração de imagem)
   "queryPexels": "3-5 palavras em inglês para busca de vídeo stock",
-  "promptImagem": "English image generation prompt — [subject] [action/state] [environment] [lighting] [cinematic style]. NUNCA inclua texto na imagem. NUNCA copie literalmente o SRT.",
+  "promptImagem": "English image generation prompt in this exact visual style: ${instrucaoEstiloImagem(configEditorial.estiloImagem)}. Depict a SCENE, LANDSCAPE, OBJECT or VISUAL METAPHOR — NOT a portrait of the narrator. Do NOT make a person the main subject unless the segment is explicitly about a specific NAMED character other than the narrator; the narrator's avatar already appears elsewhere in the video. Structure: [scene/environment] [mood/atmosphere] [lighting] [the style above]. NEVER include text in the image. NEVER copy the SRT literally.",
   "fraseAnimacao": "igual a fraseImpacto",
   "sensivel": false,
   "motivoSensivel": null,
@@ -214,6 +226,7 @@ todos os outros tipoMomento:
 6. promptImagem: sempre em inglês, nunca com violência, nudez ou texto sobreposto
 7. Considere o arco narrativo completo: o mesmo segmento classifica diferente dependendo de onde aparece no vídeo
 8. sensivel: true se o promptImagem puder ser rejeitado por APIs de geração de imagem
+9. promptImagem: priorize cenas, paisagens, objetos e metáforas visuais. EVITE retratos do narrador — o avatar dele já aparece em outras partes do vídeo. Só use uma pessoa como sujeito principal se o segmento fala de um personagem específico e NOMEADO que não seja o narrador.
 
 ═══ VALIDAÇÕES AUTOMÁTICAS (aplique antes de retornar) ═══
 - SE tipoMomento = "localizacao_geografica"

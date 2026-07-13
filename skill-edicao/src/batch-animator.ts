@@ -78,7 +78,7 @@ export async function gerarBatchAnimacoes(
 
   console.log("\n═══ FASE 1 — GERANDO ANIMAÇÕES EM BATCH ═══");
   if (clipsHF.length > 0) {
-    console.log(`HyperFrames: ${clipsHF.length} clips | Remotion (TSX): ${clipsRemotionPuro.length} clips`);
+    console.log(`HyperFrames: ${clipsHF.length} clips | Animações (TSX): ${clipsRemotionPuro.length} clips`);
   } else {
     console.log(`Gerando código para ${clipsRemotionPuro.length} clips em paralelo...`);
   }
@@ -108,7 +108,7 @@ export async function gerarBatchAnimacoes(
       if (resultado === "ok") {
         process.stdout.write(`  ✓ ${clip.clipId} (HyperFrames)\n`);
       } else {
-        process.stdout.write(`  ✗ ${clip.clipId} (HyperFrames falhou — fallback Remotion)\n`);
+        process.stdout.write(`  ✗ ${clip.clipId} (HyperFrames falhou — fallback Animações)\n`);
       }
       resultados.set(clip.clipId, null);
     });
@@ -167,7 +167,7 @@ export async function gerarBatchAnimacoes(
 
   console.log(`\n✓ Batch concluído em ${segundos}s`);
   if (clipsHF.length > 0) console.log(`  HyperFrames: ${clipsHF.length} clips renderizados`);
-  if (clipsRemotionPuro.length > 0) console.log(`  Remotion TSX: ${geradosRemotion}/${clipsRemotionPuro.length} gerados`);
+  if (clipsRemotionPuro.length > 0) console.log(`  Animações TSX: ${geradosRemotion}/${clipsRemotionPuro.length} gerados`);
   console.log("\n═══ FASE 2 — COMPILANDO E RENDERIZANDO ═══\n");
 
   return resultados;

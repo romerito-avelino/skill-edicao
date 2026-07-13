@@ -7,7 +7,8 @@
     "parse": "npx tsx src/srt-parser.ts",
     "select": "npx tsx src/visual-selector.ts",
     "fetch": "npx tsx src/asset-fetcher.ts",
-    "build": "npx tsx src/index.ts"
+    "build": "npx tsx src/index.ts",
+    "teste-templates": "npx tsx src/teste-todos-templates.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.39.0",

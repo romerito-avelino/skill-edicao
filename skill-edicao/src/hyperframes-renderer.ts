@@ -13,27 +13,47 @@ const COMPOSITIONS_DIR = path.join(HYPERFRAMES_PROJECT, "compositions");
 // vfx-shatter excluído: depende de Canvas API experimental
 // (ctx.drawElementImage) não suportada em Puppeteer headless.
 // Sempre renderiza tela preta. Ver diagnóstico de 21/06/2026.
-export const TEMPLATES_INCOMPATIVEIS = new Set(["vfx-shatter"]);
+//
+// caption-blend-difference: renderiza com 'Composition has zero duration /
+// No GSAP timeline registered'. Falha confirmada em teste de 25/06/2026,
+// mesmo padrão de erro do vfx-shatter.
+export const TEMPLATES_INCOMPATIVEIS = new Set(["vfx-shatter", "caption-blend-difference"]);
 
 // Apenas templates com window.__timelines ou data-track-index (renderizáveis standalone).
 // CSS-only snippets (vignette, parallax-zoom, parallax-unzoom, grid-pixelate-wipe) foram removidos.
+//
+// vfx-magnetic, cinematic-zoom e transitions-3d permanecem no catálogo de templates
+// (funcionam tecnicamente) mas foram removidos deste mapa: são templates "vitrine" com
+// texto explicativo técnico fixo (ex: descrição de shader WebGL), incompatíveis com
+// conteúdo narrativo. Ver auditoria de 25/06/2026.
+//
+// vfx-liquid-background é uma demonstração fixa de crossfade entre dois mockups de
+// produto (dashboard fintech e feed social) — suas 18 variáveis controlam textos/cores
+// desses mockups específicos, não há ajuste de mapeamento que o torne compatível com
+// narrativa genérica. Ver investigação de 25/06/2026.
 export const MAPA_TEMPLATE_MOMENTO: Record<string, string[]> = {
-  abertura_historia:       ["vfx-liquid-background", "morph-text"],
-  climax_emocional:        ["vfx-magnetic", "caption-kinetic-slam"],
+  abertura_historia:       ["caption-kinetic-slam"],
+  climax_emocional:        ["caption-kinetic-slam"],
   reflexao_melancolia:     ["caption-texture", "caption-editorial-emphasis"],
   reflexao_arrependimento: ["caption-editorial-emphasis", "caption-texture"],
-  transicao_historia:      ["cinematic-zoom", "transitions-3d"],
+  transicao_historia:      ["caption-editorial-emphasis"],
   dado_estatistico:        ["data-chart", "apple-money-count"],
-  localizacao_geografica:  ["world-map", "north-korea-locked-down"],
+  // world-map removido: tem dataset fixo de GDP global hardcoded, não aceita
+  // rotas geográficas dinâmicas. Reservado para uso manual em animações
+  // avulsas sobre dados globais.
+  localizacao_geografica:  ["north-korea-locked-down"],
   abertura_esperanca:      ["caption-neon-accent", "caption-editorial-emphasis"],
   dialogo_personagem:      ["yt-lower-third", "caption-blend-difference"],
   conceito_explicacao:     ["flowchart", "caption-parallax-layers"],
-  virada_narrativa:        ["vfx-magnetic", "caption-kinetic-slam"],
+  virada_narrativa:        ["caption-kinetic-slam"],
   pausa_reflexiva:         ["caption-parallax-layers", "caption-texture"],
-  confronto:               ["vfx-magnetic", "caption-kinetic-slam"],
-  descoberta:              ["vfx-magnetic", "morph-text"],
-  introducao_personagem:   ["yt-lower-third", "caption-editorial-emphasis"],
-  sequencia_temporal:      ["transitions-3d", "flowchart"],
+  confronto:               ["caption-kinetic-slam"],
+  descoberta:              ["caption-kinetic-slam"],
+  // yt-lower-third removido: é um CTA de inscrição de canal YouTube, não um
+  // template de apresentação de personagem narrativo. Reservado para uso
+  // manual em animações avulsas.
+  introducao_personagem:   ["caption-editorial-emphasis"],
+  sequencia_temporal:      ["flowchart"],
 };
 
 const TEMPLATES_FALLBACK = ["caption-editorial-emphasis", "morph-text"];
