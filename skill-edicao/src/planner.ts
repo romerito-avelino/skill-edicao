@@ -55,10 +55,65 @@ export interface PlanoSegmento {
   motor?: "remotion" | "hyperframes";
   observacoes: string;
   sensivel?: boolean;
+  // Fábrica = gerado automaticamente no pipeline (HyperFrames). Herói = placeholder
+  // no pipeline, substituído depois pela cena real feita no chat + Remotion MCP.
+  origem: "fabrica" | "heroi";
   // Campos preenchidos pelo --revisar (modo semi_manual)
   templateAprovado?: string;
   variaveisAprovadas?: Record<string, unknown>;
   statusRevisao?: "pendente" | "aprovado" | "pulado";
+}
+
+// ─── Cenas-Herói: bifurcação fábrica/herói ─────────────────────────────────
+// Quais tipoFrase viram cena-herói (feitas no chat, não no pipeline)
+const HERO_TIPOS = new Set([
+  "dado_estatistico",
+  "localizacao_geografica",
+  "sequencia_temporal",
+  "conceito_explicacao",
+]);
+
+// Ordem de prioridade quando estoura o teto (o excedente é rebaixado p/ fábrica)
+const HERO_PRIORIDADE = [
+  "dado_estatistico",
+  "localizacao_geografica",
+  "sequencia_temporal",
+  "conceito_explicacao",
+];
+
+// Teto de heróis por vídeo (override por env HERO_MAX)
+const MAX_HEROIS = Number(process.env.HERO_MAX ?? 10);
+
+interface ResultadoClassificacaoHerois {
+  herois: number;
+  rebaixados: number;
+  clipIds: string[];
+}
+
+// Marca origem "heroi" nos primeiros MAX_HEROIS candidatos (tipoVisual remotion_animacao
+// + tipoFrase em HERO_TIPOS), respeitando HERO_PRIORIDADE. O excedente e todo o resto
+// do plano recebem origem "fabrica" (caminho commodity, sem mudanças).
+function classificarHerois(segmentos: PlanoSegmento[]): ResultadoClassificacaoHerois {
+  const candidatos = segmentos.filter(
+    s => s.tipoVisual === "remotion_animacao" && HERO_TIPOS.has(s.tipoFrase)
+  );
+
+  candidatos.sort(
+    (a, b) => HERO_PRIORIDADE.indexOf(a.tipoFrase) - HERO_PRIORIDADE.indexOf(b.tipoFrase)
+  );
+
+  const promovidos = candidatos.slice(0, MAX_HEROIS);
+  const idsPromovidos = new Set(promovidos.map(c => c.clipId));
+
+  for (const s of segmentos) {
+    s.origem = idsPromovidos.has(s.clipId) ? "heroi" : "fabrica";
+  }
+
+  return {
+    herois: promovidos.length,
+    rebaixados: candidatos.length - promovidos.length,
+    clipIds: promovidos.map(c => c.clipId),
+  };
 }
 
 export interface PlanoEdicao {
@@ -430,6 +485,7 @@ function mapearParaPlano(
         motor,
         observacoes: "",
         sensivel: ehSensivel,
+        origem: "fabrica",
       });
 
       usados[tipoFinal]++;
@@ -476,6 +532,8 @@ export async function planejar(
     segmentos: mapearParaPlano(segmentosProcessados, segmentos, configEditorial, enriquecidos),
   };
 
+  const resultadoHerois = classificarHerois(plano.segmentos);
+
   const arquivo = path.join(config.pasta, "plano-edicao.json");
   fs.writeFileSync(arquivo, JSON.stringify(plano, null, 2), "utf-8");
 
@@ -490,5 +548,8 @@ export async function planejar(
   for (const [tipo, count] of Object.entries(porTipo)) {
     console.log(`  ${tipo}: ${count}`);
   }
+  console.log(
+    `  Heróis: ${resultadoHerois.herois} | Rebaixados por teto: ${resultadoHerois.rebaixados} | clipIds heróis: [${resultadoHerois.clipIds.join(", ")}]`
+  );
   console.log("\nRevise e edite o plano, depois execute com --executar");
 }

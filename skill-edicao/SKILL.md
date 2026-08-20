@@ -60,7 +60,7 @@ Exemplos:
 - Nunca criar clip com menos de 3 segundos de duração
 - Se o último clip de um segmento ficar com menos de 3s, incorpore esse tempo ao clip anterior
 
-## Fluxo de trabalho (ATUAL — três comandos)
+## Fluxo de trabalho (ATUAL — três comandos + cenas-herói)
 
 O pipeline opera em três fases, cada uma um comando:
 
@@ -69,6 +69,27 @@ cd "F:\1-YOUTUBE\agente-edicoes\skill-edicao"
 npx tsx src/index.ts [projeto] --planejar
 npx tsx src/index.ts [projeto] --revisar
 npx tsx src/index.ts [projeto] --executar
+```
+
+### Cenas-Herói (fábrica × herói)
+
+Todo clip `remotion_animacao` é classificado em `origem`:
+- **fabrica** — gerado automaticamente pelo pipeline (HyperFrames), como sempre.
+- **heroi** — momentos de maior impacto (`dado_estatistico`, `localizacao_geografica`,
+  `sequencia_temporal`, `conceito_explicacao`, teto `HERO_MAX`, padrão 10 por vídeo) NÃO
+  são gerados no pipeline. Recebem um placeholder MP4 (duração exata, fundo `0x1A1A2E`,
+  texto `CENA-HERÓI` + `clipId`) que guarda o lugar na timeline, e depois são substituídos
+  pela cena real feita à mão no Claude chat + Remotion MCP.
+
+Ordem de execução com cenas-herói:
+
+```
+npx tsx src/index.ts [projeto] --planejar         # plano já com origem (fabrica/heroi)
+npx tsx src/index.ts [projeto] --revisar           # opcional: [H] alterna heroi ⇄ fabrica
+npx tsx src/index.ts [projeto] --exportar-herois   # briefings em output/herois/*.md
+npx tsx src/index.ts [projeto] --executar          # fábrica gera commodity; heróis viram placeholder
+# (troca manual) substitui cada placeholder pelo MP4 real do chat — mesmo clipId, mesmo caminho
+npx tsx src/index.ts [projeto] --reincorporar      # confere que todos os heróis entraram; gate antes do render final
 ```
 
 ### FASE A — Planejamento (`--planejar`)
@@ -199,6 +220,10 @@ O usuário pega a pasta `output/cenas` e o `plano-edicao.json`, abre o editor de
 npx tsx src/index.ts [projeto] --planejar
 npx tsx src/index.ts [projeto] --revisar
 npx tsx src/index.ts [projeto] --executar
+
+# Cenas-herói (opcional, entre --revisar e --executar / após --executar)
+npx tsx src/index.ts [projeto] --exportar-herois
+npx tsx src/index.ts [projeto] --reincorporar
 
 # Forçar re-enriquecimento do contexto
 npx tsx src/index.ts [projeto] --planejar --reenriquecer

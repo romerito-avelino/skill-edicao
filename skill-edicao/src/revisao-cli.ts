@@ -13,10 +13,10 @@ function perguntar(rl: readline.Interface, pergunta: string): Promise<string> {
 }
 
 function exibirProposta(proposta: PropostaCena): void {
-  const { clipId, tipoMomento, atmosfera, fraseImpacto, templateAtual, variaveis, metadadosTemplate } = proposta;
+  const { clipId, tipoMomento, atmosfera, fraseImpacto, templateAtual, variaveis, metadadosTemplate, origem } = proposta;
 
   console.log("\n  ────────────────────────────────────────");
-  console.log(`  [cena ${clipId}] Momento: ${tipoMomento} | Tom: ${atmosfera}`);
+  console.log(`  [cena ${clipId}] Momento: ${tipoMomento} | Tom: ${atmosfera} | Origem: ${origem}`);
   console.log(`  Template: ${templateAtual}`);
   console.log(`  Frase: "${fraseImpacto}"`);
 
@@ -32,7 +32,7 @@ function exibirProposta(proposta: PropostaCena): void {
     if (resto > 0) console.log(`    ... e mais ${resto} variável(eis)`);
   }
 
-  console.log("\n  [A] Aprovar  [T] Trocar template  [E] Editar variável  [P] Pular");
+  console.log("\n  [A] Aprovar  [T] Trocar template  [E] Editar variável  [H] Herói⇄Fábrica  [P] Pular");
 }
 
 async function tratarTrocaTemplate(
@@ -126,6 +126,9 @@ export async function rodarRevisaoCLI(
         proposta = await tratarTrocaTemplate(rl, proposta, paleta);
       } else if (escolha === "e") {
         proposta = await tratarEdicaoVariavel(rl, proposta);
+      } else if (escolha === "h") {
+        proposta = aplicarAcaoAprovacao(proposta, "alternar_origem");
+        console.log(`  → Cena ${proposta.clipId} agora é: ${proposta.origem}`);
       } else if (escolha === "p") {
         proposta = aplicarAcaoAprovacao(proposta, "pular");
         console.log(`  → Cena ${proposta.clipId} pulada`);

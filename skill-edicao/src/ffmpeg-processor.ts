@@ -123,6 +123,100 @@ export function gerarComandoVideoStock(
   };
 }
 
+// ── Placeholder de cena-herói ──────────────────────────────────
+// Cena-herói NÃO é gerada no pipeline — recebe um MP4 de duração exata
+// que guarda o lugar na timeline, até ser substituído pela cena real
+// feita no chat + Remotion MCP. O metadado PLACEHOLDER-HEROI é como o
+// --reincorporar detecta que o slot ainda está pendente.
+export interface ParametrosPlaceholder {
+  clipId: string;
+  duracaoMs: number;
+  fraseImpacto: string;
+  paleta: {
+    primaria: string;
+    secundaria: string;
+    destaque: string;
+    texto: string;
+    fundo: string;
+  };
+  outputPath: string;
+}
+
+function escaparDrawtext(texto: string): string {
+  return texto
+    .replace(/\\/g, "\\\\")
+    .replace(/:/g, "\\:")
+    .replace(/'/g, "’") // aspas simples quebrariam o quoting do filtro
+    .replace(/%/g, "\\%");
+}
+
+function quebrarLinha(texto: string, maxChars = 40): string {
+  const palavras = texto.split(/\s+/).filter(Boolean);
+  const linhas: string[] = [];
+  let atual = "";
+  for (const p of palavras) {
+    const candidata = (atual + " " + p).trim();
+    if (candidata.length > maxChars && atual) {
+      linhas.push(atual);
+      atual = p;
+    } else {
+      atual = candidata;
+    }
+  }
+  if (atual) linhas.push(atual);
+  return linhas.join("\n");
+}
+
+export async function gerarPlaceholder(
+  params: ParametrosPlaceholder
+): Promise<ResultadoFFmpeg> {
+  const { clipId, duracaoMs, fraseImpacto, outputPath } = params;
+  const duracao = msParaSegundos(duracaoMs);
+
+  const pastaSaida = path.dirname(outputPath);
+  if (!fs.existsSync(pastaSaida)) {
+    fs.mkdirSync(pastaSaida, { recursive: true });
+  }
+
+  const clipIdTexto = escaparDrawtext(clipId);
+  const fraseTexto = escaparDrawtext(quebrarLinha(fraseImpacto));
+
+  const vf = [
+    `drawtext=text='CENA-HERÓI ${clipIdTexto}':fontcolor=white:fontsize=48:x=(w-tw)/2:y=120`,
+    `drawtext=text='${duracao}s':fontcolor=#8888aa:fontsize=36:x=(w-tw)/2:y=200`,
+    `drawtext=text='${fraseTexto}':fontcolor=#dddddd:fontsize=40:x=(w-tw)/2:y=(h-th)/2:line_spacing=12`,
+  ].join(",");
+
+  const comando = [
+    "ffmpeg -y",
+    `-f lavfi -i "color=c=0x1A1A2E:s=1920x1080:d=${duracao}:r=30"`,
+    `-vf "${vf}"`,
+    `-c:v libx264 -preset fast -crf 20 -an -t ${duracao}`,
+    `-metadata comment="PLACEHOLDER-HEROI"`,
+    `"${outputPath}"`,
+  ].join(" ");
+
+  return new Promise((resolve) => {
+    exec(comando, (erro) => {
+      if (erro) {
+        resolve({
+          clip_id: clipId,
+          sucesso: false,
+          arquivo_final: "",
+          erro: erro.message,
+        });
+        return;
+      }
+      resolve({
+        clip_id: clipId,
+        sucesso: true,
+        arquivo_final: outputPath,
+        duracao_real_ms: duracaoMs,
+      });
+    });
+  });
+}
+
 export function gerarComandoImagemIA(
   clip_id: string,
   arquivo_entrada: string,

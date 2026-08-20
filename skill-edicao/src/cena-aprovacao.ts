@@ -20,6 +20,7 @@ export interface PropostaCena {
   variaveis: Record<string, unknown>;
   metadadosTemplate: MetadadosTemplate | null;
   statusRevisao: "pendente" | "aprovado" | "pulado";
+  origem: "fabrica" | "heroi";
 }
 
 const TEMPLATES_FALLBACK = ["caption-editorial-emphasis", "morph-text"];
@@ -189,12 +190,13 @@ export function gerarPropostaCena(
     variaveis,
     metadadosTemplate: meta,
     statusRevisao: "pendente",
+    origem: segmento.origem === "heroi" ? "heroi" : "fabrica",
   };
 }
 
 export function aplicarAcaoAprovacao(
   proposta: PropostaCena,
-  acao: "aprovar" | "trocar_template" | "editar_variavel" | "pular",
+  acao: "aprovar" | "trocar_template" | "editar_variavel" | "pular" | "alternar_origem",
   payload?: { novoTemplate?: string; variavelId?: string; novoValor?: unknown },
   paleta?: PaletaCanal
 ): PropostaCena {
@@ -204,6 +206,9 @@ export function aplicarAcaoAprovacao(
 
     case "pular":
       return { ...proposta, statusRevisao: "pulado" };
+
+    case "alternar_origem":
+      return { ...proposta, origem: proposta.origem === "heroi" ? "fabrica" : "heroi" };
 
     case "trocar_template": {
       const novoTemplate = payload?.novoTemplate;

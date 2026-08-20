@@ -6,6 +6,8 @@ import { ConfigProjeto, ConfigCanal, PlanoEdicao, planejar } from "./planner";
 import { executar } from "./executor";
 import { controleEditorial, resumirConfigEditorial } from "./editorial";
 import { rodarRevisaoCLI } from "./revisao-cli";
+import { exportarHerois } from "./exportar-herois";
+import { reincorporarHerois } from "./reincorporar-herois";
 
 dotenv.config({ path: path.resolve(__dirname, "../.env") });
 
@@ -129,11 +131,15 @@ function extrairPaleta(canal: ConfigCanal): PaletaThumbnail {
   };
 }
 
+const FLAGS_VALIDAS = ["--planejar", "--revisar", "--executar", "--exportar-herois", "--reincorporar"];
+
 function mostrarAjuda(pastasProjetos: string): void {
   console.log("Uso:");
-  console.log("  npx tsx src/index.ts [projeto] --planejar                   (planejamento normal)");
-  console.log("  npx tsx src/index.ts [projeto] --revisar                    (revisão semi-manual das cenas HyperFrames)");
-  console.log("  npx tsx src/index.ts [projeto] --executar                   (execução com API — gera TSX via Claude)");
+  console.log("  npx tsx src/index.ts [projeto] --planejar                   (planejamento normal — já classifica cenas-herói)");
+  console.log("  npx tsx src/index.ts [projeto] --revisar                    (revisão semi-manual das cenas HyperFrames, inclui veto/promoção de herói)");
+  console.log("  npx tsx src/index.ts [projeto] --exportar-herois            (exporta briefings das cenas-herói para output/herois/*.md)");
+  console.log("  npx tsx src/index.ts [projeto] --executar                   (execução com API — fábrica gera commodity, heróis viram placeholder)");
+  console.log("  npx tsx src/index.ts [projeto] --reincorporar               (confere se as cenas-herói reais substituíram os placeholders)");
   console.log("  npx tsx src/index.ts [projeto] --planejar --reenriquecer    (força novo contexto)");
   console.log("");
   console.log("Projetos disponíveis:");
@@ -192,6 +198,7 @@ async function revisar(config: ConfigProjeto): Promise<void> {
     seg.templateAprovado  = proposta.templateAtual;
     seg.variaveisAprovadas = proposta.variaveis;
     seg.statusRevisao     = proposta.statusRevisao;
+    seg.origem            = proposta.origem;
   }
 
   fs.writeFileSync(arquivoPlano, JSON.stringify(plano, null, 2), "utf-8");
@@ -209,7 +216,7 @@ async function main() {
   const reenriquecer   = args.includes("--reenriquecer");
   const pastasProjetos = path.join(__dirname, "../projetos");
 
-  if (!argProjeto || (flag !== "--planejar" && flag !== "--revisar" && flag !== "--executar")) {
+  if (!argProjeto || !FLAGS_VALIDAS.includes(flag)) {
     mostrarAjuda(pastasProjetos);
     process.exit(0);
   }
@@ -240,6 +247,11 @@ async function main() {
     await planejar(config, infoCanal, paleta, configEditorial, reenriquecer);
   } else if (flag === "--revisar") {
     await revisar(config);
+  } else if (flag === "--exportar-herois") {
+    await exportarHerois(config);
+  } else if (flag === "--reincorporar") {
+    const codigoSaida = await reincorporarHerois(config);
+    process.exit(codigoSaida);
   } else {
     await executar(config);
   }

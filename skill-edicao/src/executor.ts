@@ -2,7 +2,7 @@ import * as fs from "fs";
 import * as path from "path";
 import * as readline from "readline";
 import { buscarPexelsVideo, gerarImagemOpenAI } from "./asset-fetcher";
-import { gerarComandoVideoStock, executarFFmpeg } from "./ffmpeg-processor";
+import { gerarComandoVideoStock, executarFFmpeg, gerarPlaceholder } from "./ffmpeg-processor";
 import { renderizarKenBurns } from "./remotion-renderer";
 import { ConfigProjeto, PlanoEdicao, PlanoSegmento } from "./planner";
 import { gerarBatchAnimacoes } from "./batch-animator";
@@ -22,6 +22,7 @@ interface Contadores {
   remotion: number;
   remotionViaAPI: number;
   remotionTelaPreta: number;
+  herois: number;
   falhas: string[];
   clipsFallback: string[];
 }
@@ -127,6 +128,13 @@ function gerarRelatorio(
       ]
     : [];
 
+  const linhasHerois = contadores.herois > 0
+    ? [
+        "",
+        `Cenas-herói: ${contadores.herois} placeholders herói gerados — produza as cenas reais no chat e rode --reincorporar antes do render final.`,
+      ]
+    : [];
+
   const linhas = [
     "════════════════════════════════",
     " SKILL-EDIÇÃO | Relatório Final",
@@ -138,6 +146,7 @@ function gerarRelatorio(
     `├─ Imagem IA: ${contadores.imagemIA} clips`,
     ...linhasRemotion,
     ...linhasFallback,
+    ...linhasHerois,
     "",
     `Tempo total: ${minutos} minutos`,
     `Falhas: ${contadores.falhas.length}${contadores.falhas.length > 0 ? " (listadas abaixo)" : ""}`,
@@ -226,20 +235,23 @@ export async function executar(config: ConfigProjeto): Promise<void> {
     remotion: 0,
     remotionViaAPI: 0,
     remotionTelaPreta: 0,
+    herois: 0,
     falhas: [],
     clipsFallback: [],
   };
   const inicioMs = Date.now();
   const estiloVisualImagem = instrucaoEstiloImagem(plano.configEditorial.estiloImagem);
 
-  const totalClipsRemotion = plano.segmentos.filter(s => s.tipoVisual === "remotion_animacao").length;
+  // Heróis não entram no batch — recebem placeholder no loop, não animação real.
+  const clipsRemotionFabrica = plano.segmentos.filter(
+    s => s.tipoVisual === "remotion_animacao" && s.origem !== "heroi"
+  );
 
   // Fase 1: gera todos os TSX em batch paralelo (HyperFrames + Remotion)
   let batchResultados = new Map<string, string | null>();
-  if (plano.configEditorial.usarRemotion && totalClipsRemotion > 0 && config.canal) {
-    const clipsRemotion = plano.segmentos.filter(s => s.tipoVisual === "remotion_animacao");
+  if (plano.configEditorial.usarRemotion && clipsRemotionFabrica.length > 0 && config.canal) {
     batchResultados = await gerarBatchAnimacoes(
-      clipsRemotion,
+      clipsRemotionFabrica,
       plano.configEditorial,
       config.canal,
       config.pasta,
@@ -251,6 +263,19 @@ export async function executar(config: ConfigProjeto): Promise<void> {
   for (let i = 0; i < plano.segmentos.length; i++) {
     const clip = plano.segmentos[i];
     console.log(`\n[${i + 1}/${plano.segmentos.length}] ${clip.clipId} — ${clip.tipoVisual} — ${clip.duracao}ms`);
+
+    if (clip.origem === "heroi") {
+      const saida = path.join(pastaCenas, `${clip.clipId}.mp4`);
+      await gerarPlaceholder({
+        clipId: clip.clipId,
+        duracaoMs: clip.duracao,
+        fraseImpacto: clip.fraseImpacto ?? clip.texto,
+        paleta: config.canal!.paleta,
+        outputPath: saida,
+      });
+      contadores.herois++;
+      continue;
+    }
 
     if (clip.tipoVisual === "video_stock") {
       await executarVideoStock(clip, pastaDownloads, pastaCenas, contadores, estiloVisualImagem);

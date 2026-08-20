@@ -33,3 +33,16 @@ HyperFrames/
 
 # Remotion — não versionar (projeto local pesado)
 Remotion/
+# Outputs e arquivos gerados (nao versionar)
+skill-edicao/output/
+skill-edicao/teste-templates/
+skill-edicao/projetos/*/output/
+skill-edicao/projetos/*/animacoes-geradas/
+
+# MP4s de teste de templates (gerados, nao versionar)
+skill-edicao/teste-templates/
+
+skill-edicao/projetos/*/animacoes-geradas/
+
+# Briefings de cenas-herói — gerados por projeto
+skill-edicao/projetos/*/output/herois/
